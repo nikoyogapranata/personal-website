@@ -20,7 +20,7 @@ const SHADOW = "2px 2px 0px #0a0a0a";
 const TEXT: React.CSSProperties = {
   fontFamily: "var(--font-display)",
   fontWeight: 700,
-  fontSize: "clamp(28px, 5.2vw, 78px)",
+  fontSize: "clamp(38px, 5.2vw, 78px)",
   letterSpacing: "-0.03em",
   textTransform: "uppercase",
   lineHeight: 1,
@@ -30,13 +30,13 @@ const TEXT: React.CSSProperties = {
 const CARD: React.CSSProperties = {
   position: "relative",
   width: "100%",
-  height: 'clamp(100px, 10vw, 170px)',
+  height: 170,
   border: B,
   background: BG,
   display: "flex",
   alignItems: "center",
-  gap: 'clamp(12px, 1.2vw, 20px)',
-  padding: "0 clamp(16px, 2vw, 28px)",
+  gap: 20,
+  padding: "0 28px",
   overflow: "hidden",
   boxShadow: SHADOW,
 };
@@ -46,7 +46,7 @@ function serif(color: string): React.CSSProperties {
     fontFamily: "var(--font-serif)",
     fontWeight: 400,
     fontStyle: "italic",
-    fontSize: "calc(clamp(28px, 5.2vw, 78px) * 1.1)",
+    fontSize: "calc(clamp(38px, 5.2vw, 78px) * 1.1)",
     color,
     lineHeight: 1,
     whiteSpace: "nowrap",
@@ -60,8 +60,8 @@ function ProfileImg() {
   return (
     <div
       style={{
-        height: 'clamp(76px, 8vw, 130px)',
-        width: 'clamp(64px, 7vw, 110px)',
+        height: 130,
+        width: 110,
         flexShrink: 0,
         borderRadius: "10px",
         overflow: "hidden",
@@ -153,25 +153,25 @@ function HoverPushCard({
 export default function Hero() {
   const { scrollYProgress } = useScroll();
 
-  const box1Y = useTransform(scrollYProgress, [0, 0.35], ["0%", "-300%"]);
-  const box1X = useTransform(scrollYProgress, [0, 0.35], ["0%", "80%"]);
-  const box1Rotate = useTransform(scrollYProgress, [0, 0.35], [-1.8, -25]);
+  const box1Y = useTransform(scrollYProgress, [0, 0.8], ["0%", "-300%"]);
+  const box1X = useTransform(scrollYProgress, [0, 0.8], ["0%", "80%"]);
+  const box1Rotate = useTransform(scrollYProgress, [0, 0.8], [-1.8, -25]);
 
-  const box2Y = useTransform(scrollYProgress, [0, 0.35], ["0%", "-300%"]);
-  const box2X = useTransform(scrollYProgress, [0, 0.35], ["0%", "-80%"]);
-  const box2Rotate = useTransform(scrollYProgress, [0, 0.35], [1, 20]);
+  const box2Y = useTransform(scrollYProgress, [0, 0.8], ["0%", "-300%"]);
+  const box2X = useTransform(scrollYProgress, [0, 0.8], ["0%", "-80%"]);
+  const box2Rotate = useTransform(scrollYProgress, [0, 0.8], [1, 20]);
 
-  const box3Y = useTransform(scrollYProgress, [0, 0.35], ["0%", "300%"]);
-  const box3X = useTransform(scrollYProgress, [0, 0.35], ["0%", "80%"]);
-  const box3Rotate = useTransform(scrollYProgress, [0, 0.35], [-0.6, -20]);
+  const box3Y = useTransform(scrollYProgress, [0, 0.8], ["0%", "300%"]);
+  const box3X = useTransform(scrollYProgress, [0, 0.8], ["0%", "80%"]);
+  const box3Rotate = useTransform(scrollYProgress, [0, 0.8], [-0.6, -20]);
 
-  const box4Y = useTransform(scrollYProgress, [0, 0.35], ["0%", "300%"]);
-  const box4X = useTransform(scrollYProgress, [0, 0.35], ["0%", "-80%"]);
-  const box4Rotate = useTransform(scrollYProgress, [0, 0.35], [1.4, 25]);
+  const box4Y = useTransform(scrollYProgress, [0, 0.8], ["0%", "300%"]);
+  const box4X = useTransform(scrollYProgress, [0, 0.8], ["0%", "-80%"]);
+  const box4Rotate = useTransform(scrollYProgress, [0, 0.8], [1.4, 25]);
 
-  const heroScale = useTransform(scrollYProgress, [0, 0.35], [1, 2.4]);
-  const heroOpacity = useTransform(scrollYProgress, [0.28, 0.4], [1, 0]);
-  const heroBlur = useTransform(scrollYProgress, [0.22, 0.4], [0, 12]);
+  const heroScale = useTransform(scrollYProgress, [0, 0.8], [1, 2.4]);
+  const heroOpacity = useTransform(scrollYProgress, [0.5, 0.85], [1, 0]);
+  const heroBlur = useTransform(scrollYProgress, [0.4, 0.85], [0, 12]);
   const heroFilter = useTransform(heroBlur, (b) => `blur(${b}px)`);
 
   return (
@@ -196,9 +196,9 @@ export default function Hero() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center", // FIXED: Forces all varied width child blocks to snap perfectly to the center axis
-          gap: 'clamp(6px, 0.8vw, 12px)',
+          gap: 12,
           width: "100%",        // Changed from max-content to allow flex center matching mechanics
-          maxWidth: 'min(1100px, 94vw)',
+          maxWidth: "98vw",
         }}
       >
         {/* Box 1 — white background variant */}
@@ -221,7 +221,7 @@ export default function Hero() {
             style={{
               height: "0.85em",
               width: "0.85em",
-              fontSize: "clamp(28px, 5.2vw, 78px)",
+              fontSize: "clamp(38px, 5.2vw, 78px)",
               flexShrink: 0,
               marginRight: "16px",
               display: "flex",
@@ -263,7 +263,7 @@ export default function Hero() {
           <div
             style={{
               height: "0.9em",
-              fontSize: "clamp(28px, 5.2vw, 78px)",
+              fontSize: "clamp(38px, 5.2vw, 78px)",
               width: "1.6em",
               flexShrink: 0,
               borderRadius: "12px",
@@ -322,7 +322,7 @@ export default function Hero() {
             style={{
               height: "1.05em",
               width: "auto",
-              fontSize: "clamp(28px, 5.2vw, 78px)",
+              fontSize: "clamp(38px, 5.2vw, 78px)",
               marginLeft: "18px",
               flexShrink: 0,
               display: "block",
@@ -354,7 +354,7 @@ export default function Hero() {
             style={{
               height: "0.85em",
               width: "0.85em",
-              fontSize: "clamp(28px, 5.2vw, 78px)",
+              fontSize: "clamp(38px, 5.2vw, 78px)",
               flexShrink: 0,
               marginRight: "12px",
               display: "flex",
@@ -435,7 +435,7 @@ export default function Hero() {
               style={{
                 height: "0.7em", 
                 width: "0.7em",  
-                fontSize: "clamp(28px, 5.2vw, 78px)", 
+                fontSize: "clamp(38px, 5.2vw, 78px)", 
                 flexShrink: 0,
                 marginRight: "16px",
                 display: "flex",

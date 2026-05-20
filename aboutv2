@@ -16,7 +16,6 @@ const words = [
   { text: 'that ',          font: 'display' },
   { text: 'feel ',          font: 'display' },
   { text: 'as ',            font: 'display' },
-
   { text: 'good ',          font: 'display' },
   { text: 'as ',            font: 'display' },
   { text: 'they ',          font: 'display' },
@@ -97,7 +96,7 @@ export default function AboutV2() {
         display:        'flex',
         alignItems:     'center',
         justifyContent: 'center',
-        padding:        'clamp(80px, 10vw, 140px) 8vw',
+        padding:        '140px 8vw',
         position:       'relative',
         overflow:       'hidden',
       }}
@@ -123,18 +122,13 @@ export default function AboutV2() {
       </p>
 
       <style>{`
-        @media (max-width: 1400px) {
-          section#about p {
-            font-size: clamp(28px, 4.8vw, 64px) !important;
-          }
-        }
         @media (max-width: 768px) {
           section#about {
-            padding: clamp(48px, 6vw, 80px) 6vw !important;
+            padding: 80px 6vw !important;
             min-height: 100vh !important;
           }
           section#about p {
-            font-size: clamp(18px, 5vw, 32px) !important;
+            font-size: clamp(24px, 6vw, 40px) !important;
           }
         }
       `}</style>

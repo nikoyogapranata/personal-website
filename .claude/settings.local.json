@@ -31,7 +31,8 @@
       "Bash(node *)",
       "Bash(del *)",
       "Bash(npx playwright *)",
-      "WebFetch(domain:localhost)"
+      "WebFetch(domain:localhost)",
+      "Bash(Read \"C:\\\\Users\\\\Nikk\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\D--Project-Web-personal-website\\\\5e1f3114-2fc9-4bf5-9d45-013ce3d3afe4\\\\tasks\\\\bbzkh0uzn.output\")"
     ]
   }
 }

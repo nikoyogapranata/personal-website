@@ -61,8 +61,10 @@ export default function Work() {
           alignItems:     'center',
           justifyContent: 'center',
           zIndex:         1,
+          overflow:       'hidden',
         }}>
           <motion.h2
+            className="work-title"
             style={{
               fontFamily:    'var(--font-display)',
               fontWeight:    700,
@@ -106,19 +108,19 @@ export default function Work() {
               style={{
                 position:       'relative',
                 overflow:       'hidden',
-                minHeight:      120,
+                minHeight:      'clamp(80px, 8vw, 120px)',
                 borderTop:      '0.5px solid #1e1e1e',
                 display:        'flex',
                 alignItems:     'center',
                 justifyContent: 'space-between',
-                padding:        '48px 60px',
-                gap:            40,
+                padding:        'clamp(28px, 3.5vw, 48px) clamp(24px, 4vw, 60px)',
+                gap:            'clamp(20px, 2.5vw, 40px)',
               }}
               onMouseEnter={() => setHoveredId(project.id)}
               onMouseLeave={() => setHoveredId(null)}
               onClick={() => window.open(project.link, '_blank')}
             >
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 24 }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 'clamp(12px, 1.5vw, 24px)' }}>
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: '#888', letterSpacing: '0.1em', flexShrink: 0 }}>
                   {'0' + (index + 1)}
                 </span>
@@ -164,20 +166,20 @@ export default function Work() {
               style={{
                 position:       'relative',
                 overflow:       'hidden',
-                minHeight:      120,
+                minHeight:      'clamp(80px, 8vw, 120px)',
                 borderTop:      '0.5px solid #1e1e1e',
                 ...(isLast && { borderBottom: '0.5px solid #1e1e1e' }),
                 display:        'flex',
                 alignItems:     'center',
                 justifyContent: 'space-between',
-                padding:        '48px 60px',
-                gap:            40,
+                padding:        'clamp(28px, 3.5vw, 48px) clamp(24px, 4vw, 60px)',
+                gap:            'clamp(20px, 2.5vw, 40px)',
               }}
               onMouseEnter={() => setHoveredId(project.id)}
               onMouseLeave={() => setHoveredId(null)}
               onClick={() => window.open(project.link, '_blank')}
             >
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 24 }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 'clamp(12px, 1.5vw, 24px)' }}>
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: '#888', letterSpacing: '0.1em', flexShrink: 0 }}>
                   {'0' + (index + 1)}
                 </span>
@@ -219,8 +221,8 @@ export default function Work() {
             translateY:    '-50%',
             zIndex:        100,
             pointerEvents: 'none',
-            width:         560,
-            height:        380,
+            width:         'clamp(280px, 35vw, 560px)',
+            height:        'clamp(200px, 24vw, 380px)',
             overflow:      'hidden',
             borderRadius:  4,
           }}
@@ -259,7 +261,7 @@ export default function Work() {
       <div style={{
         display:        'flex',
         justifyContent: 'center',
-        padding:        '80px 60px 120px',
+        padding:        'clamp(40px, 5vw, 80px) clamp(24px, 4vw, 60px) clamp(60px, 8vw, 120px)',
       }}>
         <motion.a
           href="/work"
@@ -309,14 +311,19 @@ export default function Work() {
 
       <style>{`
         .work-list {
-          padding: 0 60px 120px;
+          padding: 0 clamp(24px, 4vw, 60px) clamp(60px, 8vw, 120px);
         }
         .work-row {
           cursor: pointer;
         }
+        @media (max-width: 1400px) {
+          .work-title {
+            font-size: clamp(60px, 12vw, 160px) !important;
+          }
+        }
         @media (max-width: 768px) {
           .work-list { padding: 0 0 80px; }
-          .work-row  { flex-wrap: wrap; gap: 16px !important; padding: 32px 30px !important; }
+          .work-row  { flex-wrap: wrap; gap: 16px !important; padding: clamp(20px, 3vw, 32px) clamp(16px, 3vw, 30px) !important; }
         }
       `}</style>
     </motion.section>

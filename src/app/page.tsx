@@ -24,8 +24,8 @@ export default function Home() {
   return (
     <main style={{ background: '#f8f8f5', position: 'relative' }}>
 
-      {/* Scroll driver — 200vh for hero animation */}
-      <div style={{ height: '200vh' }} />
+      {/* Scroll driver — 400vh for hero animation */}
+      <div style={{ height: '300vh' }} />
 
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 10, background: '#f8f8f5' }}>

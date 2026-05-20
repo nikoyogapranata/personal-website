@@ -10,46 +10,10 @@ import {
 } from 'framer-motion'
 
 const PROJECTS = [
-  {
-    id:       1,
-    title:    'Fitness Coach AI',
-    category: 'iOS · Mobile',
-    year:     '2024',
-    image:    '/hero.jpeg',
-    link:     '#',
-  },
-  {
-    id:       2,
-    title:    'Portfolio Website',
-    category: 'Web · Frontend',
-    year:     '2025',
-    image:    '/profile.png',
-    link:     '#',
-  },
-  {
-    id:       3,
-    title:    'Weather Dashboard',
-    category: 'Web · Frontend',
-    year:     '2024',
-    image:    '/profile.png',
-    link:     '#',
-  },
-  {
-    id:       4,
-    title:    'E-Commerce UI',
-    category: 'Web · Design',
-    year:     '2024',
-    image:    '/profile.png',
-    link:     '#',
-  },
-  {
-    id:       5,
-    title:    'Brand Identity',
-    category: 'Design · Branding',
-    year:     '2024',
-    image:    '/profile.png',
-    link:     '#',
-  },
+  { id: 1, title: 'JAMUSARI',   category: 'Web · Fullstack',   year: '2025', image: '/jamusari.png',   link: 'https://jamusari.com' },
+  { id: 2, title: 'HealthSync', category: 'Web · Fullstack',   year: '2025', image: '/healthsync.png', link: 'https://healthsync-7.vercel.app' },
+  { id: 3, title: 'WETRACK',    category: 'Web · Fullstack',   year: '2024', image: '/wetrack.png',    link: 'https://github.com/nikoyogapranata/wetrack' },
+  { id: 4, title: 'EduNovel',   category: 'Design · Branding', year: '2023', image: '/edunovel.png',   link: 'https://www.figma.com/proto/cY7vOHUdtTfLDkTYDthI1n/EduNovel?page-id=0%3A1&node-id=2-2397&p=f&viewport=308%2C326%2C0.03&t=n2kiA8gcGTPQdv0j-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=2%3A2397&show-proto-sidebar=1' },
 ]
 
 export default function Work() {
@@ -57,31 +21,30 @@ export default function Work() {
   const titleRef                = useRef<HTMLDivElement>(null)
   const [hoveredId, setHoveredId] = useState<number | null>(null)
 
-  // Scroll-driven title animation
   const { scrollYProgress } = useScroll({
     target: titleRef,
     offset: ['start start', 'end start'],
   })
 
-  const titleSize = useTransform(
-    scrollYProgress,
-    [0, 0.85],
-    ['clamp(72px, 15vw, 200px)', 'clamp(36px, 3.6vw, 52px)'],
-  )
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 60,
+    damping:   18,
+    mass:      0.4,
+    restDelta: 0.001,
+  })
+
+  const titleScale = useTransform(smoothProgress, [0, 0.85], [1, 0.26])
 
   const sectionBg = useTransform(
-    scrollYProgress,
+    smoothProgress,
     [0, 0.45],
     ['#2563eb', '#0a0a0a'],
   )
 
-  // Cursor-tracking motion values
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
-
-  const cardX = useSpring(mouseX, { stiffness: 120, damping: 20, mass: 0.5 })
-  const cardY = useSpring(mouseY, { stiffness: 120, damping: 20, mass: 0.5 })
-
+  const cardX  = useSpring(mouseX, { stiffness: 120, damping: 20, mass: 0.5 })
+  const cardY  = useSpring(mouseY, { stiffness: 120, damping: 20, mass: 0.5 })
 
   return (
     <motion.section
@@ -103,23 +66,19 @@ export default function Work() {
             style={{
               fontFamily:    'var(--font-display)',
               fontWeight:    700,
-              fontSize:      titleSize,
+              fontSize:      'clamp(72px, 15vw, 200px)',
               color:         '#f8f8f5',
               letterSpacing: '-0.03em',
               lineHeight:    1.05,
               textAlign:     'center',
               margin:        0,
+              scale:         titleScale,
+              transformOrigin: 'center center',
             }}
           >
-            <motion.div style={{ display: 'block' }}>
-              A GLIMPSE OF
-            </motion.div>
-            <motion.div style={{ display: 'block' }}>
-              WHAT I&apos;VE
-            </motion.div>
-            <motion.div style={{ display: 'block' }}>
-              BEEN BUILDING
-            </motion.div>
+            <motion.div style={{ display: 'block' }}>A GLIMPSE OF</motion.div>
+            <motion.div style={{ display: 'block' }}>WHAT I&apos;VE</motion.div>
+            <motion.div style={{ display: 'block' }}>BEEN BUILDING</motion.div>
           </motion.h2>
         </div>
       </div>
@@ -133,7 +92,7 @@ export default function Work() {
           mouseY.set(e.clientY)
         }}
       >
-        {/* ── Rows 1–3 ── */}
+        {/* Rows 1–3 */}
         {PROJECTS.slice(0, 3).map((project, index) => {
           const isHovered = hoveredId === project.id
           return (
@@ -147,19 +106,19 @@ export default function Work() {
               style={{
                 position:       'relative',
                 overflow:       'hidden',
-                minHeight:      120,
+                minHeight:      'clamp(80px, 8vw, 120px)',
                 borderTop:      '0.5px solid #1e1e1e',
                 display:        'flex',
                 alignItems:     'center',
                 justifyContent: 'space-between',
-                padding:        '48px 60px',
-                gap:            40,
+                padding:        'clamp(28px, 3.5vw, 48px) clamp(24px, 4vw, 60px)',
+                gap:            'clamp(20px, 2.5vw, 40px)',
               }}
               onMouseEnter={() => setHoveredId(project.id)}
               onMouseLeave={() => setHoveredId(null)}
               onClick={() => window.open(project.link, '_blank')}
             >
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 24 }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 'clamp(12px, 1.5vw, 24px)' }}>
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: '#888', letterSpacing: '0.1em', flexShrink: 0 }}>
                   {'0' + (index + 1)}
                 </span>
@@ -189,7 +148,7 @@ export default function Work() {
           )
         })}
 
-        {/* ── Rows 4–5 ── */}
+        {/* Rows 4–5 */}
         {PROJECTS.slice(3).map((project, i) => {
           const index     = i + 3
           const isLast    = i === PROJECTS.slice(3).length - 1
@@ -205,20 +164,20 @@ export default function Work() {
               style={{
                 position:       'relative',
                 overflow:       'hidden',
-                minHeight:      120,
+                minHeight:      'clamp(80px, 8vw, 120px)',
                 borderTop:      '0.5px solid #1e1e1e',
                 ...(isLast && { borderBottom: '0.5px solid #1e1e1e' }),
                 display:        'flex',
                 alignItems:     'center',
                 justifyContent: 'space-between',
-                padding:        '48px 60px',
-                gap:            40,
+                padding:        'clamp(28px, 3.5vw, 48px) clamp(24px, 4vw, 60px)',
+                gap:            'clamp(20px, 2.5vw, 40px)',
               }}
               onMouseEnter={() => setHoveredId(project.id)}
               onMouseLeave={() => setHoveredId(null)}
               onClick={() => window.open(project.link, '_blank')}
             >
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 24 }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 'clamp(12px, 1.5vw, 24px)' }}>
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: '#888', letterSpacing: '0.1em', flexShrink: 0 }}>
                   {'0' + (index + 1)}
                 </span>
@@ -248,22 +207,22 @@ export default function Work() {
           )
         })}
 
-        {/* ── Cursor-following preview card ── */}
+        {/* Cursor-following preview card */}
         <motion.div
           style={{
-            position:   'fixed',
-            top:        0,
-            left:       0,
-            x:          cardX,
-            y:          cardY,
-            translateX: '-50%',
-            translateY: '-50%',
-            zIndex:     100,
+            position:      'fixed',
+            top:           0,
+            left:          0,
+            x:             cardX,
+            y:             cardY,
+            translateX:    '-50%',
+            translateY:    '-50%',
+            zIndex:        100,
             pointerEvents: 'none',
-            width:      560,
-            height:     380,
-            overflow:   'hidden',
-            borderRadius: 4,
+            width:         'clamp(280px, 35vw, 560px)',
+            height:        'clamp(200px, 24vw, 380px)',
+            overflow:      'hidden',
+            borderRadius:  4,
           }}
           animate={{
             opacity: hoveredId !== null ? 1 : 0,
@@ -274,7 +233,6 @@ export default function Work() {
             scale:   { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
           }}
         >
-          {/* Per-project images — crossfade between them */}
           {PROJECTS.map(project => (
             <motion.div
               key={project.id}
@@ -285,36 +243,12 @@ export default function Work() {
               <img
                 src={project.image}
                 alt={project.title}
-                style={{
-                  width:      '100%',
-                  height:     '100%',
-                  objectFit:  'cover',
-                  objectPosition: 'center',
-                  display:    'block',
-                }}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }}
               />
             </motion.div>
           ))}
-
-          {/* Centered View label */}
-          <div style={{
-            position:       'absolute',
-            inset:          0,
-            display:        'flex',
-            alignItems:     'center',
-            justifyContent: 'center',
-            zIndex:         1,
-          }}>
-            <span style={{
-              fontFamily:    'var(--font-display)',
-              fontSize:      12,
-              fontWeight:    600,
-              textTransform: 'uppercase',
-              letterSpacing: '0.18em',
-              color:         '#f8f8f5',
-              padding:       '10px 24px',
-              border:        '1px solid rgba(248,248,245,0.7)',
-            }}>
+          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1 }}>
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.18em', color: '#f8f8f5', padding: '10px 24px', border: '1px solid rgba(248,248,245,0.7)' }}>
               View
             </span>
           </div>
@@ -325,8 +259,7 @@ export default function Work() {
       <div style={{
         display:        'flex',
         justifyContent: 'center',
-        padding:        '80px 60px 120px',
-        borderTop:      '0.5px solid #1e1e1e',
+        padding:        'clamp(40px, 5vw, 80px) clamp(24px, 4vw, 60px) clamp(60px, 8vw, 120px)',
       }}>
         <motion.a
           href="/work"
@@ -354,9 +287,7 @@ export default function Work() {
             verticalAlign: 'super',
             color:         '#f8f8f5',
             marginLeft:    '0.2em',
-          }}>(5)</sup>
-
-          {/* Underline animates left to right on hover */}
+          }}>(4)</sup>
           <motion.span
             variants={{
               rest:  { scaleX: 0, originX: 0 },
@@ -378,21 +309,14 @@ export default function Work() {
 
       <style>{`
         .work-list {
-          padding: 0 60px 120px;
+          padding: 0 clamp(24px, 4vw, 60px) clamp(60px, 8vw, 120px);
         }
         .work-row {
           cursor: pointer;
         }
-
         @media (max-width: 768px) {
-          .work-list {
-            padding: 0 0 80px;
-          }
-          .work-row {
-            flex-wrap: wrap;
-            gap:       16px !important;
-            padding:   32px 30px !important;
-          }
+          .work-list { padding: 0 0 80px; }
+          .work-row  { flex-wrap: wrap; gap: 16px !important; padding: clamp(20px, 3vw, 32px) clamp(16px, 3vw, 30px) !important; }
         }
       `}</style>
     </motion.section>

@@ -46,6 +46,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Niko Pranata" }],
   creator: "Niko Pranata",
   openGraph: {
+    
     type: "website",
     locale: "en_US",
     title: "Niko Pranata - Frontend Developer",
