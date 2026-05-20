@@ -10,11 +10,10 @@ import {
 } from 'framer-motion'
 
 const PROJECTS = [
-  { id: 1, title: 'Fitness Coach AI',  category: 'iOS · Mobile',      year: '2024', image: '/hero.jpeg',   link: '#' },
-  { id: 2, title: 'Portfolio Website', category: 'Web · Frontend',    year: '2025', image: '/profile.png', link: '#' },
-  { id: 3, title: 'Weather Dashboard', category: 'Web · Frontend',    year: '2024', image: '/profile.png', link: '#' },
-  { id: 4, title: 'E-Commerce UI',     category: 'Web · Design',      year: '2024', image: '/profile.png', link: '#' },
-  { id: 5, title: 'Brand Identity',    category: 'Design · Branding', year: '2024', image: '/profile.png', link: '#' },
+  { id: 1, title: 'JAMUSARI',   category: 'Web · Fullstack',   year: '2025', image: '/jamusari.png',   link: 'https://jamusari.com' },
+  { id: 2, title: 'HealthSync', category: 'Web · Fullstack',   year: '2025', image: '/healthsync.png', link: 'https://healthsync-7.vercel.app' },
+  { id: 3, title: 'WETRACK',    category: 'Web · Fullstack',   year: '2024', image: '/wetrack.png',    link: 'https://github.com/nikoyogapranata/wetrack' },
+  { id: 4, title: 'EduNovel',   category: 'Design · Branding', year: '2023', image: '/edunovel.png',   link: 'https://www.figma.com/proto/cY7vOHUdtTfLDkTYDthI1n/EduNovel?page-id=0%3A1&node-id=2-2397&p=f&viewport=308%2C326%2C0.03&t=n2kiA8gcGTPQdv0j-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=2%3A2397&show-proto-sidebar=1' },
 ]
 
 export default function Work() {
@@ -288,7 +287,7 @@ export default function Work() {
             verticalAlign: 'super',
             color:         '#f8f8f5',
             marginLeft:    '0.2em',
-          }}>(5)</sup>
+          }}>(4)</sup>
           <motion.span
             variants={{
               rest:  { scaleX: 0, originX: 0 },

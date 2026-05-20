@@ -3,6 +3,7 @@ import { Space_Grotesk, Playfair_Display } from "next/font/google";
 import localFont from "next/font/local";
 import RibbonsCursor from "@/components/ui/RibbonsCursor";
 import Navbar from "@/components/sections/Navbar";
+import LoadingScreen from "@/components/ui/LoadingScreen";
 import "./globals.css";
 
 const clashDisplay = localFont({
@@ -37,6 +38,9 @@ export const metadata: Metadata = {
     default: "Niko Pranata — Frontend Developer",
     template: "%s — Niko Pranata",
   },
+  icons: {
+    icon: "/favicon.png",
+  },
   description:
     "CS student and frontend developer. I build interfaces that feel considered — from motion to markup.",
   authors: [{ name: "Niko Pranata" }],
@@ -44,14 +48,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    title: "Niko Pranata — Frontend Developer",
+    title: "Niko Pranata - Frontend Developer",
     description:
       "CS student and frontend developer. I build interfaces that feel considered — from motion to markup.",
     siteName: "Niko Pranata",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Niko Pranata — Frontend Developer",
+    title: "Niko Pranata - Frontend Developer",
     description:
       "CS student and frontend developer. I build interfaces that feel considered — from motion to markup.",
   },
@@ -76,6 +80,7 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <LoadingScreen />
         <RibbonsCursor />
         <Navbar />
         {children}

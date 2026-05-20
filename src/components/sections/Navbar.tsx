@@ -5,10 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import FlowingMenu from '../ui/FlowingMenu'
 
 const menuItems = [
-  { link: '/',        text: 'Home',     image: '/hero.jpeg' },
-  { link: '/about',   text: 'About Me', image: '/profile.png' },
-  { link: '/work',    text: 'Work',     image: 'https://picsum.photos/600/400?random=10' },
-  { link: '/contact', text: 'Contact',  image: 'https://picsum.photos/600/400?random=11' },
+  { link: '/',      text: 'Home',     image: '/spring.jpg' },
+  { link: '/about', text: 'About Me', image: '/autumn.jpg' },
+  { link: '/work',  text: 'Work',     image: '/winter.jpg' },
 ]
 
 export default function Navbar() {
