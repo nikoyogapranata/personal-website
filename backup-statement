@@ -1,0 +1,181 @@
+"use client";
+import { useRef } from "react";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+
+export default function Statement() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end end"],
+  });
+
+  const springCfg = { stiffness: 60, damping: 18, mass: 0.6 };
+
+  const clipTopRaw = useTransform(scrollYProgress, [0, 1], [28, 0]);
+  const clipRightRaw = useTransform(scrollYProgress, [0, 1], [20, 0]);
+  const clipBottomRaw = useTransform(scrollYProgress, [0, 1], [28, 0]);
+  const clipLeftRaw = useTransform(scrollYProgress, [0, 1], [20, 0]);
+
+  const clipTop = useSpring(clipTopRaw, springCfg);
+  const clipRight = useSpring(clipRightRaw, springCfg);
+  const clipBottom = useSpring(clipBottomRaw, springCfg);
+  const clipLeft = useSpring(clipLeftRaw, springCfg);
+
+  const clipPath = useTransform(
+    [clipTop, clipRight, clipBottom, clipLeft] as any,
+    ([t, r, b, l]: number[]) => `inset(${t}% ${r}% ${b}% ${l}%)`,
+  );
+
+  const imgWidthRaw = useTransform(
+    scrollYProgress,
+    [0.15, 0.8],
+    ["0em", "1.1em"],
+  );
+  const imgWidth = useSpring(imgWidthRaw, springCfg);
+
+  return (
+    <div
+      ref={containerRef}
+      style={{
+        position: "relative",
+        height: "160vh",
+        zIndex: 10,
+        background: "#0a0a0a",
+      }}
+    >
+      <div
+        style={{
+          position: "sticky",
+          top: 0,
+          height: "100vh",
+          overflow: "hidden",
+        }}
+      >
+        <motion.div
+          style={{
+            position: "absolute",
+            inset: 0,
+            clipPath,
+            background: "#f8f8f5",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "0 8vw",
+            overflow: "hidden",
+          }}
+        >
+          <p style={{ margin: 0, padding: 0, textAlign: "center" }}>
+            {/* Line 1: FROM THE + FIRST PIXEL */}
+            <span style={{ display: "block", lineHeight: 1.05 }}>
+              <span
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 700,
+                  fontSize: "clamp(48px, 8vw, 124px)",
+                  letterSpacing: "-0.03em",
+                  color: "#0a0a0a",
+                }}
+              >
+                FROM THE{" "}
+              </span>
+              <span
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  fontStyle: "italic",
+                  fontWeight: 400,
+                  fontSize: "clamp(48px, 8vw, 124px)",
+                  letterSpacing: "-0.03em",
+                  color: "#2563eb",
+                }}
+              >
+                first pixel
+              </span>
+            </span>
+
+            {/* Line 2: TO THE FINAL DEPLOY */}
+            <span
+              style={{
+                display: "block",
+                lineHeight: 1.05,
+                fontFamily: "var(--font-display)",
+                fontWeight: 700,
+                fontSize: "clamp(48px, 8vw, 124px)",
+                letterSpacing: "-0.03em",
+                color: "#0a0a0a",
+              }}
+            >
+              TO THE FINAL DEPLOY,
+            </span>
+
+            {/* Line 3: I + image + HANDLE THE WHOLE + PRODUCT */}
+            <span style={{ display: "block", lineHeight: 1.05 }}>
+              <span
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 700,
+                  fontSize: "clamp(48px, 8vw, 124px)",
+                  letterSpacing: "-0.03em",
+                  color: "#0a0a0a",
+                }}
+              >
+                I
+              </span>
+              {/* Inline image — height matches the cap height of the surrounding text */}
+              <motion.span
+                style={{
+                  display: "inline-block",
+                  fontSize: "clamp(48px, 8vw, 124px)",
+                  height: "0.72em",
+                  width: imgWidth,
+                  verticalAlign: "middle",
+                  transform: "translateY(-0.3em)",
+                  margin: "0 0.1em",
+                  overflow: "hidden",
+                  borderRadius: 8,
+                  flexShrink: 0,
+                }}
+              >
+                <img
+                  src="/hero.jpeg"
+                  alt=""
+                  style={{
+                    height: "100%",
+                    width: "1.1em",
+                    objectFit: "cover",
+                    objectPosition: "center",
+                    display: "block",
+                    flexShrink: 0,
+                  }}
+                />
+              </motion.span>
+              <span
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 700,
+                  fontSize: "clamp(48px, 8vw, 124px)",
+                  letterSpacing: "-0.03em",
+                  color: "#0a0a0a",
+                }}
+              >
+                HANDLE THE WHOLE{" "}
+              </span>
+              <span
+                style={{
+                  fontFamily: "var(--font-serif)",
+                  fontStyle: "italic",
+                  fontWeight: 400,
+                  fontSize: "clamp(48px, 8vw, 124px)",
+                  letterSpacing: "-0.03em",
+                  color: "#2563eb",
+                }}
+              >
+                product.
+              </span>
+            </span>
+          </p>
+        </motion.div>
+      </div>
+    </div>
+  );
+}

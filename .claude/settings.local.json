@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir D:\\\\Project\\\\Web\\\\personal-website\\\\node_modules\\\\next\\\\dist\\\\docs\\\\01-app *)",
+      "Bash(dir D:\\\\Project\\\\Web\\\\personal-website\\\\node_modules\\\\next\\\\dist\\\\docs\\\\01-app\\\\02-guides *)",
+      "Bash(dir D:\\\\Project\\\\Web\\\\personal-website\\\\node_modules\\\\next\\\\dist\\\\docs\\\\01-app\\\\03-api-reference *)",
+      "Bash(npm run *)",
+      "Bash(dir D:\\\\Project\\\\Web\\\\personal-website\\\\public *)",
+      "Bash(npx tsc *)",
+      "Bash(curl -L \"https://api.fontshare.com/v2/fonts/download/clash-display\" -o /tmp/clash-display.zip)",
+      "Read(//tmp/**)",
+      "Bash(unzip -o /tmp/clash-display.zip -d /tmp/clash-display-extracted)",
+      "Bash(cp /tmp/clash-display-extracted/ClashDisplay_Complete/Fonts/WEB/fonts/ClashDisplay-Variable.woff2 /d/Project/Web/personal-website/public/fonts/)",
+      "Bash(cp /tmp/clash-display-extracted/ClashDisplay_Complete/Fonts/WEB/fonts/ClashDisplay-Medium.woff2 /d/Project/Web/personal-website/public/fonts/)",
+      "Bash(cp /tmp/clash-display-extracted/ClashDisplay_Complete/Fonts/WEB/fonts/ClashDisplay-Semibold.woff2 /d/Project/Web/personal-website/public/fonts/)",
+      "Bash(cp /tmp/clash-display-extracted/ClashDisplay_Complete/Fonts/WEB/fonts/ClashDisplay-Bold.woff2 /d/Project/Web/personal-website/public/fonts/)",
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\(JSON.stringify\\({deps: p.dependencies, dev: p.devDependencies}, null, 2\\)\\)\")",
+      "Bash(npm install *)",
+      "Bash(node -e \"require\\('motion/react'\\); console.log\\('motion/react OK'\\)\")",
+      "Bash(curl -L \"https://api.fontshare.com/v2/fonts/download/aktura\" -o /tmp/aktura.zip)",
+      "Bash(unzip -o /tmp/aktura.zip -d /tmp/aktura-extracted)",
+      "Bash(Start-Sleep -Seconds 5)",
+      "Bash(Get-Content \"C:\\\\Users\\\\Nikk\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\D--Project-Web-personal-website\\\\e5c856f6-7322-4923-8227-df3e45ed3322\\\\tasks\\\\b15avr8na.output\" -Tail 20)",
+      "Bash(Remove-Item *)",
+      "Skill(design-taste-frontend)",
+      "PowerShell(New-Item *)",
+      "Skill(emil-design-eng)",
+      "Bash(curl *)",
+      "Bash(npx next *)",
+      "Bash(npx eslint *)",
+      "Bash(node *)",
+      "Bash(del *)"
+    ]
+  }
+}
