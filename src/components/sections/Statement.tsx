@@ -1,8 +1,8 @@
 "use client";
 import { useRef } from "react";
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform, MotionValue } from "framer-motion";
 
-export default function Statement() {
+export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -35,7 +35,9 @@ export default function Statement() {
   const smooth = useSpring(scrollYProgress, springCfg);
 
   // GOT A PROJECT? enters (collision), then continues scrolling left to reveal full text
-  const gotX = useTransform(smooth, [0.10, 0.75, 1.2], ["120vw", "0vw", "-240vw"]);
+  const gotX     = useTransform(smooth, [0.10, 0.75, 1.2], ["120vw", "0vw", "-240vw"]);
+  const clipBg   = useTransform(smooth, [0.25, 0.60], ["#f8f8f5", "#0a0a0a"]);
+  const gotColor = useTransform(smooth, [0.25, 0.60], ["#0a0a0a", "#f8f8f5"]);
 
   // Statement gets pushed out — starts moving after GOT A PROJECT? is already mid-screen
   const statX = useTransform(smooth, [0.30, 0.70], ["0vw", "-130vw"]);
@@ -63,7 +65,7 @@ export default function Statement() {
             position:   "absolute",
             inset:      0,
             clipPath,
-            background: "#f8f8f5",
+            background: clipBg,
             overflow:   "hidden",
           }}
         >
@@ -198,13 +200,13 @@ export default function Statement() {
               willChange: "transform",
             }}
           >
-            <span
+            <motion.span
               style={{
                 fontFamily:    "var(--font-display)",
                 fontWeight:    800,
                 fontSize:      "clamp(180px, 30vw, 450px)",
                 letterSpacing: "-0.04em",
-                color:         "#0a0a0a",
+                color:         gotColor,
                 lineHeight:    1,
                 userSelect:    "none",
                 whiteSpace:    "nowrap",
@@ -212,9 +214,22 @@ export default function Statement() {
               }}
             >
               GOT A PROJECT?
-            </span>
+            </motion.span>
           </motion.div>
         </motion.div>
+
+        {/* Exit dim — driven from page.tsx as Contact slides in */}
+        {exitDim && (
+          <motion.div
+            style={{
+              position:      "absolute",
+              inset:         0,
+              background:    "#0a0a0a",
+              opacity:       exitDim,
+              pointerEvents: "none",
+            }}
+          />
+        )}
       </div>
     </div>
   );

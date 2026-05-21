@@ -6,6 +6,8 @@ import Hero      from '@/components/sections/Hero'
 import AboutV2   from '@/components/sections/AboutV2'
 import Work      from '@/components/sections/Work'
 import Statement from '@/components/sections/Statement'
+import Contact   from '@/components/sections/Contact'
+import Footer    from '@/components/sections/Footer'
 
 export default function Home() {
   const { scrollYProgress } = useScroll()
@@ -20,6 +22,13 @@ export default function Home() {
   })
   const aboutY   = useTransform(workProgress, [0, 1], [0, -50])
   const aboutDim = useTransform(workProgress, [0, 1], [0, 0.55])
+
+  const contactRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress: contactProgress } = useScroll({
+    target: contactRef,
+    offset: ['start end', 'start start'],
+  })
+  const statementDim = useTransform(contactProgress, [0, 1], [0, 0.55])
 
   return (
     <main style={{ background: '#f8f8f5', position: 'relative' }}>
@@ -47,8 +56,14 @@ export default function Home() {
           <Work />
         </div>
 
-        {/* Statement — manages its own sticky container, zIndex 10 */}
-        <Statement />
+        {/* Statement — receives dim MotionValue so Contact can fade it out */}
+        <Statement exitDim={statementDim} />
+
+        {/* Contact — zIndex 11 so it slides over Statement */}
+        <div ref={contactRef} style={{ position: "relative", zIndex: 11, background: "#0a0a0a" }}>
+          <Contact />
+          <Footer />
+        </div>
 
       </div>
 

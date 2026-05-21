@@ -169,9 +169,9 @@ export default function Hero() {
   const box4X = useTransform(scrollYProgress, [0, 0.35], ["0%", "-80%"]);
   const box4Rotate = useTransform(scrollYProgress, [0, 0.35], [1.4, 25]);
 
-  const heroScale = useTransform(scrollYProgress, [0, 0.35], [1, 2.4]);
-  const heroOpacity = useTransform(scrollYProgress, [0.28, 0.4], [1, 0]);
-  const heroBlur = useTransform(scrollYProgress, [0.22, 0.4], [0, 12]);
+  const heroScale = useTransform(scrollYProgress, [0, 0.35], [1, 4.5]);
+  const heroOpacity = useTransform(scrollYProgress, [0.3, 0.42], [1, 0]);
+  const heroBlur = useTransform(scrollYProgress, [0.26, 0.42], [0, 14]);
   const heroFilter = useTransform(heroBlur, (b) => `blur(${b}px)`);
 
   return (
