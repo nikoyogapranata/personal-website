@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk, Playfair_Display } from "next/font/google";
 import localFont from "next/font/local";
 import RibbonsCursor from "@/components/ui/RibbonsCursor";
+import FilmGrain from "@/components/ui/FilmGrain";
 import Navbar from "@/components/sections/Navbar";
 import LoadingScreen from "@/components/ui/LoadingScreen";
 import "./globals.css";
@@ -82,6 +83,7 @@ export default function RootLayout({
       </head>
       <body>
         <LoadingScreen />
+        <FilmGrain />
         <RibbonsCursor />
         <Navbar />
         {children}

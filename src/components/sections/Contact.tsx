@@ -1,5 +1,8 @@
 "use client";
 import { motion } from "framer-motion";
+import Link from "next/link";
+
+const MotionLink = motion(Link);
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -193,7 +196,7 @@ export default function Contact() {
             justifyContent: "flex-end",
           }}
         >
-          <motion.a
+          <MotionLink
             href="/contact"
             whileHover={{ background: "#f8f8f5", color: "#0a0a0a" }}
             transition={{ duration: 0.22 }}
@@ -217,7 +220,7 @@ export default function Contact() {
             }}
           >
             Get in Touch
-          </motion.a>
+          </MotionLink>
         </motion.div>
       </div>
 

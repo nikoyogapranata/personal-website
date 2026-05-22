@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import Link from 'next/link'
 import FlowingMenu from '../ui/FlowingMenu'
 
 const menuItems = [
@@ -121,20 +122,11 @@ export default function Navbar() {
 
         {/* RIGHT — CONTACT */}
         <div style={{ justifySelf: 'end', display: 'flex', alignItems: 'center', gap: 32 }}>
-          <button
-            onClick={() => {
-              document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })
-            }}
+          <Link
+            href="/contact"
             onMouseEnter={() => setContactHovered(true)}
             onMouseLeave={() => setContactHovered(false)}
-            style={{
-              display:    'flex',
-              alignItems: 'center',
-              background: 'none',
-              border:     'none',
-              cursor:     'pointer',
-              padding:    0,
-            }}
+            style={{ textDecoration: 'none' }}
           >
             <span className="nav-contact" style={{
               fontFamily:    'var(--font-sans)',
@@ -147,7 +139,7 @@ export default function Navbar() {
             }}>
               Contact
             </span>
-          </button>
+          </Link>
         </div>
       </nav>
 
