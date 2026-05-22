@@ -78,8 +78,7 @@ export default function Navbar() {
           }}
         >
           <span className="nav-name" style={{
-            fontFamily:    'var(--font-display)',
-            fontWeight:    500,
+            fontFamily:    'var(--font-sans)',
             fontSize:      18,
             letterSpacing: '0.06em',
             textTransform: 'uppercase',

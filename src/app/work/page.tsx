@@ -93,6 +93,7 @@ export default function WorkPage() {
         }}
       >
         <h1
+          className="work-title"
           style={{
             fontFamily:    'var(--font-display)',
             fontWeight:    800,
@@ -111,6 +112,7 @@ export default function WorkPage() {
           alt=""
           width={260}
           height={260}
+          className="work-spark"
           style={{
             height:     'clamp(64px, 12vw, 180px)',
             width:      'auto',
@@ -252,6 +254,8 @@ export default function WorkPage() {
       <style>{`
         @media (max-width: 640px) {
           .work-page-grid { grid-template-columns: 1fr !important; }
+          .work-title     { font-size: clamp(52px, 16vw, 88px) !important; }
+          .work-spark     { height: clamp(40px, 11vw, 64px) !important; margin-left: 16px !important; }
         }
       `}</style>
     </main>
