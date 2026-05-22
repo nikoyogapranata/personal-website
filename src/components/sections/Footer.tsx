@@ -5,12 +5,12 @@ import Link from "next/link";
 import Image from "next/image";
 
 const LINKS = ["Home", "About", "Work", "Contact"] as const;
-const HREF: Record<string, string> = { Home: "/", About: "#about", Work: "#work", Contact: "#contact" };
+const HREF: Record<string, string> = { Home: "/", About: "/about", Work: "/work", Contact: "/contact" };
 
 const MARQUEE_TEXT = "NIKO PRANATA";
 const SPEED = 60; // px per second
 
-function MarqueeTrack() {
+function MarqueeTrack({ textColor }: { textColor: string }) {
   const x = useMotionValue(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const unitRef = useRef<HTMLDivElement>(null);
@@ -36,6 +36,7 @@ function MarqueeTrack() {
           objectFit: "contain",
           display: "block",
           flexShrink: 0,
+          filter: "none",
         }}
       />
     </span>
@@ -53,10 +54,9 @@ function MarqueeTrack() {
           fontSize: "clamp(100px, 18vw, 280px)",
           letterSpacing: "-0.04em",
           lineHeight: 1,
-          color: "#f8f8f5",
+          color: textColor,
         }}
       >
-        {/* Six copies so there's always content filling the viewport */}
         <span ref={unitRef} style={{ display: "inline-flex" }}>{unit}</span>
         {unit}{unit}{unit}{unit}{unit}
       </motion.div>
@@ -64,12 +64,28 @@ function MarqueeTrack() {
   );
 }
 
-export default function Footer() {
+export default function Footer({ theme = "dark" }: { theme?: "dark" | "light" }) {
+  const c = theme === "dark"
+    ? {
+        bg:         "#0a0a0a",
+        borderTop:  "#2a2a2a",
+        muted:      "#555",
+        linkHover:  "#f8f8f5",
+        marquee:    "#f8f8f5",
+      }
+    : {
+        bg:         "#f8f8f5",
+        borderTop:  "#e0e0da",
+        muted:      "#999",
+        linkHover:  "#0a0a0a",
+        marquee:    "#0a0a0a",
+      };
+
   return (
     <footer
       style={{
-        background: "#0a0a0a",
-        borderTop: "0.5px solid #2a2a2a",
+        background: c.bg,
+        borderTop: `0.5px solid ${c.borderTop}`,
         paddingTop: "clamp(40px, 5vw, 72px)",
         overflow: "hidden",
       }}
@@ -91,7 +107,7 @@ export default function Footer() {
             fontFamily: "var(--font-display)",
             fontWeight: 500,
             fontSize: "clamp(12px, 1.1vw, 14px)",
-            color: "#555",
+            color: c.muted,
             letterSpacing: "0.02em",
           }}
         >
@@ -107,14 +123,14 @@ export default function Footer() {
                 fontFamily: "var(--font-display)",
                 fontWeight: 500,
                 fontSize: "clamp(12px, 1.1vw, 14px)",
-                color: "#555",
+                color: c.muted,
                 textDecoration: "none",
                 letterSpacing: "0.04em",
                 textTransform: "uppercase",
                 transition: "color 0.2s ease",
               }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#f8f8f5"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#555"; }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = c.linkHover; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = c.muted; }}
             >
               {label}
             </Link>
@@ -123,7 +139,7 @@ export default function Footer() {
       </div>
 
       {/* ── Marquee ── */}
-      <MarqueeTrack />
+      <MarqueeTrack textColor={c.marquee} />
     </footer>
   );
 }

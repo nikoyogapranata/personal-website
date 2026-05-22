@@ -6,12 +6,32 @@ const MotionLink = motion(Link);
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-export default function Contact() {
+export default function Contact({ theme = "dark" }: { theme?: "dark" | "light" }) {
+  const c = theme === "dark"
+    ? {
+        bg:           "#0a0a0a",
+        text:         "#f8f8f5",
+        muted:        "#aaa",
+        divider:      "#2a2a2a",
+        linkLeave:    "#f8f8f5",
+        ctaHoverBg:   "#f8f8f5",
+        ctaHoverText: "#0a0a0a",
+      }
+    : {
+        bg:           "#f8f8f5",
+        text:         "#0a0a0a",
+        muted:        "#666",
+        divider:      "#e0e0da",
+        linkLeave:    "#0a0a0a",
+        ctaHoverBg:   "#0a0a0a",
+        ctaHoverText: "#f8f8f5",
+      };
+
   return (
     <section
       id="contact"
       style={{
-        background: "#0a0a0a",
+        background: c.bg,
         padding: "clamp(80px, 10vw, 140px) clamp(32px, 6vw, 80px)",
         position: "relative",
         overflow: "hidden",
@@ -27,33 +47,30 @@ export default function Contact() {
           marginBottom: "clamp(40px, 5vw, 80px)",
         }}
       >
-{/* Text lines */}
         <div>
           {(["LET'S", "WORK TOGETHER"] as const).map((line, i) => (
-            <motion.div 
-              key={line} 
+            <motion.div
+              key={line}
               style={{ overflow: "hidden" }}
-              // 1. Observe the wrapper for visibility instead of the text
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
             >
               <motion.div
-                // 2. Use variants to animate when the parent comes into view
                 variants={{
-                  hidden: { y: "100%", opacity: 0 }, // 3. Use 100% instead of a fixed 60px
-                  visible: { y: 0, opacity: 1 }
+                  hidden:   { y: "100%", opacity: 0 },
+                  visible:  { y: 0,      opacity: 1 },
                 }}
                 transition={{ duration: 0.8, delay: i * 0.1, ease }}
                 className="contact-title-line"
                 style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 800,
-                  fontSize: "clamp(52px, 9vw, 140px)",
+                  fontFamily:    "var(--font-display)",
+                  fontWeight:    800,
+                  fontSize:      "clamp(52px, 9vw, 140px)",
                   letterSpacing: "-0.04em",
-                  lineHeight: 0.95,
-                  color: "#f8f8f5",
-                  display: "block",
+                  lineHeight:    0.95,
+                  color:         c.text,
+                  display:       "block",
                 }}
               >
                 {line}
@@ -62,7 +79,7 @@ export default function Contact() {
           ))}
         </div>
 
-        {/* Spark image — fills the full height of the headline block */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <motion.img
           src="/spark-2.png"
           alt=""
@@ -73,25 +90,25 @@ export default function Contact() {
           className="contact-spark"
           style={{
             flexShrink: 0,
-            display: "block",
-            /* two lines × lineHeight 0.95 */
-            height: "calc(clamp(52px, 9vw, 140px) * 1.9)",
-            width: "auto",
-            objectFit: "contain",
+            display:    "block",
+            height:     "calc(clamp(52px, 9vw, 140px) * 1.9)",
+            width:      "auto",
+            objectFit:  "contain",
+            filter:     "none",
           }}
         />
       </div>
 
       {/* ── Divider ──────────────────────────────────────────────── */}
       <motion.div
-        initial={{ scaleX: 0, originX: 0 }}
+        initial={{ scaleX: 0 }}
         whileInView={{ scaleX: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, delay: 0.2, ease }}
         style={{
-          height: "0.5px",
-          background: "#2a2a2a",
-          marginBottom: "clamp(40px, 5vw, 80px)",
+          height:          "0.5px",
+          background:      c.divider,
+          marginBottom:    "clamp(40px, 5vw, 80px)",
           transformOrigin: "left",
         }}
       />
@@ -100,11 +117,11 @@ export default function Contact() {
       <div
         className="contact-grid"
         style={{
-          display: "grid",
+          display:             "grid",
           gridTemplateColumns: "1fr 1fr 1fr",
-          columnGap: "clamp(64px, 8vw, 120px)",
-          rowGap: "clamp(32px, 4vw, 60px)",
-          alignItems: "start",
+          columnGap:           "clamp(64px, 8vw, 120px)",
+          rowGap:              "clamp(32px, 4vw, 60px)",
+          alignItems:          "start",
         }}
       >
         {/* Col 1 — description */}
@@ -116,10 +133,10 @@ export default function Contact() {
           style={{
             fontFamily: "var(--font-display)",
             fontWeight: 500,
-            fontSize: "clamp(18px, 2vw, 28px)",
+            fontSize:   "clamp(18px, 2vw, 28px)",
             lineHeight: 1.7,
-            color: "#aaa",
-            margin: 0,
+            color:      c.muted,
+            margin:     0,
           }}
         >
           Open to freelance projects and internships. Based in Yogyakarta and
@@ -132,27 +149,12 @@ export default function Contact() {
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.4, ease }}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "clamp(16px, 2vw, 24px)",
-          }}
+          style={{ display: "flex", flexDirection: "column", gap: "clamp(16px, 2vw, 24px)" }}
         >
           {[
-            {
-              href: "mailto:nikopranatabusiness@gmail.com",
-              label: "nikopranatabusiness@gmail.com",
-            },
-            {
-              href: "https://linkedin.com/in/nikopranata",
-              label: "LinkedIn",
-              target: "_blank",
-            },
-            {
-              href: "https://github.com/nikoyogapranata",
-              label: "GitHub",
-              target: "_blank",
-            },
+            { href: "mailto:nikopranatabusiness@gmail.com", label: "nikopranatabusiness@gmail.com" },
+            { href: "https://linkedin.com/in/nikopranata",  label: "LinkedIn",  target: "_blank" },
+            { href: "https://github.com/nikoyogapranata",   label: "GitHub",    target: "_blank" },
           ].map(({ href, label, target }) => (
             <motion.a
               key={href}
@@ -161,22 +163,18 @@ export default function Contact() {
               rel={target === "_blank" ? "noopener noreferrer" : undefined}
               whileHover={{ x: 8 }}
               transition={{ duration: 0.2 }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.color = "#2563eb";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.color = "#f8f8f5";
-              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#2563eb"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = c.linkLeave; }}
               style={{
-                fontFamily: "var(--font-display)",
-                fontWeight: 600,
-                fontSize: "clamp(16px, 1.8vw, 28px)",
-                color: "#f8f8f5",
+                fontFamily:     "var(--font-display)",
+                fontWeight:     600,
+                fontSize:       "clamp(16px, 1.8vw, 28px)",
+                color:          c.linkLeave,
                 textDecoration: "none",
-                letterSpacing: "-0.01em",
-                display: "flex",
-                alignItems: "center",
-                transition: "color 0.2s ease",
+                letterSpacing:  "-0.01em",
+                display:        "flex",
+                alignItems:     "center",
+                transition:     "color 0.2s ease",
               }}
             >
               {label}
@@ -184,39 +182,36 @@ export default function Contact() {
           ))}
         </motion.div>
 
-        {/* Col 3 — GET IN TOUCH box */}
+        {/* Col 3 — GET IN TOUCH */}
         <motion.div
           initial={{ x: 30, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.5, ease }}
           className="contact-cta-col"
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
+          style={{ display: "flex", justifyContent: "flex-end" }}
         >
           <MotionLink
             href="/contact"
-            whileHover={{ background: "#f8f8f5", color: "#0a0a0a" }}
+            whileHover={{ background: c.ctaHoverBg, color: c.ctaHoverText }}
             transition={{ duration: 0.22 }}
             style={{
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontFamily: "var(--font-display)",
-              fontWeight: 700,
-              fontSize: "clamp(13px, 1.1vw, 16px)",
-              letterSpacing: "0.14em",
-              textTransform: "uppercase",
-              color: "#f8f8f5",
-              background: "transparent",
-              border: "1.5px solid #f8f8f5",
-              borderRadius: 0,
-              padding: "clamp(20px, 2vw, 28px) clamp(32px, 3.2vw, 52px)",
-              textDecoration: "none",
-              cursor: "pointer",
-              whiteSpace: "nowrap",
+              display:         "inline-flex",
+              alignItems:      "center",
+              justifyContent:  "center",
+              fontFamily:      "var(--font-display)",
+              fontWeight:      700,
+              fontSize:        "clamp(13px, 1.1vw, 16px)",
+              letterSpacing:   "0.14em",
+              textTransform:   "uppercase",
+              color:           c.text,
+              background:      "transparent",
+              border:          `1.5px solid ${c.text}`,
+              borderRadius:    0,
+              padding:         "clamp(20px, 2vw, 28px) clamp(32px, 3.2vw, 52px)",
+              textDecoration:  "none",
+              cursor:          "pointer",
+              whiteSpace:      "nowrap",
             }}
           >
             Get in Touch
@@ -227,26 +222,13 @@ export default function Contact() {
       {/* ── Mobile overrides ─────────────────────────────────────── */}
       <style>{`
         @media (max-width: 900px) {
-          .contact-grid {
-            grid-template-columns: 1fr 1fr !important;
-          }
+          .contact-grid { grid-template-columns: 1fr 1fr !important; }
         }
         @media (max-width: 600px) {
-          .contact-grid {
-            grid-template-columns: 1fr !important;
-            gap: 40px !important;
-          }
-          .contact-title-line {
-            font-size: clamp(28px, 9vw, 52px) !important;
-          }
-          .contact-spark {
-            height: 56px !important;
-            width: 56px !important;
-            object-fit: contain !important;
-          }
-          .contact-cta-col {
-            justify-content: flex-start !important;
-          }
+          .contact-grid          { grid-template-columns: 1fr !important; gap: 40px !important; }
+          .contact-title-line    { font-size: clamp(28px, 9vw, 52px) !important; }
+          .contact-spark         { height: 56px !important; width: 56px !important; object-fit: contain !important; }
+          .contact-cta-col       { justify-content: flex-start !important; }
         }
       `}</style>
     </section>
