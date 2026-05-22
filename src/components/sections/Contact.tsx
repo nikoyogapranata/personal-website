@@ -16,6 +16,7 @@ export default function Contact() {
     >
       {/* ── Headline ─────────────────────────────────────────────── */}
       <div
+        className="contact-headline"
         style={{
           display: "flex",
           alignItems: "flex-end",
@@ -23,15 +24,25 @@ export default function Contact() {
           marginBottom: "clamp(40px, 5vw, 80px)",
         }}
       >
-        {/* Text lines */}
+{/* Text lines */}
         <div>
           {(["LET'S", "WORK TOGETHER"] as const).map((line, i) => (
-            <div key={line} style={{ overflow: "hidden" }}>
+            <motion.div 
+              key={line} 
+              style={{ overflow: "hidden" }}
+              // 1. Observe the wrapper for visibility instead of the text
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+            >
               <motion.div
-                initial={{ y: 60, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true, amount: 0.3 }}
+                // 2. Use variants to animate when the parent comes into view
+                variants={{
+                  hidden: { y: "100%", opacity: 0 }, // 3. Use 100% instead of a fixed 60px
+                  visible: { y: 0, opacity: 1 }
+                }}
                 transition={{ duration: 0.8, delay: i * 0.1, ease }}
+                className="contact-title-line"
                 style={{
                   fontFamily: "var(--font-display)",
                   fontWeight: 800,
@@ -44,7 +55,7 @@ export default function Contact() {
               >
                 {line}
               </motion.div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
@@ -56,6 +67,7 @@ export default function Contact() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.9, delay: 0.25, ease }}
+          className="contact-spark"
           style={{
             flexShrink: 0,
             display: "block",
@@ -175,6 +187,7 @@ export default function Contact() {
           whileInView={{ x: 0, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.5, ease }}
+          className="contact-cta-col"
           style={{
             display: "flex",
             justifyContent: "flex-end",
@@ -219,6 +232,17 @@ export default function Contact() {
           .contact-grid {
             grid-template-columns: 1fr !important;
             gap: 40px !important;
+          }
+          .contact-title-line {
+            font-size: clamp(28px, 9vw, 52px) !important;
+          }
+          .contact-spark {
+            height: 56px !important;
+            width: 56px !important;
+            object-fit: contain !important;
+          }
+          .contact-cta-col {
+            justify-content: flex-start !important;
           }
         }
       `}</style>

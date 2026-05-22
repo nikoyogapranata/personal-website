@@ -71,7 +71,7 @@ export default function About() {
             justifyContent: 'center',
           }}
         >
-          <p style={{
+          <p className="about-hook" style={{
             fontFamily:    'var(--font-display)',
             fontWeight:    700,
             fontSize:      'clamp(36px, 5vw, 72px)',
@@ -87,7 +87,7 @@ export default function About() {
             <S>visual design.</S>
           </p>
 
-          <p style={{
+          <p className="about-bio" style={{
             fontFamily: 'var(--font-display)',
             fontWeight: 400,
             fontSize:   'clamp(15px, 1.5vw, 18px)',

@@ -40,7 +40,14 @@ export default function Navbar() {
 
   return (
     <>
+      <style>{`
+        @media (max-width: 640px) {
+          .nav-root { padding: 0 20px !important; }
+          .nav-name, .nav-contact { font-size: 13px !important; letter-spacing: 0.04em !important; }
+        }
+      `}</style>
       <nav
+        className="nav-root"
         style={{
           position:            'fixed',
           top:                 0,
@@ -69,7 +76,7 @@ export default function Navbar() {
             cursor:         'pointer',
           }}
         >
-          <span style={{
+          <span className="nav-name" style={{
             fontFamily:    'var(--font-display)',
             fontWeight:    500,
             fontSize:      18,
@@ -129,7 +136,7 @@ export default function Navbar() {
               padding:    0,
             }}
           >
-            <span style={{
+            <span className="nav-contact" style={{
               fontFamily:    'var(--font-sans)',
               fontSize:      18,
               textTransform: 'uppercase',

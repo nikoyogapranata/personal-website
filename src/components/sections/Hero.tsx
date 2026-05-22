@@ -191,13 +191,21 @@ export default function Hero() {
         pointerEvents: "none",
       }}
     >
+      <style>{`
+        .hero-boxes { transform-origin: center center; }
+        @media (max-width: 640px) { .hero-boxes { transform: scale(0.86); } }
+        @media (max-width: 520px) { .hero-boxes { transform: scale(0.74); } }
+        @media (max-width: 430px) { .hero-boxes { transform: scale(0.64); } }
+        @media (max-width: 380px) { .hero-boxes { transform: scale(0.56); } }
+      `}</style>
       <div
+        className="hero-boxes"
         style={{
           display: "flex",
           flexDirection: "column",
-          alignItems: "center", // FIXED: Forces all varied width child blocks to snap perfectly to the center axis
+          alignItems: "center",
           gap: 'clamp(6px, 0.8vw, 12px)',
-          width: "100%",        // Changed from max-content to allow flex center matching mechanics
+          width: "100%",
           maxWidth: 'min(1100px, 94vw)',
         }}
       >

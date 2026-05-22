@@ -134,7 +134,7 @@ export default function AboutV2() {
             min-height: 100vh !important;
           }
           section#about p {
-            font-size: clamp(18px, 5vw, 32px) !important;
+            font-size: clamp(24px, 7vw, 40px) !important;
           }
         }
       `}</style>

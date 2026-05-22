@@ -43,6 +43,12 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
   const statX = useTransform(smooth, [0.30, 0.70], ["0vw", "-130vw"]);
 
   return (
+    <>
+    <style>{`
+      @media (max-width: 640px) {
+        .got-text { font-size: clamp(72px, 22vw, 180px) !important; }
+      }
+    `}</style>
     <div
       ref={containerRef}
       style={{
@@ -201,6 +207,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
             }}
           >
             <motion.span
+              className="got-text"
               style={{
                 fontFamily:    "var(--font-display)",
                 fontWeight:    800,
@@ -232,5 +239,6 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
         )}
       </div>
     </div>
+    </>
   );
 }
