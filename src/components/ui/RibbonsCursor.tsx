@@ -8,8 +8,12 @@ const BG     = [0, 0, 0, 0]
 
 export default function RibbonsCursor() {
   const [mounted, setMounted] = useState(false)
-  useEffect(() => setMounted(true), [])
-  if (!mounted) return null
+  const [isTouchDevice, setIsTouchDevice] = useState(false)
+  useEffect(() => {
+    setMounted(true)
+    setIsTouchDevice(window.matchMedia('(pointer: coarse)').matches)
+  }, [])
+  if (!mounted || isTouchDevice) return null
 
   return (
     <div style={{

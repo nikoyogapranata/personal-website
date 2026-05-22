@@ -2,6 +2,7 @@
 import { motion, useAnimationFrame, useMotionValue } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const LINKS = ["Home", "About", "Work", "Contact"] as const;
 const HREF: Record<string, string> = { Home: "/", About: "#about", Work: "#work", Contact: "#contact" };
@@ -24,9 +25,11 @@ function MarqueeTrack() {
   const unit = (
     <span style={{ display: "inline-flex", alignItems: "center", gap: "clamp(40px, 5vw, 80px)", paddingRight: "clamp(120px, 16vw, 240px)" }}>
       {MARQUEE_TEXT}
-      <img
+      <Image
         src="/spark.png"
         alt=""
+        width={80}
+        height={80}
         style={{
           height: "0.72em",
           width: "auto",

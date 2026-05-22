@@ -1,6 +1,7 @@
 "use client";
 import { useRef } from "react";
 import { motion, useScroll, useSpring, useTransform, MotionValue } from "framer-motion";
+import Image from "next/image";
 
 export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -24,7 +25,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
   const clipLeft   = useSpring(clipLeftRaw,   springCfg);
 
   const clipPath = useTransform(
-    [clipTop, clipRight, clipBottom, clipLeft] as any,
+    [clipTop, clipRight, clipBottom, clipLeft] as [typeof clipTop, typeof clipRight, typeof clipBottom, typeof clipLeft],
     ([t, r, b, l]: number[]) => `inset(${t}% ${r}% ${b}% ${l}%)`,
   );
 
@@ -155,9 +156,11 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                     flexShrink:    0,
                   }}
                 >
-                  <img
+                  <Image
                     src="/hero.jpeg"
                     alt=""
+                    width={1200}
+                    height={800}
                     style={{
                       height:         "100%",
                       width:          "1.1em",

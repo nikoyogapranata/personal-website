@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
+import Image from 'next/image'
 import {
   motion,
   useMotionValue,
@@ -242,10 +243,11 @@ export default function Work() {
               transition={{ duration: 0.3 }}
               style={{ position: 'absolute', inset: 0 }}
             >
-              <img
+              <Image
                 src={project.image}
                 alt={project.title}
-                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }}
+                fill
+                style={{ objectFit: 'cover', objectPosition: 'center' }}
               />
             </motion.div>
           ))}

@@ -55,34 +55,6 @@ function serif(color: string): React.CSSProperties {
   };
 }
 
-/* ── rectangle profile image ─────────────────────────────────── */
-function ProfileImg() {
-  return (
-    <div
-      style={{
-        height: 'clamp(76px, 8vw, 130px)',
-        width: 'clamp(64px, 7vw, 110px)',
-        flexShrink: 0,
-        borderRadius: "10px",
-        overflow: "hidden",
-      }}
-    >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/profile.png"
-        alt=""
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          objectPosition: "top center",
-          filter: "grayscale(100%)",
-          display: "block",
-        }}
-      />
-    </div>
-  );
-}
 
 /* ── hover push wrapper component ────────────────────────────── */
 interface HoverPushCardProps {
