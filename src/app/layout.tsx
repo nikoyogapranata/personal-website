@@ -36,8 +36,8 @@ const aktura = localFont({
 
 export const metadata: Metadata = {
   title: {
-    default: "Niko Pranata — Frontend Developer",
-    template: "%s — Niko Pranata",
+    default: "Niko Pranata | Frontend Web Developer",
+    template: "Niko Pranata | %s",
   },
   icons: {
     icon: "/favicon.png",
@@ -84,7 +84,7 @@ export default function RootLayout({
       <body>
         <LoadingScreen />
         <FilmGrain />
-        <RibbonsCursor />
+        {/* <RibbonsCursor /> */}
         <Navbar />
         {children}
       </body>

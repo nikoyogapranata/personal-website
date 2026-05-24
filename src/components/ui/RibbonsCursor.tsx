@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import Ribbons from './Ribbons'
 
 // Stable references so the Ribbons effect dep-array never sees a new array
-const COLORS = ['#2563eb', '#2563eb88']
+const COLORS = ['#5b21b6', '#5b21b688']
 const BG     = [0, 0, 0, 0]
 
 export default function RibbonsCursor() {

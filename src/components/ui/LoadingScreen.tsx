@@ -1,125 +1,87 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { usePathname } from 'next/navigation'
 
 const STORAGE_KEY = 'niko_session_loaded'
-const WORDS = ['NIKO', 'PRANATA']
-
-const letterMap = WORDS.flatMap((word, wi) =>
-  word.split('').map((ch, li) => ({
-    ch,
-    wordIdx: wi,
-    globalIdx: WORDS.slice(0, wi).reduce((acc, w) => acc + w.length, 0) + li,
-  }))
-)
-const totalLetters = letterMap.length
+const DURATION    = 3000
 
 export default function LoadingScreen() {
-  const [visible, setVisible]   = useState(true)
-  const [skipped, setSkipped]   = useState(false)
-  const [animDone, setAnimDone] = useState(false)
+  const pathname              = usePathname()
+  const initPath              = useRef(pathname)
+  const [visible, setVisible] = useState(false)
+  const [count,   setCount]   = useState(0)
+  const rafRef                = useRef<number | null>(null)
+  const startRef              = useRef<number | null>(null)
 
+  // Dismiss instantly if the user navigates away mid-load
   useEffect(() => {
-    if (sessionStorage.getItem(STORAGE_KEY)) {
-      setSkipped(true)
-      return
+    if (pathname !== initPath.current && visible) {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      setVisible(false)
     }
-    document.body.style.overflow = 'hidden'
-  }, [])
+  }, [pathname, visible])
 
   useEffect(() => {
-    if (!animDone) return
-    const timer = setTimeout(() => setVisible(false), 800)
-    return () => clearTimeout(timer)
-  }, [animDone])
+    if (sessionStorage.getItem(STORAGE_KEY)) return
+    // Mark shown immediately so navigating away won't retrigger it
+    sessionStorage.setItem(STORAGE_KEY, '1')
+    document.body.style.overflow = 'hidden'
+    setVisible(true)
+
+    const tick = (now: number) => {
+      if (!startRef.current) startRef.current = now
+      const elapsed  = now - startRef.current
+      const progress = Math.min(elapsed / DURATION, 1)
+      setCount(Math.floor(progress * 100))
+      if (progress < 1) {
+        rafRef.current = requestAnimationFrame(tick)
+      } else {
+        setTimeout(() => setVisible(false), 300)
+      }
+    }
+    rafRef.current = requestAnimationFrame(tick)
+    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current) }
+  }, [])
 
   const handleExitComplete = () => {
     document.body.style.overflow = ''
-    sessionStorage.setItem(STORAGE_KEY, '1')
   }
 
-  if (skipped) return null
-
   return (
-    <>
-      <style>{`
-        .ls-letter {
-          font-size: clamp(42px, 12vw, 160px);
-        }
-        @media (min-width: 1401px) {
-          .ls-letter {
-            font-size: clamp(80px, 16vw, 220px);
-          }
-        }
-        .ls-words {
-          flex-direction: column;
-          align-items: center;
-          gap: 0;
-        }
-        @media (min-width: 768px) {
-          .ls-words {
-            flex-direction: row;
-            gap: clamp(20px, 4vw, 64px);
-          }
-        }
-      `}</style>
-      <AnimatePresence onExitComplete={handleExitComplete}>
-        {visible && (
-          <motion.div
-            initial={{ opacity: 1 }}
-            exit={{ y: '-100%' }}
-            transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-            style={{
-              position:        'fixed',
-              inset:           0,
-              zIndex:          9999,
-              backgroundColor: '#1432ff',
-              display:         'flex',
-              alignItems:      'center',
-              justifyContent:  'center',
-            }}
-          >
-            <div className="ls-words" style={{ display: 'flex' }}>
-              {WORDS.map((word, wi) => (
-                <div key={wi} style={{ display: 'flex', overflow: 'hidden', gap: '0.01em' }}>
-                  {letterMap
-                    .filter(l => l.wordIdx === wi)
-                    .map(({ ch, globalIdx }) => (
-                      <motion.span
-                        key={globalIdx}
-                        initial={{ y: '100%', opacity: 0 }}
-                        animate={{ y: '0%', opacity: 1 }}
-                        transition={{
-                          duration: 1.0,
-                          ease:     [0.16, 1, 0.3, 1],
-                          delay:    0.3 + globalIdx * 0.12,
-                        }}
-                        onAnimationComplete={
-                          globalIdx === totalLetters - 1
-                            ? () => setAnimDone(true)
-                            : undefined
-                        }
-                        className="ls-letter"
-                        style={{
-                          display:       'inline-block',
-                          fontFamily:    'var(--font-display)',
-                          fontWeight:    700,
-                          color:         '#ffffff',
-                          letterSpacing: '-0.03em',
-                          lineHeight:    1,
-                        }}
-                      >
-                        {ch}
-                      </motion.span>
-                    ))
-                  }
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+    <AnimatePresence onExitComplete={handleExitComplete}>
+      {visible && (
+        <motion.div
+          initial={{ opacity: 1 }}
+          exit={{ y: '-100%' }}
+          transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+          style={{
+            position:        'fixed',
+            inset:           0,
+            zIndex:          9999,
+            backgroundColor: '#5b21b6',
+          }}
+        >
+          <style>{`
+            .ls-number { font-size: clamp(200px, 38vw, 560px); }
+            @media (max-width: 768px) { .ls-number { font-size: 52vw; } }
+          `}</style>
+          <div className="ls-number" style={{
+            position:      'absolute',
+            bottom:        '-0.08em',
+            right:         'clamp(32px, 5vw, 60px)',
+            fontFamily:    'var(--font-display)',
+            fontWeight:    700,
+            color:         '#ffffff',
+            lineHeight:    1,
+            letterSpacing: '-0.04em',
+            userSelect:    'none',
+          }}>
+            {count}
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   )
 }

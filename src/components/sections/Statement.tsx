@@ -109,7 +109,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                     fontWeight:    400,
                     fontSize:      "clamp(48px, 8vw, 124px)",
                     letterSpacing: "-0.03em",
-                    color:         "#2563eb",
+                    color:         "var(--color-accent-secondary)",
                   }}
                 >
                   first pixel
@@ -189,7 +189,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                     fontWeight:    400,
                     fontSize:      "clamp(48px, 8vw, 124px)",
                     letterSpacing: "-0.03em",
-                    color:         "#2563eb",
+                    color:         "var(--color-accent-secondary)",
                   }}
                 >
                   product.

@@ -59,7 +59,7 @@ interface ProgressiveWordProps {
 function ProgressiveWord({ text, font, index, total, scrollProgress }: ProgressiveWordProps) {
   const start      = (index / total) * 0.5
   const end        = Math.min(start + (1 / total) * 6, 1)
-  const finalColor = font === 'serif' ? '#2563eb' : '#0a0a0a'
+  const finalColor = font === 'serif' ? '#c41e3a' : '#0a0a0a'
 
   const color = useTransform(scrollProgress, [start, end], ['#cccccc', finalColor])
 

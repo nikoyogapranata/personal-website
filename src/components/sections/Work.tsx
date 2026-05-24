@@ -39,7 +39,7 @@ export default function Work() {
   const sectionBg = useTransform(
     smoothProgress,
     [0, 0.45],
-    ['#2563eb', '#0a0a0a'],
+    ['#5b21b6', '#0a0a0a'],
   )
 
   const mouseX = useMotionValue(0)
@@ -136,7 +136,7 @@ export default function Work() {
                   <motion.span
                     animate={{ opacity: isHovered ? 1 : 0 }}
                     transition={{ duration: 0.8, ease: 'easeInOut' }}
-                    style={{ position: 'absolute', top: 0, left: 0, fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 400, fontSize: 'clamp(28px, 4vw, 64px)', letterSpacing: '-0.02em', color: '#2563eb', lineHeight: 1.1, whiteSpace: 'nowrap' }}
+                    style={{ position: 'absolute', top: 0, left: 0, fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 400, fontSize: 'clamp(28px, 4vw, 64px)', letterSpacing: '-0.02em', color: 'var(--color-accent-primary)', lineHeight: 1.1, whiteSpace: 'nowrap' }}
                   >
                     {project.title}
                   </motion.span>
@@ -195,7 +195,7 @@ export default function Work() {
                   <motion.span
                     animate={{ opacity: isHovered ? 1 : 0 }}
                     transition={{ duration: 0.8, ease: 'easeInOut' }}
-                    style={{ position: 'absolute', top: 0, left: 0, fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 400, fontSize: 'clamp(28px, 4vw, 64px)', letterSpacing: '-0.02em', color: '#2563eb', lineHeight: 1.1, whiteSpace: 'nowrap' }}
+                    style={{ position: 'absolute', top: 0, left: 0, fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 400, fontSize: 'clamp(28px, 4vw, 64px)', letterSpacing: '-0.02em', color: 'var(--color-accent-primary)', lineHeight: 1.1, whiteSpace: 'nowrap' }}
                   >
                     {project.title}
                   </motion.span>
@@ -304,7 +304,7 @@ export default function Work() {
               left:       0,
               right:      0,
               height:     '1px',
-              background: '#2563eb',
+              background: 'var(--color-accent-primary)',
               display:    'block',
             }}
           />

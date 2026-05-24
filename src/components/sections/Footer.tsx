@@ -36,7 +36,7 @@ function MarqueeTrack({ textColor }: { textColor: string }) {
           objectFit: "contain",
           display: "block",
           flexShrink: 0,
-          filter: "none",
+          filter: "hue-rotate(40deg) saturate(1.3)",
         }}
       />
     </span>

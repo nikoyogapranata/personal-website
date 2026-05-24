@@ -11,7 +11,7 @@ function S({ children }: { children: React.ReactNode }) {
       fontFamily: 'var(--font-serif)',
       fontStyle:  'italic',
       fontWeight: 400,
-      color:      '#2563eb',
+      color:      'var(--color-accent-secondary)',
       fontSize:   '1.1em',
     }}>
       {children}
@@ -183,7 +183,7 @@ export default function About() {
                   fontStyle:     'italic',
                   fontWeight:    400,
                   fontSize:      '0.6em',
-                  color:         '#2563eb',
+                  color:         'var(--color-accent-secondary)',
                   verticalAlign: 'super',
                 }}>
                   {suffix}

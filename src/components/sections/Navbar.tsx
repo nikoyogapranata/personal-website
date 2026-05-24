@@ -37,7 +37,7 @@ export default function Navbar() {
 
   // base color flips with background; accent stays blue; transitions on every text element
   const base   = isDark ? '#f8f8f5' : '#0a0a0a'
-  const accent = '#2563eb'
+  const accent = 'var(--color-accent-primary)'
 
   return (
     <>

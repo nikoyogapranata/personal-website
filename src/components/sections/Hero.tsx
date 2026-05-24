@@ -14,7 +14,7 @@ import React from "react";
 const B = "1.5px solid #0a0a0a";
 const BG = "#f8f8f5";
 const DARK = "#0a0a0a";
-const BLUE = "#2563eb";
+const BLUE = "var(--color-accent-secondary)";
 const SHADOW = "2px 2px 0px #0a0a0a";
 
 const TEXT: React.CSSProperties = {
@@ -275,7 +275,7 @@ export default function Hero() {
           style={{
             ...CARD,
             width: "fit-content",
-            background: DARK,
+            background: "var(--color-accent-primary)",
             border: `1.5px solid ${DARK}`,
             zIndex: 3,
             pointerEvents: "auto",
@@ -285,7 +285,7 @@ export default function Hero() {
           {/* Text layout */}
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
             <span style={{ ...serif(BG), transform: "translateY(-9px)" }}>
-              Front End
+              Frontend
             </span>
             <span style={{ ...TEXT, color: BG, marginLeft: "4px" }}>WEB</span>
             <span style={{ ...TEXT, color: BG }}>DEVELOPER</span>
@@ -295,7 +295,7 @@ export default function Hero() {
           <svg
             viewBox="0 0 26 24"
             fill="none"
-            stroke={BLUE}
+            stroke={BG}
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"

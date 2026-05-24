@@ -2,10 +2,15 @@
 
 /* ── Design tokens ──────────────────────────────────────────────── */
 :root {
-  --color-bg:     #f8f8f5;
-  --color-text:   #0a0a0a;
-  --color-accent: #;
-  --color-border: #0a0a0a;
+  --color-accent-primary:   #5b21b6;   /* violet — interactive */
+  --color-accent-secondary: #c41e3a;   /* crimson — typographic */
+  --color-bg:               #f8f8f5;
+  --color-bg-dark:          #0a0a0a;
+  --color-text:             #0a0a0a;
+  --color-text-muted:       #555;
+  --color-text-faint:       #888;
+  --color-border:           #1e1e1e;
+  --color-border-light:     #e5e5e0;
 }
 
 /* ── Font tokens ────────────────────────────────────────────────── */
