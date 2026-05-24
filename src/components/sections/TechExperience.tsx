@@ -25,21 +25,21 @@ const TECH = [
 const EXPERIENCE = [
   {
     role: 'IT Manager',
-    company: 'Jamusari',
-    period: '2024 — Present',
-    description: 'Led technical infrastructure and managed IT operations, overseeing system architecture and digital tools for the organization.',
-  },
-  {
-    role: 'UI/UX Designer',
-    company: 'Jamusari',
-    period: '2024 — Present',
-    description: 'Designed user interfaces and experiences for web and mobile products, focusing on usability, visual consistency, and interaction design.',
+    company: 'HelloCation',
+    period: 'Jan 2026 — Present',
+    description: 'Restructured the IT division into specialized squads, led the full redesign of Hellocation.id, and directed a remote team of designers and developers — bridging technical execution with C-level strategy.',
   },
   {
     role: 'Web Developer',
     company: 'Jamusari',
-    period: '2024 — Present',
-    description: 'Built and maintained fullstack web applications using Next.js and Supabase, from initial design to production deployment.',
+    period: 'Aug 2025 — Nov 2025',
+    description: 'Designed and built the Jamusari website end-to-end — from UI concept and asset curation to SEO implementation and launch — using WordPress and Elementor to deliver a maintainable, performant site promoting the Modern Jamu and TOGA conservation initiative.',
+  },
+  {
+    role: 'UI/UX Designer',
+    company: 'HelloCation',
+    period: 'Mar 2024 — Jun 2024',
+    description: 'Redesigned the full HelloCation website across all key pages — modernizing layouts, improving visual hierarchy, and ensuring consistent branding and responsive, user-friendly interfaces throughout using Figma.',
   },
 ]
 
