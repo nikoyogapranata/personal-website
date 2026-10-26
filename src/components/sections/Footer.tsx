@@ -35,7 +35,7 @@ function MarqueeTrack({ textColor }: { textColor: string }) {
   }, []);
 
   const unit = (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: "clamp(40px, 5vw, 80px)", paddingRight: "clamp(120px, 16vw, 240px)" }}>
+    <span style={{ display: "inline-flex", alignItems: "center", gap: "clamp(40px, calc(4.17 * var(--u)), 96px)", paddingRight: "clamp(120px, calc(12.5 * var(--u)), 288px)" }}>
       {MARQUEE_TEXT}
       <Image
         src="/spark.png"
@@ -64,7 +64,7 @@ function MarqueeTrack({ textColor }: { textColor: string }) {
           whiteSpace: "nowrap",
           fontFamily: "var(--font-display)",
           fontWeight: 800,
-          fontSize: "clamp(100px, 18vw, 280px)",
+          fontSize: "var(--text-marquee)",
           letterSpacing: "-0.04em",
           lineHeight: 1,
           color: textColor,
@@ -99,7 +99,7 @@ export default function Footer({ theme = "dark" }: { theme?: "dark" | "light" })
       style={{
         background: c.bg,
         borderTop: `0.5px solid ${c.borderTop}`,
-        paddingTop: "clamp(40px, 5vw, 72px)",
+        paddingTop: "var(--space-xl)",
         overflow: "hidden",
       }}
     >
@@ -109,8 +109,8 @@ export default function Footer({ theme = "dark" }: { theme?: "dark" | "light" })
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "0 clamp(32px, 6vw, 80px)",
-          marginBottom: "clamp(48px, 7vw, 100px)",
+          padding: "0 max(var(--page-x), calc((100% - var(--content-max)) / 2))",
+          marginBottom: "clamp(48px, calc(5.21 * var(--u)), 120px)",
           flexWrap: "wrap",
           gap: "16px",
         }}
@@ -121,7 +121,7 @@ export default function Footer({ theme = "dark" }: { theme?: "dark" | "light" })
           style={{
             fontFamily: "var(--font-display)",
             fontWeight: 500,
-            fontSize: "clamp(13px, 1.1vw, 14px)",
+            fontSize: "var(--text-caption)",
             color: c.muted,
             letterSpacing: "0.02em",
           }}
@@ -129,7 +129,7 @@ export default function Footer({ theme = "dark" }: { theme?: "dark" | "light" })
           © {new Date().getFullYear()} Niko Yoga Pranata
         </span>
 
-        <nav style={{ display: "flex", gap: "clamp(20px, 3vw, 48px)" }}>
+        <nav style={{ display: "flex", gap: "clamp(20px, calc(2.5 * var(--u)), 58px)" }}>
           {LINKS.map((label) => (
             <Link
               key={label}
@@ -137,7 +137,7 @@ export default function Footer({ theme = "dark" }: { theme?: "dark" | "light" })
               style={{
                 fontFamily: "var(--font-display)",
                 fontWeight: 500,
-                fontSize: "clamp(13px, 1.1vw, 14px)",
+                fontSize: "var(--text-caption)",
                 color: c.muted,
                 textDecoration: "none",
                 letterSpacing: "0.04em",
