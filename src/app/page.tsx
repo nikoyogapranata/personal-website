@@ -35,6 +35,35 @@ export default function Home() {
   return (
     <main style={{ background: 'var(--color-bg)', position: 'relative' }}>
 
+      {/* Fixed layers come first in the DOM so the hero h1 precedes the section h2s;
+          paint order is set by their z-index, not source order */}
+
+      {/* Fixed overlay — fades out during scroll */}
+      <motion.div style={{
+        position:      'fixed',
+        top:           0,
+        left:          0,
+        width:         '100%',
+        height:        '100vh',
+        zIndex:        5,
+        background:    'var(--color-bg)',
+        opacity:       overlayOpacity,
+        pointerEvents: 'none',
+      }} />
+
+      {/* Hero — fixed on top */}
+      <motion.div data-nav-transparent style={{
+        position:      'fixed',
+        top:           0,
+        left:          0,
+        width:         '100%',
+        height:        '100vh',
+        zIndex:        6,
+        pointerEvents: heroPointerEvents,
+      }}>
+        <Hero />
+      </motion.div>
+
       {/* Scroll driver — 300vh for hero animation */}
       <div data-nav-transparent style={{ height: '300vh' }} />
 
@@ -68,32 +97,6 @@ export default function Home() {
         </div>
 
       </div>
-
-      {/* Fixed overlay — fades out during scroll */}
-      <motion.div style={{
-        position:      'fixed',
-        top:           0,
-        left:          0,
-        width:         '100%',
-        height:        '100vh',
-        zIndex:        5,
-        background:    'var(--color-bg)',
-        opacity:       overlayOpacity,
-        pointerEvents: 'none',
-      }} />
-
-      {/* Hero — fixed on top */}
-      <motion.div data-nav-transparent style={{
-        position:      'fixed',
-        top:           0,
-        left:          0,
-        width:         '100%',
-        height:        '100vh',
-        zIndex:        6,
-        pointerEvents: heroPointerEvents,
-      }}>
-        <Hero />
-      </motion.div>
 
     </main>
   )
