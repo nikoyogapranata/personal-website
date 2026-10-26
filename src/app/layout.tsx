@@ -22,16 +22,9 @@ const spaceGrotesk = Space_Grotesk({
 
 const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
-  style: ["normal", "italic"],
+  style: "italic",
   variable: "--font-serif",
   display: "swap",
-});
-
-const aktura = localFont({
-  src: "../../public/fonts/Aktura-Regular.woff2",
-  variable: "--font-aktura",
-  display: "swap",
-  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -73,14 +66,8 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${clashDisplay.variable} ${spaceGrotesk.variable} ${playfairDisplay.variable} ${aktura.variable}`}
+      className={`${clashDisplay.variable} ${spaceGrotesk.variable} ${playfairDisplay.variable}`}
     >
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
-        />
-      </head>
       <body>
         <LoadingScreen />
         <FilmGrain />
