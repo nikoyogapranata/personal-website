@@ -65,13 +65,13 @@ export default function LoadingScreen() {
         .loading-screen { display: none; }
         html[data-loader] .loading-screen { display: block; }
         html[data-loader] body { overflow: hidden; }
-        .ls-number { font-size: clamp(200px, 38vw, 560px); }
-        @media (max-width: 768px) { .ls-number { font-size: 52vw; } }
+        .ls-number { font-size: calc(var(--text-marquee) * 2); }
+        @media (max-width: 900px) { .ls-number { font-size: 52vw; } }
       `}</style>
       <div className="ls-number" style={{
         position:      'absolute',
         bottom:        '-0.08em',
-        right:         'clamp(32px, 5vw, 60px)',
+        right:         'clamp(32px, calc(3.125 * var(--u)), 72px)',
         fontFamily:    'var(--font-display)',
         fontWeight:    700,
         color:         '#ffffff',
