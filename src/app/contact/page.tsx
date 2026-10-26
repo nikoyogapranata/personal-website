@@ -35,7 +35,7 @@ export default function ContactPage() {
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
-            gap: "clamp(48px, 8vw, 120px)",
+            gap: "clamp(48px, calc(6.25 * var(--u)), 144px)",
             alignItems: "start",
           }}
         >
@@ -50,11 +50,11 @@ export default function ContactPage() {
             <p style={{
               fontFamily: "var(--font-display)",
               fontWeight: 700,
-              fontSize: "clamp(24px, 3vw, 44px)",
+              fontSize: "var(--text-h4)",
               color: "var(--color-text)",
               letterSpacing: "-0.02em",
               lineHeight: 1.2,
-              marginBottom: "clamp(24px, 3vw, 40px)",
+              marginBottom: "var(--space-m)",
               marginTop: 0,
             }}>
               Open to freelance projects,{" "}
@@ -74,11 +74,11 @@ export default function ContactPage() {
             <p style={{
               fontFamily: "var(--font-sans)",
               fontWeight: 400,
-              fontSize: "clamp(14px, 1.3vw, 17px)",
+              fontSize: "var(--text-body)",
               color: "var(--color-text-faint)",
               lineHeight: 1.8,
-              marginBottom: "clamp(32px, 4vw, 56px)",
-              maxWidth: 360,
+              marginBottom: "var(--space-l)",
+              maxWidth: "22.5rem",
               marginTop: 0,
             }}>
               Based in Yogyakarta, available remotely.
@@ -100,7 +100,7 @@ export default function ContactPage() {
                     textDecoration: "none",
                     fontFamily: "var(--font-display)",
                     fontWeight: 500,
-                    fontSize: "clamp(14px, 1.4vw, 18px)",
+                    fontSize: "var(--text-body)",
                     color: "var(--color-text)",
                     transition: "color 0.2s ease, transform 0.2s ease",
                   }}
@@ -114,7 +114,7 @@ export default function ContactPage() {
 
             {/* Availability badge */}
             <div style={{
-              marginTop: "clamp(32px, 4vw, 48px)",
+              marginTop: "clamp(32px, calc(2.5 * var(--u)), 58px)",
               display: "flex",
               alignItems: "center",
               gap: 10,
@@ -129,7 +129,7 @@ export default function ContactPage() {
               }} />
               <span style={{
                 fontFamily: "var(--font-sans)",
-                fontSize: 13,
+                fontSize: "var(--text-label)",
                 textTransform: "uppercase",
                 letterSpacing: "0.15em",
                 color: "var(--color-text-faint)",
@@ -144,7 +144,7 @@ export default function ContactPage() {
         </div>
 
         <style>{`
-          @media (max-width: 768px) {
+          @media (max-width: 900px) {
             .contact-page-grid { grid-template-columns: 1fr !important; }
           }
         `}</style>

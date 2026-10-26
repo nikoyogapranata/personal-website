@@ -41,7 +41,7 @@ export default function ContactForm() {
       {status === "sent" ? (
         <div role="status" style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 16 }}>
           <span style={{
-            fontSize: 48,
+            fontSize: "3rem",
             color: "var(--color-accent-primary)",
             lineHeight: 1,
           }}>
@@ -49,7 +49,7 @@ export default function ContactForm() {
           </span>
           <p style={{
             fontFamily: "var(--font-display)",
-            fontSize: "clamp(18px, 2vw, 26px)",
+            fontSize: "max(1.125rem, var(--text-h5))",
             color: "var(--color-text)",
             margin: 0,
             letterSpacing: "-0.01em",
@@ -60,7 +60,7 @@ export default function ContactForm() {
       ) : (
         <form
           onSubmit={handleSubmit}
-          style={{ display: "flex", flexDirection: "column", gap: "clamp(20px, 2.5vw, 28px)" }}
+          style={{ display: "flex", flexDirection: "column", gap: "clamp(20px, calc(1.46 * var(--u)), 34px)" }}
         >
           {/* Honeypot — hidden from people, filled by bots */}
           <input
@@ -75,7 +75,7 @@ export default function ContactForm() {
           />
 
           {/* Name */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <label htmlFor="contact-name" style={LABEL_STYLE}>Name</label>
             <input
               id="contact-name"
@@ -93,7 +93,7 @@ export default function ContactForm() {
           </div>
 
           {/* Email */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <label htmlFor="contact-email" style={LABEL_STYLE}>Email</label>
             <input
               id="contact-email"
@@ -111,7 +111,7 @@ export default function ContactForm() {
           </div>
 
           {/* Subject */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <label htmlFor="contact-subject" style={LABEL_STYLE}>Subject</label>
             <input
               id="contact-subject"
@@ -127,7 +127,7 @@ export default function ContactForm() {
           </div>
 
           {/* Message */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <label htmlFor="contact-message" style={LABEL_STYLE}>Message</label>
             <textarea
               id="contact-message"
@@ -146,7 +146,7 @@ export default function ContactForm() {
           {status === "error" && (
             <p role="alert" style={{
               fontFamily: "var(--font-sans)",
-              fontSize: 15,
+              fontSize: "var(--text-body)",
               color: "var(--color-accent-secondary)",
               margin: 0,
               lineHeight: 1.6,
@@ -162,21 +162,21 @@ export default function ContactForm() {
           <motion.button
             type="submit"
             disabled={status === "sending"}
-            whileHover={{ backgroundColor: "var(--color-accent-primary)", gap: "20px" }}
+            whileHover={{ backgroundColor: "var(--color-accent-primary)", gap: "1.54em" }}
             transition={{ duration: 0.2 }}
             style={{
               marginTop: 8,
               display: "inline-flex",
               alignItems: "center",
-              gap: 12,
+              gap: "0.92em",
               background: "var(--color-bg-dark)",
               color: "var(--color-text-inverse)",
               fontFamily: "var(--font-display)",
               fontWeight: 600,
-              fontSize: 13,
+              fontSize: "var(--text-label)",
               textTransform: "uppercase",
               letterSpacing: "0.15em",
-              padding: "16px 32px",
+              padding: "1.23em 2.46em",
               border: "none",
               cursor: status === "sending" ? "wait" : "pointer",
               opacity: status === "sending" ? 0.6 : 1,
@@ -206,7 +206,7 @@ export default function ContactForm() {
 
 const LABEL_STYLE: React.CSSProperties = {
   fontFamily: "var(--font-sans)",
-  fontSize: 13,
+  fontSize: "var(--text-label)",
   textTransform: "uppercase",
   letterSpacing: "0.15em",
   color: "var(--color-text-faint)",
@@ -216,8 +216,8 @@ const INPUT_STYLE: React.CSSProperties = {
   width: "100%",
   background: "transparent",
   border: "none",
-  padding: "12px 0",
+  padding: "0.75rem 0",
   fontFamily: "var(--font-display)",
-  fontSize: "clamp(15px, 1.4vw, 18px)",
+  fontSize: "var(--text-body)",
   color: "var(--color-text)",
 };
