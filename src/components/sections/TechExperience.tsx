@@ -45,13 +45,13 @@ const EXPERIENCE = [
 const LABEL: React.CSSProperties = {
   fontFamily:    'var(--font-display)',
   fontWeight:    400,
-  fontSize:      'clamp(13px, 1.2vw, 16px)',
+  fontSize:      'var(--text-small)',
   textTransform: 'uppercase',
   letterSpacing: '0.2em',
   color:         'var(--color-text-faint)',
   whiteSpace:    'nowrap',
   flexShrink:    0,
-  width:         'clamp(100px, 12vw, 160px)',
+  width:         '10em',
 }
 
 const DIVIDER: React.CSSProperties = {
@@ -65,24 +65,24 @@ export default function TechExperience() {
   return (
     <section style={{
       background: 'var(--color-bg)',
-      padding:    'clamp(80px, 10vw, 140px) clamp(32px, 6vw, 80px)',
+      padding:    'var(--section-y) max(var(--page-x), calc((100% - var(--content-max)) / 2))',
       position:   'relative',
     }}>
 
       {/* ── TECH STACK ── */}
-      <div style={{ ...DIVIDER, marginBottom: 'clamp(32px, 4vw, 56px)' }} />
+      <div style={{ ...DIVIDER, marginBottom: 'var(--space-l)' }} />
 
       <div className="te-row" style={{
         display:    'flex',
         alignItems: 'baseline',
-        gap:        'clamp(200px, 28vw, 400px)',
+        gap:        'clamp(200px, calc(20.83 * var(--u)), 480px)',
       }}>
         <span style={LABEL}>Tech Stack</span>
 
         <div style={{
           display:    'flex',
           flexWrap:   'wrap',
-          gap:        'clamp(16px, 2.5vw, 32px) 0',
+          gap:        'clamp(16px, calc(1.67 * var(--u)), 38px) 0',
           alignItems: 'baseline',
         }}>
           {TECH.map((name, i) => (
@@ -100,7 +100,7 @@ export default function TechExperience() {
                 style={{
                   fontFamily:    'var(--font-display)',
                   fontWeight:    500,
-                  fontSize:      'clamp(16px, 2vw, 28px)',
+                  fontSize:      'var(--text-h5)',
                   color:         'var(--color-text)',
                   letterSpacing: '-0.01em',
                   transition:    'color 0.2s ease',
@@ -112,8 +112,8 @@ export default function TechExperience() {
               {i < TECH.length - 1 && (
                 <span style={{
                   color:    'var(--color-accent-primary)',
-                  fontSize: 'clamp(20px, 2.5vw, 36px)',
-                  margin:   '0 clamp(12px, 1.8vw, 24px)',
+                  fontSize: 'calc(var(--text-h5) * 1.29)',
+                  margin:   '0 0.67em',
                   lineHeight: 1,
                 }}>
                   •
@@ -125,13 +125,13 @@ export default function TechExperience() {
       </div>
 
       {/* ── DIVIDER ── */}
-      <div style={{ ...DIVIDER, margin: 'clamp(40px, 5vw, 72px) 0' }} />
+      <div style={{ ...DIVIDER, margin: 'var(--space-xl) 0' }} />
 
       {/* ── EXPERIENCE ── */}
       <div className="te-row" style={{
         display:    'flex',
         alignItems: 'flex-start',
-        gap:        'clamp(200px, 28vw, 400px)',
+        gap:        'clamp(200px, calc(20.83 * var(--u)), 480px)',
       }}>
         <span style={{ ...LABEL, paddingTop: 4 }}>Experience</span>
 
@@ -154,8 +154,8 @@ export default function TechExperience() {
                 justifyContent:'space-between',
                 alignItems:    'flex-start',
                 gap:           40,
-                paddingBottom: 'clamp(32px, 4vw, 56px)',
-                paddingTop:    i > 0 ? 'clamp(32px, 4vw, 56px)' : 0,
+                paddingBottom: 'var(--space-l)',
+                paddingTop:    i > 0 ? 'var(--space-l)' : 0,
                 borderBottom:  i < EXPERIENCE.length - 1 ? '0.5px solid var(--color-border-light)' : 'none',
               }}
             >
@@ -164,7 +164,7 @@ export default function TechExperience() {
                 <span style={{
                   fontFamily:    'var(--font-display)',
                   fontWeight:    600,
-                  fontSize:      'clamp(18px, 2.2vw, 30px)',
+                  fontSize:      'max(1.125rem, var(--text-h5))',
                   color:         'var(--color-text)',
                   letterSpacing: '-0.02em',
                 }}>
@@ -174,7 +174,7 @@ export default function TechExperience() {
                   fontFamily: 'var(--font-serif)',
                   fontStyle:  'italic',
                   fontWeight: 400,
-                  fontSize:   'clamp(16px, 1.8vw, 24px)',
+                  fontSize:   'max(1rem, calc(var(--text-h5) * 0.86))',
                   color:      'var(--color-accent-secondary)',
                 }}>
                   {item.company}
@@ -182,11 +182,11 @@ export default function TechExperience() {
                 <p style={{
                   fontFamily: 'var(--font-sans)',
                   fontWeight: 400,
-                  fontSize:   'clamp(13px, 1.2vw, 16px)',
+                  fontSize:   'var(--text-small)',
                   color:      'var(--color-text-faint)',
                   lineHeight: 1.6,
                   marginTop:  4,
-                  maxWidth:   480,
+                  maxWidth:   '30rem',
                   margin:     0,
                 }}>
                   {item.description}
@@ -196,7 +196,7 @@ export default function TechExperience() {
               {/* Right — period */}
               <span className="te-period" style={{
                 fontFamily:    'var(--font-sans)',
-                fontSize:      'clamp(13px, 1vw, 14px)',
+                fontSize:      'var(--text-caption)',
                 color:         'var(--color-text-faint)',
                 whiteSpace:    'nowrap',
                 flexShrink:    0,
@@ -210,10 +210,10 @@ export default function TechExperience() {
       </div>
 
       {/* ── BOTTOM DIVIDER ── */}
-      <div style={{ ...DIVIDER, marginTop: 'clamp(40px, 5vw, 72px)' }} />
+      <div style={{ ...DIVIDER, marginTop: 'var(--space-xl)' }} />
 
       <style>{`
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
           .te-row {
             flex-direction: column !important;
             gap: 0 !important;
