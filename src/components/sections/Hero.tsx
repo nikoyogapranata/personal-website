@@ -231,12 +231,14 @@ export default function Hero() {
             />
           </div>
 
-          {/* Text container */}
-          <div
+          {/* Text container — the page's h1 */}
+          <h1
             style={{
               display: "flex",
               alignItems: "center",
               gap: "16px",
+              margin: 0,
+              font: "inherit",
             }}
           >
             <span style={{ ...TEXT, color: DARK }}>I&apos;m</span>
@@ -247,7 +249,7 @@ export default function Hero() {
             <span style={{ ...serif(DARK), transform: "translateY(-9px)" }}>
               Pranata
             </span>
-          </div>
+          </h1>
 
           {/* Landscape hero image */}
           <div

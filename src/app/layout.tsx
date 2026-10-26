@@ -6,6 +6,7 @@ import Navbar from "@/components/sections/Navbar";
 import LoadingScreen from "@/components/ui/LoadingScreen";
 import { loaderBootScript } from "@/lib/loader";
 import MotionProvider from "@/components/MotionProvider";
+import { EMAIL, SITE_URL, SOCIAL } from "@/lib/site";
 import "./globals.css";
 
 const clashDisplay = localFont({
@@ -28,37 +29,51 @@ const playfairDisplay = Playfair_Display({
   display: "swap",
 });
 
+const TITLE       = "Niko Pranata | Frontend Web Developer";
+const DESCRIPTION =
+  "CS student and frontend developer. I build interfaces that feel considered — from motion to markup.";
+
+// Icons and the share image come from the app/ file conventions (icon.png, favicon.ico, opengraph-image.png)
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Niko Pranata | Frontend Web Developer",
+    default: TITLE,
     template: "Niko Pranata | %s",
   },
-  icons: {
-    icon: "/favicon.png",
-  },
-  description:
-    "CS student and frontend developer. I build interfaces that feel considered — from motion to markup.",
-  authors: [{ name: "Niko Pranata" }],
+  description: DESCRIPTION,
+  alternates: { canonical: "/" },
+  authors: [{ name: "Niko Pranata", url: SITE_URL }],
   creator: "Niko Pranata",
   openGraph: {
-    
     type: "website",
     locale: "en_US",
-    title: "Niko Pranata - Frontend Developer",
-    description:
-      "CS student and frontend developer. I build interfaces that feel considered — from motion to markup.",
+    url: "/",
+    title: TITLE,
+    description: DESCRIPTION,
     siteName: "Niko Pranata",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Niko Pranata - Frontend Developer",
-    description:
-      "CS student and frontend developer. I build interfaces that feel considered — from motion to markup.",
+    title: TITLE,
+    description: DESCRIPTION,
   },
   robots: {
     index: true,
     follow: true,
   },
+};
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Niko Yoga Pranata",
+  alternateName: "Niko Pranata",
+  url: SITE_URL,
+  image: `${SITE_URL}/hero.jpeg`,
+  jobTitle: "Frontend Web Developer",
+  email: `mailto:${EMAIL}`,
+  address: { "@type": "PostalAddress", addressLocality: "Yogyakarta", addressCountry: "ID" },
+  sameAs: [SOCIAL.linkedin, SOCIAL.github],
 };
 
 export default function RootLayout({
@@ -79,6 +94,10 @@ export default function RootLayout({
         </noscript>
       </head>
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c") }}
+        />
         <MotionProvider>
           <LoadingScreen />
           <FilmGrain />
