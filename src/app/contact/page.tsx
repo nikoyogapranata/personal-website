@@ -170,12 +170,7 @@ export default function ContactPage() {
                     color: "var(--color-text)",
                     transition: "color 0.2s ease",
                   }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.color = "var(--color-accent-primary)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.color = "#0a0a0a";
-                  }}
+                  className="hover-accent"
                 >
                   <span style={{ fontSize: "0.85em", opacity: 0.5 }}>↗</span>
                   {label}

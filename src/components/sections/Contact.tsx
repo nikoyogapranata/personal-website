@@ -176,13 +176,7 @@ export default function Contact({
               rel={target === "_blank" ? "noopener noreferrer" : undefined}
               whileHover={{ x: 8 }}
               transition={{ duration: 0.2 }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.color = "var(--color-accent-primary)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.color =
-                  c.linkLeave;
-              }}
+              className="hover-accent"
               style={{
                 fontFamily: "var(--font-display)",
                 fontWeight: 600,

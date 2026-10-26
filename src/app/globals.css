@@ -22,6 +22,20 @@
   --font-mono: ui-monospace, "SF Mono", "Cascadia Code", monospace;
 }
 
+/* ── Hover / focus colour ───────────────────────────────────────
+   For elements whose resting colour is set inline; !important beats the inline value. */
+.hover-accent:hover,
+.hover-accent:focus-visible,
+.hover-accent-text:hover > span,
+.hover-accent-text:focus-visible > span {
+  color: var(--color-accent-primary) !important;
+}
+/* Theme-dependent hover colour, passed in as --hover-color */
+.hover-to:hover,
+.hover-to:focus-visible {
+  color: var(--hover-color) !important;
+}
+
 /* ── Keyframes ──────────────────────────────────────────────────── */
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; }

@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import { motion } from 'framer-motion'
 
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
@@ -62,7 +61,6 @@ const DIVIDER: React.CSSProperties = {
 }
 
 export default function TechExperience() {
-  const [hoveredTech, setHoveredTech] = useState<string | null>(null)
 
   return (
     <section style={{
@@ -98,13 +96,12 @@ export default function TechExperience() {
               style={{ display: 'inline-flex', alignItems: 'baseline' }}
             >
               <span
-                onMouseEnter={() => setHoveredTech(name)}
-                onMouseLeave={() => setHoveredTech(null)}
+                className="hover-accent"
                 style={{
                   fontFamily:    'var(--font-display)',
                   fontWeight:    500,
                   fontSize:      'clamp(16px, 2vw, 28px)',
-                  color:         hoveredTech === name ? 'var(--color-accent-primary)' : '#0a0a0a',
+                  color:         'var(--color-text)',
                   letterSpacing: '-0.01em',
                   transition:    'color 0.2s ease',
                   cursor:        'default',

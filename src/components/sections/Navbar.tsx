@@ -52,8 +52,6 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen]               = useState(false)
   const [surface, setSurface]                 = useState<Surface>({ dark: false, color: null })
   const isDark                                = surface.dark
-  const [nikoHovered, setNikoHovered]         = useState(false)
-  const [contactHovered, setContactHovered]   = useState(false)
   const navRef                                = useRef<HTMLElement>(null)
   const menuButtonRef                         = useRef<HTMLButtonElement>(null)
   const panelRef                              = useRef<HTMLDivElement>(null)
@@ -153,8 +151,7 @@ export default function Navbar() {
         {/* LEFT — NIKO PRANATA */}
         <button
           onClick={goTop}
-          onMouseEnter={() => setNikoHovered(true)}
-          onMouseLeave={() => setNikoHovered(false)}
+          className="hover-accent-text"
           style={{
             display:        'flex',
             alignItems:     'center',
@@ -169,7 +166,7 @@ export default function Navbar() {
             fontSize:      18,
             letterSpacing: '0.06em',
             textTransform: 'uppercase',
-            color:         nikoHovered ? accent : base,
+            color:         base,
             lineHeight:    1,
             transition:    'color 0.25s ease',
           }}>
@@ -220,8 +217,7 @@ export default function Navbar() {
         <div style={{ justifySelf: 'end', display: 'flex', alignItems: 'center', gap: 32 }}>
           <Link
             href="/contact"
-            onMouseEnter={() => setContactHovered(true)}
-            onMouseLeave={() => setContactHovered(false)}
+            className="hover-accent-text"
             style={{ textDecoration: 'none' }}
           >
             <span className="nav-contact" style={{
@@ -229,7 +225,7 @@ export default function Navbar() {
               fontSize:      18,
               textTransform: 'uppercase',
               letterSpacing: '0.06em',
-              color:         contactHovered ? accent : base,
+              color:         base,
               lineHeight:    1,
               transition:    'color 0.25s ease',
             }}>

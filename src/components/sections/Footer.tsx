@@ -132,9 +132,9 @@ export default function Footer({ theme = "dark" }: { theme?: "dark" | "light" })
                 letterSpacing: "0.04em",
                 textTransform: "uppercase",
                 transition: "color 0.2s ease",
-              }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = c.linkHover; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = c.muted; }}
+                "--hover-color": c.linkHover,
+              } as React.CSSProperties}
+              className="hover-to"
             >
               {label}
             </Link>
