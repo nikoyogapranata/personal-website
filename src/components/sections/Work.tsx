@@ -10,6 +10,7 @@ import {
   useScroll,
   useTransform,
 } from 'framer-motion'
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 
 const MotionLink = motion.create(Link)
 
@@ -44,7 +45,10 @@ export default function Work() {
     restDelta: 0.001,
   })
 
-  const titleScale = useTransform(smoothProgress, [0, 0.85], [1, 0.26])
+  const reduceMotion = usePrefersReducedMotion()
+  const titleScale   = useTransform(smoothProgress, [0, 0.85], [1, 0.26])
+  // Reduced motion: fade the pinned title out instead of shrinking it
+  const titleFade    = useTransform(smoothProgress, [0, 0.85], [1, 0])
 
   const sectionBg = useTransform(
     smoothProgress,
@@ -85,7 +89,8 @@ export default function Work() {
               lineHeight:    1.05,
               textAlign:     'center',
               margin:        0,
-              scale:         titleScale,
+              scale:         reduceMotion ? 1 : titleScale,
+              opacity:       reduceMotion ? titleFade : 1,
               transformOrigin: 'center center',
             }}
           >

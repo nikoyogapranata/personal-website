@@ -48,13 +48,17 @@ export default function Navbar() {
 
   useEffect(() => {
     let frame = 0
+    let sampleUntil = 0
+    const sample = () => {
+      const nav = navRef.current
+      if (nav) setIsDark(isDarkAt(window.innerWidth / 2, 32, el => nav.contains(el)))
+      // Section backgrounds are spring-driven and keep changing briefly after scrolling stops
+      if (performance.now() < sampleUntil) frame = requestAnimationFrame(sample)
+    }
     const update = () => {
+      sampleUntil = performance.now() + 800
       cancelAnimationFrame(frame)
-      frame = requestAnimationFrame(() => {
-        const nav = navRef.current
-        if (!nav) return
-        setIsDark(isDarkAt(window.innerWidth / 2, 32, el => nav.contains(el)))
-      })
+      frame = requestAnimationFrame(sample)
     }
     window.addEventListener('scroll', update, { passive: true })
     window.addEventListener('resize', update)
@@ -92,7 +96,10 @@ export default function Navbar() {
     return () => cancelAnimationFrame(frame)
   }, [menuOpen])
 
-  const goTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
+  const goTop = () => window.scrollTo({
+    top: 0,
+    behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+  })
 
   // base color flips with the background under the navbar
   const base   = isDark ? '#f8f8f5' : '#0a0a0a'

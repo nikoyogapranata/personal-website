@@ -75,6 +75,7 @@ function MenuItem({
       const contentWidth = (marqueeContent as HTMLElement).offsetWidth
       if (contentWidth === 0) return
       if (animationRef.current) animationRef.current.kill()
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
       animationRef.current = gsap.to(marqueeInnerRef.current, {
         x:        -contentWidth,
         duration: speed,

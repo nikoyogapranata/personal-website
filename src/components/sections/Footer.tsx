@@ -1,5 +1,6 @@
 "use client";
 import { motion, useAnimationFrame, useMotionValue } from "framer-motion";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -14,8 +15,10 @@ function MarqueeTrack({ textColor }: { textColor: string }) {
   const x = useMotionValue(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const unitRef = useRef<HTMLDivElement>(null);
+  const reduceMotion = usePrefersReducedMotion();
 
   useAnimationFrame((_, delta) => {
+    if (reduceMotion) return;
     const unitW = unitRef.current?.offsetWidth ?? 0;
     if (!unitW) return;
     const next = (x.get() - (delta / 1000) * SPEED) % unitW;

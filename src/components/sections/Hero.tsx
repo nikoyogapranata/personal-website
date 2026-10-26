@@ -8,6 +8,7 @@ import {
   useSpring,
   MotionValue,
 } from "framer-motion";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import React from "react";
 import Image from "next/image";
 
@@ -64,6 +65,8 @@ interface HoverPushCardProps {
   scrollX: MotionValue<string>;
   scrollY: MotionValue<string>;
   scrollRotate: MotionValue<number>;
+  /** Resting tilt, used instead of the scroll animation under reduced motion */
+  restRotate: number;
 }
 
 function HoverPushCard({
@@ -72,7 +75,9 @@ function HoverPushCard({
   scrollX,
   scrollY,
   scrollRotate,
+  restRotate,
 }: HoverPushCardProps) {
+  const reduceMotion = usePrefersReducedMotion();
   // Local mouse coordinates relative to the card's center
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -83,6 +88,7 @@ function HoverPushCard({
   const pushY = useSpring(mouseY, springConfig);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (reduceMotion) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
@@ -108,9 +114,9 @@ function HoverPushCard({
       onMouseLeave={handleMouseLeave}
       style={{
         ...style,
-        x: scrollX,
-        y: scrollY,
-        rotate: scrollRotate,
+        x: reduceMotion ? 0 : scrollX,
+        y: reduceMotion ? 0 : scrollY,
+        rotate: reduceMotion ? restRotate : scrollRotate,
         translateX: pushX, // layer local offset alongside global positioning transforms
         translateY: pushY,
       }}
@@ -124,6 +130,7 @@ function HoverPushCard({
 
 /* ── hero ────────────────────────────────────────────────────── */
 export default function Hero() {
+  const reduceMotion = usePrefersReducedMotion();
   const { scrollYProgress } = useScroll();
 
   const box1Y = useTransform(scrollYProgress, [0, 0.35], ["0%", "-300%"]);
@@ -150,9 +157,10 @@ export default function Hero() {
   return (
     <motion.section
       style={{
-        scale: heroScale,
+        // Reduced motion: no zoom or blur, just the fade
+        scale: reduceMotion ? 1 : heroScale,
         opacity: heroOpacity,
-        filter: heroFilter,
+        filter: reduceMotion ? "none" : heroFilter,
         transformOrigin: "center center",
         background: "transparent",
         position: "absolute",
@@ -187,6 +195,7 @@ export default function Hero() {
           scrollX={box1X}
           scrollY={box1Y}
           scrollRotate={box1Rotate}
+          restRotate={-1.8}
           style={{
             ...CARD,
             width: "fit-content",
@@ -276,6 +285,7 @@ export default function Hero() {
           scrollX={box2X}
           scrollY={box2Y}
           scrollRotate={box2Rotate}
+          restRotate={1}
           style={{
             ...CARD,
             width: "fit-content",
@@ -323,6 +333,7 @@ export default function Hero() {
           scrollX={box3X}
           scrollY={box3Y}
           scrollRotate={box3Rotate}
+          restRotate={-0.6}
           style={{
             ...CARD,
             width: "fit-content",
@@ -402,6 +413,7 @@ export default function Hero() {
           scrollX={box4X}
           scrollY={box4Y}
           scrollRotate={box4Rotate}
+          restRotate={1.4}
           style={{
             ...CARD,
             width: "fit-content",

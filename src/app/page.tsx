@@ -2,6 +2,7 @@
 
 import { useRef } from 'react'
 import { useScroll, useTransform, motion } from 'framer-motion'
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import Hero      from '@/components/sections/Hero'
 import AboutV2   from '@/components/sections/AboutV2'
 import Work      from '@/components/sections/Work'
@@ -10,6 +11,7 @@ import Contact   from '@/components/sections/Contact'
 import Footer    from '@/components/sections/Footer'
 
 export default function Home() {
+  const reduceMotion = usePrefersReducedMotion()
   const { scrollYProgress } = useScroll()
 
   const overlayOpacity    = useTransform(scrollYProgress, [0.3, 0.75], [1, 0])
@@ -40,7 +42,7 @@ export default function Home() {
       <div style={{ position: 'relative', zIndex: 10, background: '#f8f8f5' }}>
 
         {/* About */}
-        <motion.div style={{ position: 'sticky', top: '-25vh', zIndex: 1, y: aboutY }}>
+        <motion.div style={{ position: 'sticky', top: '-25vh', zIndex: 1, y: reduceMotion ? 0 : aboutY }}>
           <AboutV2 />
           <motion.div style={{
             position:      'absolute',

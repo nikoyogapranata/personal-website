@@ -51,3 +51,15 @@
     color: #f8f8f5;
   }
 }
+
+/* ── Reduced motion ─────────────────────────────────────────────
+   Stops CSS keyframes (e.g. the availability pulse) and transitions.
+   JS-driven motion is handled by MotionConfig and usePrefersReducedMotion. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

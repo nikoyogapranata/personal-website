@@ -1,6 +1,7 @@
 "use client";
 import { useRef } from "react";
 import { motion, useScroll, useSpring, useTransform, MotionValue } from "framer-motion";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import Image from "next/image";
 
 export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }) {
@@ -43,6 +44,11 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
   // Statement gets pushed out — starts moving after GOT A PROJECT? is already mid-screen
   const statX = useTransform(smooth, [0.30, 0.70], ["0vw", "-130vw"]);
 
+  // Reduced motion: no clip zoom or horizontal travel — crossfade the two layers in place
+  const reduceMotion = usePrefersReducedMotion();
+  const statFade     = useTransform(smooth, [0.30, 0.50], [1, 0]);
+  const gotFade      = useTransform(smooth, [0.45, 0.65], [0, 1]);
+
   return (
     <>
     <style>{`
@@ -71,7 +77,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
           style={{
             position:   "absolute",
             inset:      0,
-            clipPath,
+            clipPath:   reduceMotion ? "none" : clipPath,
             background: clipBg,
             overflow:   "hidden",
           }}
@@ -85,7 +91,8 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
               alignItems:     "center",
               justifyContent: "center",
               padding:        "0 8vw",
-              x:              statX,
+              x:              reduceMotion ? 0 : statX,
+              opacity:        reduceMotion ? statFade : 1,
               willChange:     "transform",
             }}
           >
@@ -147,7 +154,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                     display:       "inline-block",
                     fontSize:      "clamp(48px, 8vw, 124px)",
                     height:        "0.72em",
-                    width:         imgWidth,
+                    width:         reduceMotion ? "1.1em" : imgWidth,
                     verticalAlign: "middle",
                     transform:     "translateY(-0.3em)",
                     margin:        "0 0.1em",
@@ -206,22 +213,26 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
               inset:      0,
               display:    "flex",
               alignItems: "center",
-              x:          gotX,
+              justifyContent: reduceMotion ? "center" : undefined,
+              x:          reduceMotion ? 0 : gotX,
+              opacity:    reduceMotion ? gotFade : 1,
               willChange: "transform",
             }}
           >
             <motion.span
-              className="got-text"
+              className={reduceMotion ? undefined : "got-text"}
               style={{
                 fontFamily:    "var(--font-display)",
                 fontWeight:    800,
-                fontSize:      "clamp(180px, 30vw, 450px)",
+                // Reduced motion: the text can't scroll across, so size it to fit and let it wrap
+                fontSize:      reduceMotion ? "clamp(56px, 13vw, 200px)" : "clamp(180px, 30vw, 450px)",
                 letterSpacing: "-0.04em",
                 color:         gotColor,
                 lineHeight:    1,
                 userSelect:    "none",
-                whiteSpace:    "nowrap",
-                paddingLeft:   "4vw",
+                whiteSpace:    reduceMotion ? "normal" : "nowrap",
+                textAlign:     reduceMotion ? "center" : undefined,
+                paddingLeft:   reduceMotion ? 0 : "4vw",
               }}
             >
               GOT A PROJECT?
