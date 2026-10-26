@@ -15,13 +15,27 @@ const LINKS = [
 ];
 
 export default function ContactPage() {
-  const [fields, setFields] = useState({ name: "", email: "", subject: "", message: "" });
-  const [submitted, setSubmitted] = useState(false);
+  const [fields, setFields] = useState({ name: "", email: "", subject: "", message: "", company: "" });
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: connect to email service
-    setSubmitted(true);
+    setStatus("sending");
+    setError("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(fields),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error ?? "Your message could not be sent.");
+      setStatus("sent");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Your message could not be sent.");
+      setStatus("error");
+    }
   };
 
   return (
@@ -200,8 +214,8 @@ export default function ContactPage() {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
           >
-            {submitted ? (
-              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 16 }}>
+            {status === "sent" ? (
+              <div role="status" style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 16 }}>
                 <span style={{
                   fontSize: 48,
                   color: "var(--color-accent-primary)",
@@ -224,11 +238,26 @@ export default function ContactPage() {
                 onSubmit={handleSubmit}
                 style={{ display: "flex", flexDirection: "column", gap: "clamp(20px, 2.5vw, 28px)" }}
               >
+                {/* Honeypot — hidden from people, filled by bots */}
+                <input
+                  type="text"
+                  name="company"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  value={fields.company}
+                  onChange={(e) => setFields(f => ({ ...f, company: e.target.value }))}
+                  style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+                />
+
                 {/* Name */}
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                   <label style={LABEL_STYLE}>Name</label>
                   <input
                     type="text"
+                    name="name"
+                    required
+                    maxLength={100}
                     placeholder="Your name"
                     value={fields.name}
                     onChange={(e) => setFields(f => ({ ...f, name: e.target.value }))}
@@ -243,6 +272,9 @@ export default function ContactPage() {
                   <label style={LABEL_STYLE}>Email</label>
                   <input
                     type="email"
+                    name="email"
+                    required
+                    maxLength={200}
                     placeholder="your@email.com"
                     value={fields.email}
                     onChange={(e) => setFields(f => ({ ...f, email: e.target.value }))}
@@ -257,6 +289,8 @@ export default function ContactPage() {
                   <label style={LABEL_STYLE}>Subject</label>
                   <input
                     type="text"
+                    name="subject"
+                    maxLength={200}
                     placeholder="What's this about?"
                     value={fields.subject}
                     onChange={(e) => setFields(f => ({ ...f, subject: e.target.value }))}
@@ -271,6 +305,9 @@ export default function ContactPage() {
                   <label style={LABEL_STYLE}>Message</label>
                   <textarea
                     rows={5}
+                    name="message"
+                    required
+                    maxLength={5000}
                     placeholder="Tell me about your project..."
                     value={fields.message}
                     onChange={(e) => setFields(f => ({ ...f, message: e.target.value }))}
@@ -280,9 +317,25 @@ export default function ContactPage() {
                   />
                 </div>
 
+                {status === "error" && (
+                  <p role="alert" style={{
+                    fontFamily: "var(--font-sans)",
+                    fontSize: 15,
+                    color: "var(--color-accent-secondary)",
+                    margin: 0,
+                    lineHeight: 1.6,
+                  }}>
+                    {error} Please try again, or email me at{" "}
+                    <a href="mailto:nikopranatabusiness@gmail.com" style={{ color: "inherit" }}>
+                      nikopranatabusiness@gmail.com
+                    </a>.
+                  </p>
+                )}
+
                 {/* Submit */}
                 <motion.button
                   type="submit"
+                  disabled={status === "sending"}
                   whileHover={{ backgroundColor: "var(--color-accent-primary)", gap: "20px" }}
                   transition={{ duration: 0.2 }}
                   style={{
@@ -299,11 +352,12 @@ export default function ContactPage() {
                     letterSpacing: "0.15em",
                     padding: "16px 32px",
                     border: "none",
-                    cursor: "pointer",
+                    cursor: status === "sending" ? "wait" : "pointer",
+                    opacity: status === "sending" ? 0.6 : 1,
                     alignSelf: "flex-start",
                   }}
                 >
-                  Send Message →
+                  {status === "sending" ? "Sending…" : "Send Message →"}
                 </motion.button>
               </form>
             )}
