@@ -66,7 +66,8 @@ export default function ContactPage() {
             style={{
               fontFamily: "var(--font-display)",
               fontWeight: 800,
-              fontSize: "clamp(88px, 17vw, 260px)",
+              // Smaller than /about and /work: CONTACT is a longer word and must leave room for the asterisk
+              fontSize: "clamp(80px, 14vw, 220px)",
               letterSpacing: "-0.04em",
               lineHeight: 1,
               color: "#0a0a0a",
@@ -372,7 +373,7 @@ export default function ContactPage() {
 
         <style>{`
           @media (max-width: 640px) {
-            .contact-page-title { font-size: clamp(52px, 16vw, 88px) !important; }
+            .contact-page-title { font-size: clamp(44px, 12vw, 88px) !important; }
             .contact-page-spark { height: clamp(40px, 11vw, 64px) !important; margin-left: 16px !important; }
           }
           @media (max-width: 768px) {
