@@ -3,7 +3,11 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
-import FlowingMenu from '../ui/FlowingMenu'
+import dynamic from 'next/dynamic'
+
+// FlowingMenu pulls in GSAP; only load it when the menu is about to open
+const loadFlowingMenu = () => import('../ui/FlowingMenu')
+const FlowingMenu = dynamic(loadFlowingMenu, { ssr: false })
 
 const menuItems = [
   { link: '/',      text: 'Home',     image: '/menu-spring.webp' },
@@ -93,6 +97,7 @@ export default function Navbar() {
         {/* CENTER — MENU */}
         <div
           onClick={() => setMenuOpen(v => !v)}
+          onPointerEnter={loadFlowingMenu}
           style={{
             display:       'flex',
             flexDirection: 'column',
