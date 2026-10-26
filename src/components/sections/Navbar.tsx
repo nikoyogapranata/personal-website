@@ -26,20 +26,32 @@ function luminance(color: string): number | null {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b
 }
 
-// Is the painted background under (x, y) dark? Skips the navbar itself; pointer-events:none
-// overlays are skipped by hit-testing, and clip-path is respected, so this tracks what's visible.
-function isDarkAt(x: number, y: number, ignore: (el: Element) => boolean) {
-  const hit = document.elementsFromPoint(x, y).find(el => !ignore(el))
-  for (let el: Element | null = hit ?? null; el; el = el.parentElement) {
-    const l = luminance(getComputedStyle(el).backgroundColor)
-    if (l !== null) return l < 0.4
-  }
-  return false
+type Surface = {
+  dark:  boolean
+  /** Background for the bar, or null to stay transparent (home hero, top of a page) */
+  color: string | null
 }
+
+// What's painted under (x, y)? Skips the navbar itself; pointer-events:none overlays are skipped
+// by hit-testing, and clip-path is respected, so this tracks what's actually visible.
+function surfaceAt(x: number, y: number, ignore: (el: Element) => boolean): Surface {
+  const hit = document.elementsFromPoint(x, y).find(el => !ignore(el)) ?? null
+  const transparent = window.scrollY < 8 || !!hit?.closest('[data-nav-transparent]')
+  for (let el: Element | null = hit; el; el = el.parentElement) {
+    const color = getComputedStyle(el).backgroundColor
+    const l = luminance(color)
+    // 0.18 is where #0a0a0a and #f8f8f5 text have equal contrast, so this picks the more readable one
+    if (l !== null) return { dark: l < 0.18, color: transparent ? null : color }
+  }
+  return { dark: false, color: null }
+}
+
+const sameSurface = (a: Surface, b: Surface) => a.dark === b.dark && a.color === b.color
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen]               = useState(false)
-  const [isDark, setIsDark]                   = useState(false)
+  const [surface, setSurface]                 = useState<Surface>({ dark: false, color: null })
+  const isDark                                = surface.dark
   const [nikoHovered, setNikoHovered]         = useState(false)
   const [contactHovered, setContactHovered]   = useState(false)
   const navRef                                = useRef<HTMLElement>(null)
@@ -51,7 +63,10 @@ export default function Navbar() {
     let sampleUntil = 0
     const sample = () => {
       const nav = navRef.current
-      if (nav) setIsDark(isDarkAt(window.innerWidth / 2, 32, el => nav.contains(el)))
+      if (nav) {
+        const next = surfaceAt(window.innerWidth / 2, 32, el => nav.contains(el))
+        setSurface(prev => (sameSurface(prev, next) ? prev : next))
+      }
       // Section backgrounds are spring-driven and keep changing briefly after scrolling stops
       if (performance.now() < sampleUntil) frame = requestAnimationFrame(sample)
     }
@@ -127,7 +142,12 @@ export default function Navbar() {
           alignItems:          'center',
           height:              64,
           padding:             '0 40px',
-          background:          'transparent',
+          // Solid once past the hero so content never runs under the links
+          background:          surface.color ?? 'transparent',
+          borderBottom:        `1px solid ${
+            surface.color === null ? 'transparent' : isDark ? 'var(--color-border)' : 'var(--color-border-light)'
+          }`,
+          transition:          'background-color 0.25s ease, border-color 0.25s ease',
         }}
       >
         {/* LEFT — NIKO PRANATA */}

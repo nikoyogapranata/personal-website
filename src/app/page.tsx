@@ -36,7 +36,7 @@ export default function Home() {
     <main style={{ background: '#f8f8f5', position: 'relative' }}>
 
       {/* Scroll driver — 400vh for hero animation */}
-      <div style={{ height: '300vh' }} />
+      <div data-nav-transparent style={{ height: '300vh' }} />
 
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 10, background: '#f8f8f5' }}>
@@ -83,7 +83,7 @@ export default function Home() {
       }} />
 
       {/* Hero — fixed on top */}
-      <motion.div style={{
+      <motion.div data-nav-transparent style={{
         position:      'fixed',
         top:           0,
         left:          0,
