@@ -10,18 +10,18 @@ export default function Error({ retry }: { error: unknown; retry: () => void }) 
         background: "var(--color-bg)",
         minHeight: "100vh",
         padding:
-          "clamp(110px, 14vw, 180px) clamp(32px, 6vw, 80px) clamp(80px, 10vw, 140px)",
+          "var(--page-top) max(var(--page-x), calc((100% - var(--content-max)) / 2)) var(--section-y)",
       }}
     >
       <h1
         style={{
           fontFamily: "var(--font-display)",
           fontWeight: 800,
-          fontSize: "clamp(52px, 10vw, 160px)",
+          fontSize: "clamp(3.25rem, calc(8.33 * var(--u)), 192px)",
           letterSpacing: "-0.04em",
           lineHeight: 1,
           color: "var(--color-text)",
-          margin: "0 0 clamp(32px, 4vw, 56px)",
+          margin: "0 0 var(--space-l)",
         }}
       >
         SOMETHING{" "}
@@ -40,11 +40,11 @@ export default function Error({ retry }: { error: unknown; retry: () => void }) 
       <p
         style={{
           fontFamily: "var(--font-sans)",
-          fontSize: "clamp(16px, 1.5vw, 20px)",
+          fontSize: "var(--text-body-lg)",
           lineHeight: 1.75,
           color: "var(--color-text-muted)",
           maxWidth: 560,
-          margin: "0 0 clamp(32px, 4vw, 48px)",
+          margin: "0 0 clamp(32px, calc(2.5 * var(--u)), 58px)",
         }}
       >
         This part of the page failed to load. Try again, head back home, or email me at{" "}
@@ -60,10 +60,10 @@ export default function Error({ retry }: { error: unknown; retry: () => void }) 
             color: "var(--color-text-inverse)",
             fontFamily: "var(--font-display)",
             fontWeight: 600,
-            fontSize: 13,
+            fontSize: "var(--text-label)",
             textTransform: "uppercase",
             letterSpacing: "0.15em",
-            padding: "16px 32px",
+            padding: "1.23em 2.46em",
             border: "none",
             cursor: "pointer",
           }}
@@ -75,7 +75,7 @@ export default function Error({ retry }: { error: unknown; retry: () => void }) 
           style={{
             fontFamily: "var(--font-display)",
             fontWeight: 500,
-            fontSize: 16,
+            fontSize: "var(--text-body)",
             color: "var(--color-text)",
           }}
         >
