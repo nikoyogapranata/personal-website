@@ -39,6 +39,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
 
   // GOT A PROJECT? enters (collision), then continues scrolling left to reveal full text
   const gotX     = useTransform(smooth, [0.10, 0.75, 1.2], ["120vw", "0vw", "-240vw"]);
+  // Literal hex: interpolated colours can't be CSS variables (--color-bg / --color-bg-dark)
   const clipBg   = useTransform(smooth, [0.25, 0.60], ["#f8f8f5", "#0a0a0a"]);
   const gotColor = useTransform(smooth, [0.25, 0.60], ["#0a0a0a", "#f8f8f5"]);
 
@@ -63,7 +64,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
         position:   "relative",
         height:     "300vh",
         zIndex:     10,
-        background: "#0a0a0a",
+        background: "var(--color-bg-dark)",
       }}
     >
       <div
@@ -105,7 +106,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                     fontWeight:    700,
                     fontSize:      "clamp(48px, 8vw, 124px)",
                     letterSpacing: "-0.03em",
-                    color:         "#0a0a0a",
+                    color:         "var(--color-text)",
                   }}
                 >
                   FROM THE{" "}
@@ -132,7 +133,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                   fontWeight:    700,
                   fontSize:      "clamp(48px, 8vw, 124px)",
                   letterSpacing: "-0.03em",
-                  color:         "#0a0a0a",
+                  color:         "var(--color-text)",
                 }}
               >
                 TO THE FINAL DEPLOY,
@@ -145,7 +146,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                     fontWeight:    700,
                     fontSize:      "clamp(48px, 8vw, 124px)",
                     letterSpacing: "-0.03em",
-                    color:         "#0a0a0a",
+                    color:         "var(--color-text)",
                   }}
                 >
                   I
@@ -186,7 +187,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                     fontWeight:    700,
                     fontSize:      "clamp(48px, 8vw, 124px)",
                     letterSpacing: "-0.03em",
-                    color:         "#0a0a0a",
+                    color:         "var(--color-text)",
                   }}
                 >
                   HANDLE THE WHOLE{" "}
@@ -249,7 +250,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
             style={{
               position:      "absolute",
               inset:         0,
-              background:    "#0a0a0a",
+              background:    "var(--color-bg-dark)",
               opacity:       exitDim,
               pointerEvents: "none",
             }}

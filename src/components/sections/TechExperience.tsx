@@ -66,7 +66,7 @@ export default function TechExperience() {
 
   return (
     <section style={{
-      background: '#f8f8f5',
+      background: 'var(--color-bg)',
       padding:    'clamp(80px, 10vw, 140px) clamp(32px, 6vw, 80px)',
       position:   'relative',
     }}>
@@ -159,7 +159,7 @@ export default function TechExperience() {
                 gap:           40,
                 paddingBottom: 'clamp(32px, 4vw, 56px)',
                 paddingTop:    i > 0 ? 'clamp(32px, 4vw, 56px)' : 0,
-                borderBottom:  i < EXPERIENCE.length - 1 ? '0.5px solid #e5e5e0' : 'none',
+                borderBottom:  i < EXPERIENCE.length - 1 ? '0.5px solid var(--color-border-light)' : 'none',
               }}
             >
               {/* Left — role, company, description */}
@@ -168,7 +168,7 @@ export default function TechExperience() {
                   fontFamily:    'var(--font-display)',
                   fontWeight:    600,
                   fontSize:      'clamp(18px, 2.2vw, 30px)',
-                  color:         '#0a0a0a',
+                  color:         'var(--color-text)',
                   letterSpacing: '-0.02em',
                 }}>
                   {item.role}

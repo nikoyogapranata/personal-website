@@ -43,7 +43,7 @@ export default function ContactPage() {
     <>
       <main
         style={{
-          background: "#f8f8f5",
+          background: "var(--color-bg)",
           minHeight: "100vh",
           padding: "clamp(110px, 14vw, 180px) clamp(32px, 6vw, 80px) clamp(80px, 10vw, 140px)",
         }}
@@ -70,7 +70,7 @@ export default function ContactPage() {
               fontSize: "clamp(80px, 14vw, 220px)",
               letterSpacing: "-0.04em",
               lineHeight: 1,
-              color: "#0a0a0a",
+              color: "var(--color-text)",
               margin: 0,
             }}
           >
@@ -115,7 +115,7 @@ export default function ContactPage() {
               fontFamily: "var(--font-display)",
               fontWeight: 700,
               fontSize: "clamp(24px, 3vw, 44px)",
-              color: "#0a0a0a",
+              color: "var(--color-text)",
               letterSpacing: "-0.02em",
               lineHeight: 1.2,
               marginBottom: "clamp(24px, 3vw, 40px)",
@@ -167,7 +167,7 @@ export default function ContactPage() {
                     fontFamily: "var(--font-display)",
                     fontWeight: 500,
                     fontSize: "clamp(14px, 1.4vw, 18px)",
-                    color: "#0a0a0a",
+                    color: "var(--color-text)",
                     transition: "color 0.2s ease",
                   }}
                   onMouseEnter={(e) => {
@@ -230,7 +230,7 @@ export default function ContactPage() {
                 <p style={{
                   fontFamily: "var(--font-display)",
                   fontSize: "clamp(18px, 2vw, 26px)",
-                  color: "#0a0a0a",
+                  color: "var(--color-text)",
                   margin: 0,
                   letterSpacing: "-0.01em",
                 }}>
@@ -349,8 +349,8 @@ export default function ContactPage() {
                     display: "inline-flex",
                     alignItems: "center",
                     gap: 12,
-                    background: "#0a0a0a",
-                    color: "#f8f8f5",
+                    background: "var(--color-bg-dark)",
+                    color: "var(--color-text-inverse)",
                     fontFamily: "var(--font-display)",
                     fontWeight: 600,
                     fontSize: 13,
@@ -412,5 +412,5 @@ const INPUT_STYLE: React.CSSProperties = {
   padding: "12px 0",
   fontFamily: "var(--font-display)",
   fontSize: "clamp(15px, 1.4vw, 18px)",
-  color: "#0a0a0a",
+  color: "var(--color-text)",
 };

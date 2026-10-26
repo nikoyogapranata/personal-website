@@ -58,7 +58,7 @@ export default function LoadingScreen() {
         position:        'fixed',
         inset:           0,
         zIndex:          9999,
-        backgroundColor: '#5b21b6',
+        backgroundColor: 'var(--color-accent-primary)',
       }}
     >
       <style>{`

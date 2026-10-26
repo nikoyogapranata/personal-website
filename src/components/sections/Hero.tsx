@@ -16,7 +16,7 @@ import Image from "next/image";
 const B = "1.5px solid #0a0a0a";
 const BG = "#f8f8f5";
 const DARK = "#0a0a0a";
-const BLUE = "var(--color-accent-secondary)";
+const CRIMSON = "var(--color-accent-secondary)";
 const SHADOW = "2px 2px 0px #0a0a0a";
 
 const TEXT: React.CSSProperties = {
@@ -328,7 +328,7 @@ export default function Hero() {
           </svg>
         </HoverPushCard>
 
-        {/* Box 3 — vibrant blue location variant */}
+        {/* Box 3 — crimson location variant */}
         <HoverPushCard
           scrollX={box3X}
           scrollY={box3Y}
@@ -337,7 +337,7 @@ export default function Hero() {
           style={{
             ...CARD,
             width: "fit-content",
-            background: BLUE,
+            background: CRIMSON,
             border: `1.5px solid ${DARK}`,
             zIndex: 2,
             pointerEvents: "auto",

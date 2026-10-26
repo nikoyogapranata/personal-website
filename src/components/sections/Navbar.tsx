@@ -282,11 +282,11 @@ export default function Navbar() {
               <FlowingMenu
                 items={menuItems}
                 speed={12}
-                textColor='#0a0a0a'
-                bgColor='#f8f8f5'
-                marqueeBgColor='#0a0a0a'
-                marqueeTextColor='#f8f8f5'
-                borderColor='#e5e5e0'
+                textColor='var(--color-text)'
+                bgColor='var(--color-bg)'
+                marqueeBgColor='var(--color-bg-dark)'
+                marqueeTextColor='var(--color-text-inverse)'
+                borderColor='var(--color-border-light)'
               />
             </motion.div>
           </>

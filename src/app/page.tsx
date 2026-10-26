@@ -33,13 +33,13 @@ export default function Home() {
   const statementDim = useTransform(contactProgress, [0, 1], [0, 0.55])
 
   return (
-    <main style={{ background: '#f8f8f5', position: 'relative' }}>
+    <main style={{ background: 'var(--color-bg)', position: 'relative' }}>
 
       {/* Scroll driver — 300vh for hero animation */}
       <div data-nav-transparent style={{ height: '300vh' }} />
 
       {/* Content */}
-      <div style={{ position: 'relative', zIndex: 10, background: '#f8f8f5' }}>
+      <div style={{ position: 'relative', zIndex: 10, background: 'var(--color-bg)' }}>
 
         {/* About */}
         <motion.div style={{ position: 'sticky', top: '-25vh', zIndex: 1, y: reduceMotion ? 0 : aboutY }}>
@@ -47,14 +47,14 @@ export default function Home() {
           <motion.div style={{
             position:      'absolute',
             inset:         0,
-            background:    '#0a0a0a',
+            background:    'var(--color-bg-dark)',
             opacity:       aboutDim,
             pointerEvents: 'none',
           }} />
         </motion.div>
 
         {/* Work — zIndex 2, dark bg covers About beneath */}
-        <div ref={workRef} style={{ position: 'relative', zIndex: 2, background: '#0a0a0a' }}>
+        <div ref={workRef} style={{ position: 'relative', zIndex: 2, background: 'var(--color-bg-dark)' }}>
           <Work />
         </div>
 
@@ -62,7 +62,7 @@ export default function Home() {
         <Statement exitDim={statementDim} />
 
         {/* Contact — zIndex 11 so it slides over Statement */}
-        <div ref={contactRef} style={{ position: "relative", zIndex: 11, background: "#0a0a0a" }}>
+        <div ref={contactRef} style={{ position: "relative", zIndex: 11, background: "var(--color-bg-dark)" }}>
           <Contact />
           <Footer />
         </div>
@@ -77,7 +77,7 @@ export default function Home() {
         width:         '100%',
         height:        '100vh',
         zIndex:        5,
-        background:    '#f8f8f5',
+        background:    'var(--color-bg)',
         opacity:       overlayOpacity,
         pointerEvents: 'none',
       }} />

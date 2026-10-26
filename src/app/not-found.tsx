@@ -12,7 +12,7 @@ const LINK: React.CSSProperties = {
   fontFamily: "var(--font-display)",
   fontWeight: 500,
   fontSize: "clamp(16px, 1.6vw, 22px)",
-  color: "#0a0a0a",
+  color: "var(--color-text)",
   textDecoration: "none",
   display: "inline-flex",
   alignItems: "center",
@@ -24,7 +24,7 @@ export default function NotFound() {
     <>
       <main
         style={{
-          background: "#f8f8f5",
+          background: "var(--color-bg)",
           minHeight: "100vh",
           padding:
             "clamp(110px, 14vw, 180px) clamp(32px, 6vw, 80px) clamp(80px, 10vw, 140px)",
@@ -46,7 +46,7 @@ export default function NotFound() {
               fontSize: "clamp(88px, 17vw, 260px)",
               letterSpacing: "-0.04em",
               lineHeight: 1,
-              color: "#0a0a0a",
+              color: "var(--color-text)",
               margin: 0,
             }}
           >
@@ -74,7 +74,7 @@ export default function NotFound() {
             fontSize: "clamp(24px, 3vw, 44px)",
             letterSpacing: "-0.02em",
             lineHeight: 1.2,
-            color: "#0a0a0a",
+            color: "var(--color-text)",
             maxWidth: 720,
             margin: "0 0 clamp(32px, 4vw, 56px)",
           }}

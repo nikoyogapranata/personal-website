@@ -61,7 +61,7 @@ const INFO: React.CSSProperties = {
   fontWeight: 400,
   fontSize: "clamp(13px, 1.2vw, 16px)",
   letterSpacing: "0.02em",
-  color: "#555",
+  color: "var(--color-text-muted)",
 };
 
 export default function WorkPage() {
@@ -71,7 +71,7 @@ export default function WorkPage() {
     <>
       <main
         style={{
-          background: "#f8f8f5",
+          background: "var(--color-bg)",
           minHeight: "100vh",
           padding:
             "clamp(110px, 14vw, 180px) clamp(32px, 6vw, 80px) clamp(80px, 10vw, 140px)",
@@ -98,7 +98,7 @@ export default function WorkPage() {
               fontSize: "clamp(88px, 17vw, 260px)",
               letterSpacing: "-0.04em",
               lineHeight: 1,
-              color: "#0a0a0a",
+              color: "var(--color-text)",
               margin: 0,
             }}
           >
@@ -188,7 +188,7 @@ export default function WorkPage() {
                     position: "relative",
                     aspectRatio: "16/9",
                     overflow: "hidden",
-                    background: "#f8f8f5",
+                    background: "var(--color-bg)",
                   }}
                 >
                   <motion.div

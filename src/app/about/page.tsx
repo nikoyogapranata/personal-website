@@ -13,7 +13,7 @@ export default function AboutPage() {
     <>
       <main
         style={{
-          background: "#f8f8f5",
+          background: "var(--color-bg)",
           minHeight: "100vh",
           padding:
             "clamp(110px, 14vw, 180px) clamp(32px, 6vw, 80px) clamp(80px, 10vw, 140px)",
@@ -40,7 +40,7 @@ export default function AboutPage() {
               fontSize: "clamp(88px, 17vw, 260px)",
               letterSpacing: "-0.04em",
               lineHeight: 1,
-              color: "#0a0a0a",
+              color: "var(--color-text)",
               margin: 0,
             }}
           >
@@ -94,7 +94,7 @@ export default function AboutPage() {
                   fontSize: "clamp(28px, 3.6vw, 56px)",
                   letterSpacing: "-0.03em",
                   lineHeight: 1.1,
-                  color: "#0a0a0a",
+                  color: "var(--color-text)",
                   margin: 0,
                 }}
               >
@@ -119,7 +119,7 @@ export default function AboutPage() {
                   fontWeight: 400,
                   fontSize: "clamp(16px, 1.5vw, 20px)",
                   lineHeight: 1.75,
-                  color: "#555",
+                  color: "var(--color-text-muted)",
                   margin: 0,
                 }}
               >
@@ -131,7 +131,7 @@ export default function AboutPage() {
                   fontWeight: 400,
                   fontSize: "clamp(16px, 1.5vw, 20px)",
                   lineHeight: 1.75,
-                  color: "#555",
+                  color: "var(--color-text-muted)",
                   margin: 0,
                 }}
               >
@@ -143,7 +143,7 @@ export default function AboutPage() {
                   fontWeight: 400,
                   fontSize: "clamp(16px, 1.5vw, 20px)",
                   lineHeight: 1.75,
-                  color: "#555",
+                  color: "var(--color-text-muted)",
                   margin: 0,
                 }}
               >

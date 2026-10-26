@@ -50,6 +50,7 @@ export default function Work() {
   // Reduced motion: fade the pinned title out instead of shrinking it
   const titleFade    = useTransform(smoothProgress, [0, 0.85], [1, 0])
 
+  // Literal hex: interpolated colours can't be CSS variables (--color-accent-primary / --color-bg-dark)
   const sectionBg = useTransform(
     smoothProgress,
     [0, 0.45],
@@ -84,7 +85,7 @@ export default function Work() {
               fontFamily:    'var(--font-display)',
               fontWeight:    700,
               fontSize:      'clamp(72px, 15vw, 200px)',
-              color:         '#f8f8f5',
+              color:         'var(--color-text-inverse)',
               letterSpacing: '-0.03em',
               lineHeight:    1.05,
               textAlign:     'center',
@@ -128,7 +129,7 @@ export default function Work() {
                 position:       'relative',
                 overflow:       'hidden',
                 minHeight:      'clamp(80px, 8vw, 120px)',
-                borderTop:      '0.5px solid #1e1e1e',
+                borderTop:      '0.5px solid var(--color-border)',
                 display:        'flex',
                 alignItems:     'center',
                 justifyContent: 'space-between',
@@ -157,7 +158,7 @@ export default function Work() {
                     initial={false}
                     animate={{ opacity: isHovered ? 0 : 1 }}
                     transition={{ duration: 0.5, ease: 'easeInOut' }}
-                    style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: 'clamp(28px, 4vw, 64px)', letterSpacing: '-0.02em', color: '#f8f8f5', lineHeight: 1.1, display: 'block' }}
+                    style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: 'clamp(28px, 4vw, 64px)', letterSpacing: '-0.02em', color: 'var(--color-text-inverse)', lineHeight: 1.1, display: 'block' }}
                   >
                     {project.title}
                   </motion.span>
@@ -226,7 +227,7 @@ export default function Work() {
             </motion.div>
           ))}
           <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1 }}>
-            <span style={{ fontFamily: 'var(--font-display)', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.18em', color: '#f8f8f5', padding: '10px 24px', border: '1px solid rgba(248,248,245,0.7)' }}>
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.18em', color: 'var(--color-text-inverse)', padding: '10px 24px', border: '1px solid rgba(248,248,245,0.7)' }}>
               View
             </span>
           </div>
@@ -246,7 +247,7 @@ export default function Work() {
             fontStyle:      'italic',
             fontWeight:     400,
             fontSize:       'clamp(28px, 4vw, 56px)',
-            color:          '#f8f8f5',
+            color:          'var(--color-text-inverse)',
             textDecoration: 'none',
             position:       'relative',
             display:        'inline-block',
@@ -263,7 +264,7 @@ export default function Work() {
             fontWeight:    400,
             letterSpacing: '0.05em',
             verticalAlign: 'super',
-            color:         '#f8f8f5',
+            color:         'var(--color-text-inverse)',
             marginLeft:    '0.2em',
           }}>(4)</sup>
           <motion.span
@@ -293,7 +294,7 @@ export default function Work() {
           cursor: pointer;
         }
         a.work-row:last-of-type {
-          border-bottom: 0.5px solid #1e1e1e;
+          border-bottom: 0.5px solid var(--color-border);
         }
         @media (max-width: 1400px) {
           .work-title {

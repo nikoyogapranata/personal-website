@@ -59,6 +59,7 @@ interface ProgressiveWordProps {
 function ProgressiveWord({ text, font, index, total, scrollProgress }: ProgressiveWordProps) {
   const start      = (index / total) * 0.5
   const end        = Math.min(start + (1 / total) * 6, 1)
+  // Literal hex: useTransform interpolates these, which CSS variables can't do (--color-accent-secondary / --color-text)
   const finalColor = font === 'serif' ? '#c41e3a' : '#0a0a0a'
 
   const color = useTransform(scrollProgress, [start, end], ['#a3a3a3', finalColor])
@@ -92,7 +93,7 @@ export default function AboutV2() {
       ref={sectionRef}
       id="about"
       style={{
-        background:     '#f8f8f5',
+        background:     'var(--color-bg)',
         minHeight:      '150vh',
         display:        'flex',
         alignItems:     'center',
