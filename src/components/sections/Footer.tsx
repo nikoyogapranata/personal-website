@@ -39,14 +39,13 @@ function MarqueeTrack({ textColor }: { textColor: string }) {
           objectFit: "contain",
           display: "block",
           flexShrink: 0,
-          filter: "hue-rotate(40deg) saturate(1.3)",
         }}
       />
     </span>
   );
 
   return (
-    <div ref={containerRef} style={{ overflow: "hidden", position: "relative" }}>
+    <div ref={containerRef} aria-hidden="true" style={{ overflow: "hidden", position: "relative" }}>
       <motion.div
         style={{
           x,
@@ -109,7 +108,7 @@ export default function Footer({ theme = "dark" }: { theme?: "dark" | "light" })
           style={{
             fontFamily: "var(--font-display)",
             fontWeight: 500,
-            fontSize: "clamp(12px, 1.1vw, 14px)",
+            fontSize: "clamp(13px, 1.1vw, 14px)",
             color: c.muted,
             letterSpacing: "0.02em",
           }}
@@ -125,7 +124,7 @@ export default function Footer({ theme = "dark" }: { theme?: "dark" | "light" })
               style={{
                 fontFamily: "var(--font-display)",
                 fontWeight: 500,
-                fontSize: "clamp(12px, 1.1vw, 14px)",
+                fontSize: "clamp(13px, 1.1vw, 14px)",
                 color: c.muted,
                 textDecoration: "none",
                 letterSpacing: "0.04em",

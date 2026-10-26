@@ -203,7 +203,6 @@ export default function Hero() {
             border: `1.5px solid ${DARK}`,
             zIndex: 4,
             pointerEvents: "auto",
-            cursor: "pointer",
           }}
         >
           {/* Spark image asset */}
@@ -221,7 +220,7 @@ export default function Hero() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/spark.png"
-              alt="Spark"
+              alt=""
               style={{
                 width: "100%",
                 height: "100%",
@@ -295,7 +294,6 @@ export default function Hero() {
             border: `1.5px solid ${DARK}`,
             zIndex: 3,
             pointerEvents: "auto",
-            cursor: "pointer",
           }}
         >
           {/* Text layout */}
@@ -343,7 +341,6 @@ export default function Hero() {
             border: `1.5px solid ${DARK}`,
             zIndex: 2,
             pointerEvents: "auto",
-            cursor: "pointer",
           }}
         >
           {/* Custom location.png image asset matching text height */}
@@ -361,7 +358,7 @@ export default function Hero() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/location.png"
-              alt="Location"
+              alt=""
               style={{
                 width: "100%",
                 height: "100%",
@@ -423,7 +420,6 @@ export default function Hero() {
             border: `1.5px solid ${DARK}`,
             zIndex: 1,
             pointerEvents: "auto",
-            cursor: "pointer",
           }}
         >
           {/* Layout alignment container */}
@@ -443,7 +439,7 @@ export default function Hero() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/up-right-arrow.png"
-                alt="Arrow Top Right"
+                alt=""
                 style={{
                   width: "100%",
                   height: "100%",

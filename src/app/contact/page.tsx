@@ -88,7 +88,6 @@ export default function ContactPage() {
               width: "auto",
               objectFit: "contain",
               flexShrink: 0,
-              filter: "hue-rotate(40deg) saturate(1.3)",
             }}
           />
         </motion.div>
@@ -400,7 +399,7 @@ export default function ContactPage() {
 
 const LABEL_STYLE: React.CSSProperties = {
   fontFamily: "var(--font-sans)",
-  fontSize: 11,
+  fontSize: 13,
   textTransform: "uppercase",
   letterSpacing: "0.15em",
   color: "var(--color-text-faint)",

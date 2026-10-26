@@ -199,7 +199,7 @@ export default function TechExperience() {
               {/* Right — period */}
               <span className="te-period" style={{
                 fontFamily:    'var(--font-sans)',
-                fontSize:      'clamp(12px, 1vw, 14px)',
+                fontSize:      'clamp(13px, 1vw, 14px)',
                 color:         'var(--color-text-faint)',
                 whiteSpace:    'nowrap',
                 flexShrink:    0,

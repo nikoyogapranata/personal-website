@@ -149,7 +149,7 @@ export default function Work() {
               onBlur={() => setHoveredId(null)}
             >
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 'clamp(12px, 1.5vw, 24px)' }}>
-                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: '#888', letterSpacing: '0.1em', flexShrink: 0 }}>
+                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 13, color: '#888', letterSpacing: '0.1em', flexShrink: 0 }}>
                   {'0' + (index + 1)}
                 </span>
                 <span style={{ position: 'relative', display: 'inline-block' }}>
@@ -226,7 +226,7 @@ export default function Work() {
             </motion.div>
           ))}
           <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1 }}>
-            <span style={{ fontFamily: 'var(--font-display)', fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.18em', color: '#f8f8f5', padding: '10px 24px', border: '1px solid rgba(248,248,245,0.7)' }}>
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.18em', color: '#f8f8f5', padding: '10px 24px', border: '1px solid rgba(248,248,245,0.7)' }}>
               View
             </span>
           </div>

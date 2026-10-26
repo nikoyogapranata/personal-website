@@ -58,7 +58,6 @@ export default function AboutPage() {
               width: "auto",
               objectFit: "contain",
               flexShrink: 0,
-              filter: "hue-rotate(40deg) saturate(1.3)",
             }}
           />
         </motion.div>

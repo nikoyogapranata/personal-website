@@ -53,16 +53,16 @@ export default function Contact({
           marginBottom: "clamp(40px, 5vw, 80px)",
         }}
       >
-        <div>
+        <h2 style={{ margin: 0, font: "inherit" }}>
           {(["LET'S", "WORK TOGETHER"] as const).map((line, i) => (
-            <motion.div
+            <motion.span
               key={line}
-              style={{ overflow: "hidden" }}
+              style={{ overflow: "hidden", display: "block" }}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
             >
-              <motion.div data-reveal
+              <motion.span data-reveal
                 variants={{
                   hidden: { y: "100%", opacity: 0 },
                   visible: { y: 0, opacity: 1 },
@@ -79,11 +79,11 @@ export default function Contact({
                   display: "block",
                 }}
               >
-                {line}
-              </motion.div>
-            </motion.div>
+                {line}{i === 0 ? " " : ""}
+              </motion.span>
+            </motion.span>
           ))}
-        </div>
+        </h2>
 
         <motion.img
           src="/spark-2.png"
