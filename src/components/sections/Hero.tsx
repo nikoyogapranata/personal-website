@@ -22,7 +22,7 @@ const SHADOW = "2px 2px 0px #0a0a0a";
 const TEXT: React.CSSProperties = {
   fontFamily: "var(--font-display)",
   fontWeight: 700,
-  fontSize: "clamp(28px, 5.2vw, 78px)",
+  fontSize: "var(--text-hero)",
   letterSpacing: "-0.03em",
   textTransform: "uppercase",
   lineHeight: 1,
@@ -32,13 +32,13 @@ const TEXT: React.CSSProperties = {
 const CARD: React.CSSProperties = {
   position: "relative",
   width: "100%",
-  height: 'clamp(100px, 10vw, 170px)',
+  height: "var(--hero-card-h)",
   border: B,
   background: BG,
   display: "flex",
   alignItems: "center",
-  gap: 'clamp(12px, 1.2vw, 20px)',
-  padding: "0 clamp(16px, 2vw, 28px)",
+  gap: "clamp(12px, calc(1.04 * var(--u)), 24px)",
+  padding: "0 clamp(16px, calc(1.46 * var(--u)), 34px)",
   overflow: "hidden",
   boxShadow: SHADOW,
 };
@@ -48,7 +48,7 @@ function serif(color: string): React.CSSProperties {
     fontFamily: "var(--font-serif)",
     fontWeight: 400,
     fontStyle: "italic",
-    fontSize: "calc(clamp(28px, 5.2vw, 78px) * 1.1)",
+    fontSize: "calc(var(--text-hero) * 1.1)",
     color,
     lineHeight: 1,
     whiteSpace: "nowrap",
@@ -173,7 +173,26 @@ export default function Hero() {
       }}
     >
       <style>{`
-        .hero-boxes { transform-origin: center center; }
+        .hero-boxes {
+          transform-origin: center center;
+          /* Card spacing scales with the hero text; values at 1920×1080 in comments */
+          --hu: min(var(--u), 23.04px);               /* same 1.2× cap as --text-hero */
+          --hero-card-h: max(calc(var(--text-hero) * 2.18), min(100px, 13svh)); /* 170 */
+          --hero-gap-xs: calc(0.21 * var(--hu));      /* 4 */
+          --hero-gap-s: calc(0.625 * var(--hu));      /* 12 */
+          --hero-gap-m: calc(0.73 * var(--hu));       /* 14 */
+          --hero-gap: calc(0.83 * var(--hu));         /* 16 */
+          --hero-gap-l: calc(0.94 * var(--hu));       /* 18 */
+          --hero-lift: calc(-0.47 * var(--hu));       /* -9: optical baseline for the serif words */
+          --hero-badge: max(0.8125rem, calc(0.83 * var(--hu))); /* 16 */
+        }
+        /* Phones keep their fixed spacing; the whole stack is scaled down instead */
+        @media (max-width: 640px) {
+          .hero-boxes {
+            --hero-card-h: 100px; --hero-gap-xs: 4px; --hero-gap-s: 12px; --hero-gap-m: 14px;
+            --hero-gap: 16px; --hero-gap-l: 18px; --hero-lift: -9px; --hero-badge: 16px;
+          }
+        }
         @media (max-width: 640px) { .hero-boxes { transform: scale(0.86); } }
         @media (max-width: 520px) { .hero-boxes { transform: scale(0.74); } }
         @media (max-width: 430px) { .hero-boxes { transform: scale(0.64); } }
@@ -185,7 +204,7 @@ export default function Hero() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: 'clamp(6px, 0.8vw, 12px)',
+          gap: "clamp(6px, calc(0.625 * var(--u)), 14px)",
           width: "100%",
           maxWidth: 'min(1100px, 94vw)',
         }}
@@ -210,9 +229,9 @@ export default function Hero() {
             style={{
               height: "0.85em",
               width: "0.85em",
-              fontSize: "clamp(28px, 5.2vw, 78px)",
+              fontSize: "var(--text-hero)",
               flexShrink: 0,
-              marginRight: "16px",
+              marginRight: "var(--hero-gap)",
               display: "flex",
               alignItems: "center",
             }}
@@ -235,17 +254,17 @@ export default function Hero() {
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "16px",
+              gap: "var(--hero-gap)",
               margin: 0,
               font: "inherit",
             }}
           >
             <span style={{ ...TEXT, color: DARK }}>I&apos;m</span>
             <span style={{ ...TEXT, color: DARK }}>NIKO</span>
-            <span style={{ ...TEXT, color: DARK, marginRight: "12px" }}>
+            <span style={{ ...TEXT, color: DARK, marginRight: "var(--hero-gap-s)" }}>
               YOGA
             </span>
-            <span style={{ ...serif(DARK), transform: "translateY(-9px)" }}>
+            <span style={{ ...serif(DARK), transform: "translateY(var(--hero-lift))" }}>
               Pranata
             </span>
           </h1>
@@ -254,12 +273,12 @@ export default function Hero() {
           <div
             style={{
               height: "0.9em",
-              fontSize: "clamp(28px, 5.2vw, 78px)",
+              fontSize: "var(--text-hero)",
               width: "1.6em",
               flexShrink: 0,
-              borderRadius: "12px",
+              borderRadius: "var(--hero-gap-s)",
               overflow: "hidden",
-              marginLeft: "12px",
+              marginLeft: "var(--hero-gap-s)",
             }}
           >
             <Image
@@ -297,11 +316,11 @@ export default function Hero() {
           }}
         >
           {/* Text layout */}
-          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <span style={{ ...serif(BG), transform: "translateY(-9px)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "var(--hero-gap)" }}>
+            <span style={{ ...serif(BG), transform: "translateY(var(--hero-lift))" }}>
               Frontend
             </span>
-            <span style={{ ...TEXT, color: BG, marginLeft: "4px" }}>WEB</span>
+            <span style={{ ...TEXT, color: BG, marginLeft: "var(--hero-gap-xs)" }}>WEB</span>
             <span style={{ ...TEXT, color: BG }}>DEVELOPER</span>
           </div>
 
@@ -316,8 +335,8 @@ export default function Hero() {
             style={{
               height: "1.05em",
               width: "auto",
-              fontSize: "clamp(28px, 5.2vw, 78px)",
-              marginLeft: "18px",
+              fontSize: "var(--text-hero)",
+              marginLeft: "var(--hero-gap-l)",
               flexShrink: 0,
               display: "block",
             }}
@@ -348,9 +367,9 @@ export default function Hero() {
             style={{
               height: "0.85em",
               width: "0.85em",
-              fontSize: "clamp(28px, 5.2vw, 78px)",
+              fontSize: "var(--text-hero)",
               flexShrink: 0,
-              marginRight: "12px",
+              marginRight: "var(--hero-gap-s)",
               display: "flex",
               alignItems: "center",
             }}
@@ -369,13 +388,13 @@ export default function Hero() {
           </div>
 
           {/* Unified container using flex stretching to match height perfectly */}
-          <div style={{ display: "flex", alignItems: "stretch", gap: "16px" }}>
+          <div style={{ display: "flex", alignItems: "stretch", gap: "var(--hero-gap)" }}>
             {/* Text block that sets the layout height */}
-            <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "var(--hero-gap)" }}>
               <span style={{ ...TEXT, color: "#ffffff" }}>BASED</span>
               <span style={{ ...TEXT, color: "#ffffff" }}>IN</span>
               <span
-                style={{ ...serif("#ffffff"), transform: "translateY(-9px)" }}
+                style={{ ...serif("#ffffff"), transform: "translateY(var(--hero-lift))" }}
               >
                 Yogyakarta
               </span>
@@ -389,17 +408,17 @@ export default function Hero() {
                 justifyContent: "center",
                 fontFamily: "var(--font-sans)",
                 fontWeight: 700,
-                fontSize: 16,
+                fontSize: "var(--hero-badge)",
                 textTransform: "uppercase",
                 letterSpacing: "0.2em",
                 color: DARK,
                 background: "#ffffff",
                 border: `1.5px solid ${DARK}`,
-                borderRadius: "12px",
-                padding: "0 20px",
+                borderRadius: "var(--hero-gap-s)",
+                padding: "0 1.25em",
                 whiteSpace: "nowrap",
                 flexShrink: 0,
-                marginLeft: "16px",
+                marginLeft: "var(--hero-gap)",
               }}
             >
               INDONESIA
@@ -423,15 +442,15 @@ export default function Hero() {
           }}
         >
           {/* Layout alignment container */}
-          <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "var(--hero-gap-m)" }}>
             {/* Custom up-right-arrow.png image asset matching text height */}
             <div
               style={{
                 height: "0.7em", 
                 width: "0.7em",  
-                fontSize: "clamp(28px, 5.2vw, 78px)", 
+                fontSize: "var(--text-hero)",
                 flexShrink: 0,
-                marginRight: "16px",
+                marginRight: "var(--hero-gap)",
                 display: "flex",
                 alignItems: "center",
               }}
@@ -450,7 +469,7 @@ export default function Hero() {
             </div>
 
             <span style={{ ...TEXT, color: DARK }}>CURRENTLY</span>
-            <span style={{ ...serif(DARK), transform: "translateY(-9px)" }}>Open</span>
+            <span style={{ ...serif(DARK), transform: "translateY(var(--hero-lift))" }}>Open</span>
             <span style={{ ...TEXT, color: DARK }}>TO WORK</span>
           </div>
         </HoverPushCard>
