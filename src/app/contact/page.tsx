@@ -4,14 +4,15 @@ import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Footer from "@/components/sections/Footer";
+import { EMAIL, RESUME_PATH, SOCIAL } from "@/lib/site";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 const LINKS = [
-  { label: "nikopranatabusiness@gmail.com", href: "mailto:nikopranatabusiness@gmail.com" },
-  { label: "LinkedIn",        href: "https://linkedin.com/in/nikoyogapranata", target: "_blank" },
-  { label: "GitHub",          href: "https://github.com/nikoyogapranata",      target: "_blank" },
-  { label: "Download Resume", href: "/resume.pdf",                             target: "_blank" },
+  { label: EMAIL,             href: `mailto:${EMAIL}` },
+  { label: "LinkedIn",        href: SOCIAL.linkedin, target: "_blank" },
+  { label: "GitHub",          href: SOCIAL.github,   target: "_blank" },
+  { label: "Download Resume", href: RESUME_PATH,     target: "_blank" },
 ];
 
 export default function ContactPage() {
@@ -326,8 +327,8 @@ export default function ContactPage() {
                     lineHeight: 1.6,
                   }}>
                     {error} Please try again, or email me at{" "}
-                    <a href="mailto:nikopranatabusiness@gmail.com" style={{ color: "inherit" }}>
-                      nikopranatabusiness@gmail.com
+                    <a href={`mailto:${EMAIL}`} style={{ color: "inherit" }}>
+                      {EMAIL}
                     </a>.
                   </p>
                 )}

@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { EMAIL, SOCIAL } from "@/lib/site";
 
 const MotionLink = motion(Link);
 
@@ -161,20 +162,9 @@ export default function Contact({
           }}
         >
           {[
-            {
-              href: "mailto:nikopranatabusiness@gmail.com",
-              label: "nikopranatabusiness@gmail.com",
-            },
-            {
-              href: "https://linkedin.com/in/nikopranata",
-              label: "LinkedIn",
-              target: "_blank",
-            },
-            {
-              href: "https://github.com/nikoyogapranata",
-              label: "GitHub",
-              target: "_blank",
-            },
+            { href: `mailto:${EMAIL}`, label: EMAIL },
+            { href: SOCIAL.linkedin, label: "LinkedIn", target: "_blank" },
+            { href: SOCIAL.github, label: "GitHub", target: "_blank" },
           ].map(({ href, label, target }) => (
             <motion.a
               key={href}
