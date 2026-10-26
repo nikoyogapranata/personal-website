@@ -4,9 +4,9 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/sections/Footer";
+import { EASE } from "@/lib/motion";
 import TechExperience from "@/components/sections/TechExperience";
 
-const EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function AboutPage() {
   return (

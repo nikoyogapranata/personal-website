@@ -2,10 +2,10 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { EMAIL, SOCIAL } from "@/lib/site";
+import { EASE } from "@/lib/motion";
 
 const MotionLink = motion.create(Link);
 
-const ease = [0.16, 1, 0.3, 1] as const;
 
 export default function Contact({
   theme = "dark",
@@ -67,7 +67,7 @@ export default function Contact({
                   hidden: { y: "100%", opacity: 0 },
                   visible: { y: 0, opacity: 1 },
                 }}
-                transition={{ duration: 0.8, delay: i * 0.1, ease }}
+                transition={{ duration: 0.8, delay: i * 0.1, ease: EASE }}
                 className="contact-title-line"
                 style={{
                   fontFamily: "var(--font-display)",
@@ -92,7 +92,7 @@ export default function Contact({
           initial={{ opacity: 0, scale: 0.85 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.9, delay: 0.25, ease }}
+          transition={{ duration: 0.9, delay: 0.25, ease: EASE }}
           className="contact-spark"
           style={{
             flexShrink: 0,
@@ -111,7 +111,7 @@ export default function Contact({
         initial={{ scaleX: 0 }}
         whileInView={{ scaleX: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.2, ease }}
+        transition={{ duration: 0.8, delay: 0.2, ease: EASE }}
         style={{
           height: "0.5px",
           background: c.divider,
@@ -137,7 +137,7 @@ export default function Contact({
           initial={{ x: -30, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.3, ease }}
+          transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
           style={{
             fontFamily: "var(--font-display)",
             fontWeight: 500,
@@ -157,7 +157,7 @@ export default function Contact({
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.4, ease }}
+          transition={{ duration: 0.8, delay: 0.4, ease: EASE }}
           style={{
             display: "flex",
             flexDirection: "column",
@@ -200,7 +200,7 @@ export default function Contact({
           initial={{ x: 30, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.5, ease }}
+          transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
           className="contact-cta-col"
           style={{ display: "flex", justifyContent: "flex-end" }}
         >

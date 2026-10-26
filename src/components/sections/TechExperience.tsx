@@ -1,8 +1,8 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { EASE } from '@/lib/motion'
 
-const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
 const TECH = [
   // Languages

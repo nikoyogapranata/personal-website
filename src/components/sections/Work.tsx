@@ -11,15 +11,10 @@ import {
   useTransform,
 } from 'framer-motion'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
+import { PROJECTS } from '@/lib/projects'
+import { EASE } from '@/lib/motion'
 
 const MotionLink = motion.create(Link)
-
-const PROJECTS = [
-  { id: 1, title: 'JAMUSARI',   category: 'Web · Fullstack',   year: '2025', image: '/jamusari.webp',   link: 'https://jamusari.com' },
-  { id: 2, title: 'HealthSync', category: 'Web · Fullstack',   year: '2025', image: '/healthsync.webp', link: 'https://healthsync-7.vercel.app' },
-  { id: 3, title: 'WETRACK',    category: 'Web · Fullstack',   year: '2024', image: '/wetrack.webp',    link: 'https://github.com/nikoyogapranata/wetrack' },
-  { id: 4, title: 'EduNovel',   category: 'Design · Branding', year: '2023', image: '/edunovel.webp',   link: 'https://www.figma.com/proto/cY7vOHUdtTfLDkTYDthI1n/EduNovel?page-id=0%3A1&node-id=2-2397&p=f&viewport=308%2C326%2C0.03&t=n2kiA8gcGTPQdv0j-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=2%3A2397&show-proto-sidebar=1' },
-]
 
 export default function Work() {
   const sectionRef              = useRef<HTMLElement>(null)
@@ -123,7 +118,7 @@ export default function Work() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: (index % 3) * 0.08 }}
+              transition={{ duration: 0.6, ease: EASE, delay: (index % 3) * 0.08 }}
               className="work-row"
               style={{
                 position:       'relative',
@@ -206,7 +201,7 @@ export default function Work() {
           }}
           transition={{
             opacity: { duration: 0.5, ease: 'easeInOut' },
-            scale:   { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
+            scale:   { duration: 0.3, ease: EASE },
           }}
         >
           {previewReady && PROJECTS.map(project => (
@@ -272,7 +267,7 @@ export default function Work() {
               rest:  { scaleX: 0, originX: 0 },
               hover: { scaleX: 1, originX: 0 },
             }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.4, ease: EASE }}
             style={{
               position:   'absolute',
               bottom:     -4,

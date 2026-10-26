@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
+import { EASE } from '@/lib/motion'
 
 // FlowingMenu pulls in GSAP; only load it when the menu is about to open
 const loadFlowingMenu = () => import('../ui/FlowingMenu')
@@ -197,7 +198,7 @@ export default function Navbar() {
           <motion.div
             initial={false}
             animate={{ background: menuOpen ? accent : base }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.3, ease: EASE }}
             style={{ height: '1.5px', width: '100%' }}
           />
           <span style={{
@@ -265,7 +266,7 @@ export default function Navbar() {
               initial={{ y: '-100%' }}
               animate={{ y: 0 }}
               exit={{ y: '-100%' }}
-              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.5, ease: EASE }}
               style={{
                 position: 'fixed',
                 top:      64,

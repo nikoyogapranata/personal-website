@@ -4,9 +4,9 @@ import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Footer from "@/components/sections/Footer";
+import { EASE } from "@/lib/motion";
 import { EMAIL, RESUME_PATH, SOCIAL } from "@/lib/site";
 
-const EASE = [0.16, 1, 0.3, 1] as const;
 
 const LINKS = [
   { label: EMAIL,             href: `mailto:${EMAIL}` },
