@@ -104,7 +104,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                   style={{
                     fontFamily:    "var(--font-display)",
                     fontWeight:    700,
-                    fontSize:      "clamp(48px, 8vw, 124px)",
+                    fontSize:      "var(--text-statement)",
                     letterSpacing: "-0.03em",
                     color:         "var(--color-text)",
                   }}
@@ -116,7 +116,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                     fontFamily:    "var(--font-serif)",
                     fontStyle:     "italic",
                     fontWeight:    400,
-                    fontSize:      "clamp(48px, 8vw, 124px)",
+                    fontSize:      "var(--text-statement)",
                     letterSpacing: "-0.03em",
                     color:         "var(--color-accent-secondary)",
                   }}
@@ -131,7 +131,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                   lineHeight:    1.05,
                   fontFamily:    "var(--font-display)",
                   fontWeight:    700,
-                  fontSize:      "clamp(48px, 8vw, 124px)",
+                  fontSize:      "var(--text-statement)",
                   letterSpacing: "-0.03em",
                   color:         "var(--color-text)",
                 }}
@@ -144,7 +144,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                   style={{
                     fontFamily:    "var(--font-display)",
                     fontWeight:    700,
-                    fontSize:      "clamp(48px, 8vw, 124px)",
+                    fontSize:      "var(--text-statement)",
                     letterSpacing: "-0.03em",
                     color:         "var(--color-text)",
                   }}
@@ -154,7 +154,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                 <motion.span
                   style={{
                     display:       "inline-block",
-                    fontSize:      "clamp(48px, 8vw, 124px)",
+                    fontSize:      "var(--text-statement)",
                     height:        "0.72em",
                     width:         reduceMotion ? "1.1em" : imgWidth,
                     verticalAlign: "middle",
@@ -185,7 +185,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                   style={{
                     fontFamily:    "var(--font-display)",
                     fontWeight:    700,
-                    fontSize:      "clamp(48px, 8vw, 124px)",
+                    fontSize:      "var(--text-statement)",
                     letterSpacing: "-0.03em",
                     color:         "var(--color-text)",
                   }}
@@ -197,7 +197,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                     fontFamily:    "var(--font-serif)",
                     fontStyle:     "italic",
                     fontWeight:    400,
-                    fontSize:      "clamp(48px, 8vw, 124px)",
+                    fontSize:      "var(--text-statement)",
                     letterSpacing: "-0.03em",
                     color:         "var(--color-accent-secondary)",
                   }}
@@ -228,7 +228,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                   fontFamily:    "var(--font-display)",
                   fontWeight:    800,
                   // Reduced motion: the text can't scroll across, so size it to fit and let it wrap
-                  fontSize:      reduceMotion ? "clamp(56px, 13vw, 200px)" : "clamp(180px, 30vw, 450px)",
+                  fontSize:      reduceMotion ? "clamp(3.5rem, calc(10.42 * var(--u)), 240px)" : "var(--text-poster)",
                   letterSpacing: "-0.04em",
                   color:         gotColor,
                   lineHeight:    1,
