@@ -36,6 +36,14 @@
   color: var(--hover-color) !important;
 }
 
+/* Small rightward nudge on hover/focus (CSS stand-in for framer whileHover x) */
+@media (prefers-reduced-motion: no-preference) {
+  .hover-nudge:hover,
+  .hover-nudge:focus-visible {
+    transform: translateX(6px);
+  }
+}
+
 /* ── Keyframes ──────────────────────────────────────────────────── */
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; }

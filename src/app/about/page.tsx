@@ -1,12 +1,10 @@
-"use client";
-
 import Image from "next/image";
-import { motion } from "framer-motion";
+import PageHeader from "@/components/ui/PageHeader";
+import Reveal from "@/components/ui/Reveal";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/sections/Footer";
 import { EASE } from "@/lib/motion";
 import TechExperience from "@/components/sections/TechExperience";
-
 
 export default function AboutPage() {
   return (
@@ -19,48 +17,7 @@ export default function AboutPage() {
             "clamp(110px, 14vw, 180px) clamp(32px, 6vw, 80px) clamp(80px, 10vw, 140px)",
         }}
       >
-        {/* ── Title row ── */}
-        <motion.div
-          data-reveal
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: EASE }}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginBottom: "clamp(56px, 7vw, 100px)",
-          }}
-        >
-          <h1
-            className="about-title"
-            style={{
-              fontFamily: "var(--font-display)",
-              fontWeight: 800,
-              fontSize: "clamp(88px, 17vw, 260px)",
-              letterSpacing: "-0.04em",
-              lineHeight: 1,
-              color: "var(--color-text)",
-              margin: 0,
-            }}
-          >
-            ABOUT
-          </h1>
-
-          <Image
-            src="/spark.png"
-            alt=""
-            width={260}
-            height={260}
-            className="about-spark"
-            style={{
-              height: "clamp(64px, 12vw, 180px)",
-              width: "auto",
-              objectFit: "contain",
-              flexShrink: 0,
-            }}
-          />
-        </motion.div>
+        <PageHeader title="ABOUT" />
 
         {/* ── Two-column section ── */}
         <div
@@ -73,8 +30,7 @@ export default function AboutPage() {
           }}
         >
           {/* Left — quote + paragraph */}
-          <motion.div
-            data-reveal
+          <Reveal
             initial={{ opacity: 0, y: 36 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
@@ -150,11 +106,10 @@ export default function AboutPage() {
                 I&apos;m currently studying Informatics and looking for a frontend web developer internship where I can work on real products, learn from experienced teams, and contribute something that matters.
               </p>
             </div>
-          </motion.div>
+          </Reveal>
 
           {/* Right — squared hero image */}
-          <motion.div
-            data-reveal
+          <Reveal
             initial={{ opacity: 0, y: 36 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.26, ease: EASE }}
@@ -174,14 +129,12 @@ export default function AboutPage() {
               priority
               style={{ objectFit: "cover", objectPosition: "center top" }}
             />
-          </motion.div>
+          </Reveal>
         </div>
 
         <style>{`
           @media (max-width: 640px) {
             .about-body  { grid-template-columns: 1fr !important; }
-            .about-title { font-size: clamp(52px, 16vw, 88px) !important; }
-            .about-spark { height: clamp(40px, 11vw, 64px) !important; margin-left: 16px !important; }
           }
         `}</style>
       </main>
