@@ -8,7 +8,9 @@
   --color-bg-dark:          #0a0a0a;
   --color-text:             #0a0a0a;
   --color-text-muted:       #555;
-  --color-text-faint:       #888;
+  --color-text-faint:       #6e6e6e;   /* lightest grey with 4.5:1 on --color-bg */
+  --color-text-faint-inverse: #8a8a8a; /* same role on --color-bg-dark (5.7:1) */
+  --color-line-strong:      #8a8a8a;   /* form field boundaries, 3:1 on --color-bg */
   --color-border:           #1e1e1e;
   --color-border-light:     #e5e5e0;
 }

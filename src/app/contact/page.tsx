@@ -139,7 +139,7 @@ export default function ContactPage() {
               fontFamily: "var(--font-sans)",
               fontWeight: 400,
               fontSize: "clamp(14px, 1.3vw, 17px)",
-              color: "#888",
+              color: "var(--color-text-faint)",
               lineHeight: 1.8,
               marginBottom: "clamp(32px, 4vw, 56px)",
               maxWidth: 360,
@@ -203,7 +203,7 @@ export default function ContactPage() {
                 fontSize: 13,
                 textTransform: "uppercase",
                 letterSpacing: "0.15em",
-                color: "#888",
+                color: "var(--color-text-faint)",
               }}>
                 Available for work
               </span>
@@ -376,7 +376,7 @@ export default function ContactPage() {
           @media (max-width: 768px) {
             .contact-page-grid { grid-template-columns: 1fr !important; }
           }
-          input::placeholder, textarea::placeholder { color: #bbb; }
+          input::placeholder, textarea::placeholder { color: var(--color-text-faint); }
         `}</style>
       </main>
 
@@ -390,7 +390,7 @@ const LABEL_STYLE: React.CSSProperties = {
   fontSize: 11,
   textTransform: "uppercase",
   letterSpacing: "0.15em",
-  color: "#888",
+  color: "var(--color-text-faint)",
 };
 
 const INPUT_STYLE: React.CSSProperties = {

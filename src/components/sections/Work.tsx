@@ -173,7 +173,7 @@ export default function Work() {
                 </span>
               </div>
               <div style={{ flexShrink: 0 }}>
-                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 13, color: isHovered ? '#aaa' : '#777', letterSpacing: '0.05em', transition: 'color 0.2s ease' }}>
+                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 13, color: isHovered ? '#aaa' : 'var(--color-text-faint-inverse)', letterSpacing: '0.05em', transition: 'color 0.2s ease' }}>
                   {project.category}
                 </span>
               </div>

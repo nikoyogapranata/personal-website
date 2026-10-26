@@ -72,14 +72,14 @@ export default function Footer({ theme = "dark" }: { theme?: "dark" | "light" })
     ? {
         bg:         "#0a0a0a",
         borderTop:  "#2a2a2a",
-        muted:      "#555",
+        muted:      "var(--color-text-faint-inverse)",
         linkHover:  "#f8f8f5",
         marquee:    "#f8f8f5",
       }
     : {
         bg:         "#f8f8f5",
         borderTop:  "#e0e0da",
-        muted:      "#999",
+        muted:      "var(--color-text-faint)",
         linkHover:  "#0a0a0a",
         marquee:    "#0a0a0a",
       };
