@@ -6,9 +6,9 @@ import Link from 'next/link'
 import FlowingMenu from '../ui/FlowingMenu'
 
 const menuItems = [
-  { link: '/',      text: 'Home',     image: '/spring.jpg' },
-  { link: '/about', text: 'About Me', image: '/autumn.jpg' },
-  { link: '/work',  text: 'Work',     image: '/winter.jpg' },
+  { link: '/',      text: 'Home',     image: '/menu-spring.webp' },
+  { link: '/about', text: 'About Me', image: '/menu-autumn.webp' },
+  { link: '/work',  text: 'Work',     image: '/menu-winter.webp' },
 ]
 
 export default function Navbar() {

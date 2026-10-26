@@ -168,6 +168,8 @@ export default function AboutPage() {
               src="/hero.jpeg"
               alt="Niko Pranata"
               fill
+              sizes="(max-width: 640px) 100vw, 50vw"
+              priority
               style={{ objectFit: "cover", objectPosition: "center top" }}
             />
           </motion.div>

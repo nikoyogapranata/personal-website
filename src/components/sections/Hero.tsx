@@ -9,6 +9,7 @@ import {
   MotionValue,
 } from "framer-motion";
 import React from "react";
+import Image from "next/image";
 
 /* ── tokens ──────────────────────────────────────────────────── */
 const B = "1.5px solid #0a0a0a";
@@ -251,10 +252,13 @@ export default function Hero() {
               marginLeft: "12px",
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src="/hero.jpeg"
-              alt="Hero"
+              alt="Portrait of Niko Pranata"
+              width={1280}
+              height={1600}
+              sizes="160px"
+              priority
               style={{
                 width: "100%",
                 height: "100%",

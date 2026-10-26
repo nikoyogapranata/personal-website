@@ -161,6 +161,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                     alt=""
                     width={1200}
                     height={800}
+                    sizes="160px"
                     style={{
                       height:         "100%",
                       width:          "1.1em",

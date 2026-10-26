@@ -11,16 +11,23 @@ import {
 } from 'framer-motion'
 
 const PROJECTS = [
-  { id: 1, title: 'JAMUSARI',   category: 'Web · Fullstack',   year: '2025', image: '/jamusari.png',   link: 'https://jamusari.com' },
-  { id: 2, title: 'HealthSync', category: 'Web · Fullstack',   year: '2025', image: '/healthsync.png', link: 'https://healthsync-7.vercel.app' },
-  { id: 3, title: 'WETRACK',    category: 'Web · Fullstack',   year: '2024', image: '/wetrack.png',    link: 'https://github.com/nikoyogapranata/wetrack' },
-  { id: 4, title: 'EduNovel',   category: 'Design · Branding', year: '2023', image: '/edunovel.png',   link: 'https://www.figma.com/proto/cY7vOHUdtTfLDkTYDthI1n/EduNovel?page-id=0%3A1&node-id=2-2397&p=f&viewport=308%2C326%2C0.03&t=n2kiA8gcGTPQdv0j-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=2%3A2397&show-proto-sidebar=1' },
+  { id: 1, title: 'JAMUSARI',   category: 'Web · Fullstack',   year: '2025', image: '/jamusari.webp',   link: 'https://jamusari.com' },
+  { id: 2, title: 'HealthSync', category: 'Web · Fullstack',   year: '2025', image: '/healthsync.webp', link: 'https://healthsync-7.vercel.app' },
+  { id: 3, title: 'WETRACK',    category: 'Web · Fullstack',   year: '2024', image: '/wetrack.webp',    link: 'https://github.com/nikoyogapranata/wetrack' },
+  { id: 4, title: 'EduNovel',   category: 'Design · Branding', year: '2023', image: '/edunovel.webp',   link: 'https://www.figma.com/proto/cY7vOHUdtTfLDkTYDthI1n/EduNovel?page-id=0%3A1&node-id=2-2397&p=f&viewport=308%2C326%2C0.03&t=n2kiA8gcGTPQdv0j-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=2%3A2397&show-proto-sidebar=1' },
 ]
 
 export default function Work() {
   const sectionRef              = useRef<HTMLElement>(null)
   const titleRef                = useRef<HTMLDivElement>(null)
   const [hoveredId, setHoveredId] = useState<number | null>(null)
+  // The preview card is fixed and always "in view", so lazy loading alone would fetch every image on page load
+  const [previewReady, setPreviewReady] = useState(false)
+
+  const enterRow = (id: number) => {
+    setHoveredId(id)
+    setPreviewReady(true)
+  }
 
   const { scrollYProgress } = useScroll({
     target: titleRef,
@@ -117,7 +124,7 @@ export default function Work() {
                 padding:        'clamp(28px, 3.5vw, 48px) clamp(24px, 4vw, 60px)',
                 gap:            'clamp(20px, 2.5vw, 40px)',
               }}
-              onMouseEnter={() => setHoveredId(project.id)}
+              onMouseEnter={() => enterRow(project.id)}
               onMouseLeave={() => setHoveredId(null)}
               onClick={() => window.open(project.link, '_blank')}
             >
@@ -176,7 +183,7 @@ export default function Work() {
                 padding:        'clamp(28px, 3.5vw, 48px) clamp(24px, 4vw, 60px)',
                 gap:            'clamp(20px, 2.5vw, 40px)',
               }}
-              onMouseEnter={() => setHoveredId(project.id)}
+              onMouseEnter={() => enterRow(project.id)}
               onMouseLeave={() => setHoveredId(null)}
               onClick={() => window.open(project.link, '_blank')}
             >
@@ -236,7 +243,7 @@ export default function Work() {
             scale:   { duration: 0.3, ease: [0.16, 1, 0.3, 1] },
           }}
         >
-          {PROJECTS.map(project => (
+          {previewReady && PROJECTS.map(project => (
             <motion.div
               key={project.id}
               animate={{ opacity: hoveredId === project.id ? 1 : 0 }}
@@ -245,8 +252,9 @@ export default function Work() {
             >
               <Image
                 src={project.image}
-                alt={project.title}
+                alt=""
                 fill
+                sizes="560px"
                 style={{ objectFit: 'cover', objectPosition: 'center' }}
               />
             </motion.div>
