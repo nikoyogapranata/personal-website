@@ -38,7 +38,8 @@ export default function Contact({
       id="contact"
       style={{
         background: c.bg,
-        padding: "clamp(80px, 10vw, 140px) clamp(32px, 6vw, 80px)",
+        // Side padding grows past --content-max so the content stays centred on very wide screens
+        padding: "var(--section-y) max(var(--page-x), calc((100% - var(--content-max)) / 2))",
         position: "relative",
         overflow: "hidden",
       }}
@@ -50,7 +51,7 @@ export default function Contact({
           display: "flex",
           alignItems: "flex-end",
           justifyContent: "space-between",
-          marginBottom: "clamp(40px, 5vw, 80px)",
+          marginBottom: "clamp(40px, calc(4.17 * var(--u)), 96px)",
         }}
       >
         <h2 style={{ margin: 0, font: "inherit" }}>
@@ -72,7 +73,7 @@ export default function Contact({
                 style={{
                   fontFamily: "var(--font-display)",
                   fontWeight: 800,
-                  fontSize: "clamp(52px, 9vw, 140px)",
+                  fontSize: "var(--text-display)",
                   letterSpacing: "-0.04em",
                   lineHeight: 0.95,
                   color: c.text,
@@ -97,7 +98,7 @@ export default function Contact({
           style={{
             flexShrink: 0,
             display: "block",
-            height: "calc(clamp(52px, 9vw, 140px) * 1.9)",
+            height: "calc(var(--text-display) * 1.9)",
             width: "auto",
             objectFit: "contain",
             filter: "none",
@@ -115,7 +116,7 @@ export default function Contact({
         style={{
           height: "0.5px",
           background: c.divider,
-          marginBottom: "clamp(40px, 5vw, 80px)",
+          marginBottom: "clamp(40px, calc(4.17 * var(--u)), 96px)",
           transformOrigin: "left",
         }}
       />
@@ -126,8 +127,8 @@ export default function Contact({
         style={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr 1fr",
-          columnGap: "clamp(64px, 8vw, 120px)",
-          rowGap: "clamp(32px, 4vw, 60px)",
+          columnGap: "var(--space-2xl)",
+          rowGap: "clamp(32px, calc(3.125 * var(--u)), 72px)",
           alignItems: "start",
         }}
       >
@@ -141,7 +142,7 @@ export default function Contact({
           style={{
             fontFamily: "var(--font-display)",
             fontWeight: 500,
-            fontSize: "clamp(18px, 2vw, 28px)",
+            fontSize: "max(1.125rem, var(--text-h5))",
             lineHeight: 1.7,
             color: c.muted,
             margin: 0,
@@ -161,7 +162,7 @@ export default function Contact({
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "clamp(16px, 2vw, 24px)",
+            gap: "clamp(16px, calc(1.25 * var(--u)), 29px)",
           }}
         >
           {[
@@ -180,7 +181,7 @@ export default function Contact({
               style={{
                 fontFamily: "var(--font-display)",
                 fontWeight: 600,
-                fontSize: "clamp(16px, 1.8vw, 28px)",
+                fontSize: "var(--text-h5)",
                 color: c.linkLeave,
                 textDecoration: "none",
                 letterSpacing: "-0.01em",
@@ -214,14 +215,14 @@ export default function Contact({
               justifyContent: "center",
               fontFamily: "var(--font-display)",
               fontWeight: 700,
-              fontSize: "clamp(13px, 1.1vw, 16px)",
+              fontSize: "var(--text-small)",
               letterSpacing: "0.14em",
               textTransform: "uppercase",
               color: c.text,
               background: "transparent",
               border: `1.5px solid ${c.text}`,
               borderRadius: 0,
-              padding: "clamp(20px, 2vw, 28px) clamp(32px, 3.2vw, 52px)",
+              padding: "1.75em 3.25em",
               textDecoration: "none",
               cursor: "pointer",
               whiteSpace: "nowrap",
@@ -237,7 +238,7 @@ export default function Contact({
         @media (max-width: 900px) {
           .contact-grid { grid-template-columns: 1fr 1fr !important; }
         }
-        @media (max-width: 600px) {
+        @media (max-width: 640px) {
           .contact-grid          { grid-template-columns: 1fr !important; gap: 40px !important; }
           .contact-title-line    { font-size: clamp(28px, 9vw, 52px) !important; }
           .contact-spark         { height: 56px !important; width: 56px !important; object-fit: contain !important; }
