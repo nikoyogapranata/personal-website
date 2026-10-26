@@ -256,42 +256,46 @@ export default function ContactPage() {
 
                 {/* Name */}
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  <label style={LABEL_STYLE}>Name</label>
+                  <label htmlFor="contact-name" style={LABEL_STYLE}>Name</label>
                   <input
+                    id="contact-name"
+                    className="contact-field"
                     type="text"
                     name="name"
+                    autoComplete="name"
                     required
                     maxLength={100}
                     placeholder="Your name"
                     value={fields.name}
                     onChange={(e) => setFields(f => ({ ...f, name: e.target.value }))}
                     style={INPUT_STYLE}
-                    onFocus={(e) => { e.currentTarget.style.borderBottomColor = "var(--color-accent-primary)"; }}
-                    onBlur={(e) => { e.currentTarget.style.borderBottomColor = "#d8d5d0"; }}
                   />
                 </div>
 
                 {/* Email */}
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  <label style={LABEL_STYLE}>Email</label>
+                  <label htmlFor="contact-email" style={LABEL_STYLE}>Email</label>
                   <input
+                    id="contact-email"
+                    className="contact-field"
                     type="email"
                     name="email"
+                    autoComplete="email"
                     required
                     maxLength={200}
                     placeholder="your@email.com"
                     value={fields.email}
                     onChange={(e) => setFields(f => ({ ...f, email: e.target.value }))}
                     style={INPUT_STYLE}
-                    onFocus={(e) => { e.currentTarget.style.borderBottomColor = "var(--color-accent-primary)"; }}
-                    onBlur={(e) => { e.currentTarget.style.borderBottomColor = "#d8d5d0"; }}
                   />
                 </div>
 
                 {/* Subject */}
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  <label style={LABEL_STYLE}>Subject</label>
+                  <label htmlFor="contact-subject" style={LABEL_STYLE}>Subject</label>
                   <input
+                    id="contact-subject"
+                    className="contact-field"
                     type="text"
                     name="subject"
                     maxLength={200}
@@ -299,15 +303,15 @@ export default function ContactPage() {
                     value={fields.subject}
                     onChange={(e) => setFields(f => ({ ...f, subject: e.target.value }))}
                     style={INPUT_STYLE}
-                    onFocus={(e) => { e.currentTarget.style.borderBottomColor = "var(--color-accent-primary)"; }}
-                    onBlur={(e) => { e.currentTarget.style.borderBottomColor = "#d8d5d0"; }}
                   />
                 </div>
 
                 {/* Message */}
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  <label style={LABEL_STYLE}>Message</label>
+                  <label htmlFor="contact-message" style={LABEL_STYLE}>Message</label>
                   <textarea
+                    id="contact-message"
+                    className="contact-field"
                     rows={5}
                     name="message"
                     required
@@ -316,8 +320,6 @@ export default function ContactPage() {
                     value={fields.message}
                     onChange={(e) => setFields(f => ({ ...f, message: e.target.value }))}
                     style={{ ...INPUT_STYLE, resize: "none" }}
-                    onFocus={(e) => { e.currentTarget.style.borderBottomColor = "var(--color-accent-primary)"; }}
-                    onBlur={(e) => { e.currentTarget.style.borderBottomColor = "#d8d5d0"; }}
                   />
                 </div>
 
@@ -377,6 +379,16 @@ export default function ContactPage() {
             .contact-page-grid { grid-template-columns: 1fr !important; }
           }
           input::placeholder, textarea::placeholder { color: var(--color-text-faint); }
+          .contact-field {
+            border-bottom: 1px solid var(--color-line-strong) !important;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+          }
+          /* 2px accent underline: visible focus without shifting layout */
+          .contact-field:focus-visible {
+            border-bottom-color: var(--color-accent-primary) !important;
+            box-shadow: 0 1px 0 0 var(--color-accent-primary);
+          }
         `}</style>
       </main>
 
@@ -397,11 +409,8 @@ const INPUT_STYLE: React.CSSProperties = {
   width: "100%",
   background: "transparent",
   border: "none",
-  borderBottom: "0.5px solid #d8d5d0",
   padding: "12px 0",
   fontFamily: "var(--font-display)",
   fontSize: "clamp(15px, 1.4vw, 18px)",
   color: "#0a0a0a",
-  outline: "none",
-  transition: "border-color 0.2s ease",
 };
