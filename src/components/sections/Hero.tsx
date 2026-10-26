@@ -175,16 +175,16 @@ export default function Hero() {
       <style>{`
         .hero-boxes {
           transform-origin: center center;
-          /* Card spacing scales with the hero text; values at 1920×1080 in comments */
+          /* Card spacing scales with the hero text, written as (px at 1920×1080) / 19.2 */
           --hu: min(var(--u), 23.04px);               /* same 1.2× cap as --text-hero */
-          --hero-card-h: max(calc(var(--text-hero) * 2.1795), min(100px, 13svh)); /* 170 */
-          --hero-gap-xs: calc(0.2083 * var(--hu));      /* 4 */
-          --hero-gap-s: calc(0.625 * var(--hu));      /* 12 */
-          --hero-gap-m: calc(0.7292 * var(--hu));       /* 14 */
-          --hero-gap: calc(0.8333 * var(--hu));         /* 16 */
-          --hero-gap-l: calc(0.9375 * var(--hu));       /* 18 */
-          --hero-lift: calc(-0.4688 * var(--hu));       /* -9: optical baseline for the serif words */
-          --hero-badge: max(0.8125rem, calc(0.8333 * var(--hu))); /* 16 */
+          --hero-card-h: max(calc(var(--text-hero) * 170 / 78), min(100px, 13svh));
+          --hero-gap-xs: calc(var(--hu) * 4 / 19.2);
+          --hero-gap-s: calc(var(--hu) * 12 / 19.2);
+          --hero-gap-m: calc(var(--hu) * 14 / 19.2);
+          --hero-gap: calc(var(--hu) * 16 / 19.2);
+          --hero-gap-l: calc(var(--hu) * 18 / 19.2);
+          --hero-lift: calc(var(--hu) * -9 / 19.2); /* optical baseline for the serif words */
+          --hero-badge: max(0.8125rem, calc(var(--hu) * 16 / 19.2));
         }
         /* Phones keep their fixed spacing; the whole stack is scaled down instead */
         @media (max-width: 640px) {
