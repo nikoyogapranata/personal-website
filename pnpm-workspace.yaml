@@ -1,0 +1,6 @@
+# Dependencies allowed to run install scripts (pnpm blocks them by default).
+# sharp: native image library used by next/image optimization.
+# unrs-resolver: native module resolver used by eslint-plugin-import.
+allowBuilds:
+  sharp: true
+  unrs-resolver: true
