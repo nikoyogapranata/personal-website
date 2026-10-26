@@ -9,7 +9,7 @@ import { EASE } from "@/lib/motion";
 const INFO: React.CSSProperties = {
   fontFamily: "var(--font-sans)",
   fontWeight: 400,
-  fontSize: "clamp(13px, 1.2vw, 16px)",
+  fontSize: "var(--text-small)",
   letterSpacing: "0.02em",
   color: "var(--color-text-muted)",
 };
@@ -26,7 +26,7 @@ export default function WorkGrid() {
         style={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
-          gap: "clamp(32px, 4vw, 56px) clamp(32px, 4vw, 56px)",
+          gap: "var(--space-l)",
         }}
       >
         {PROJECTS.map((project, i) => {
@@ -62,7 +62,7 @@ export default function WorkGrid() {
                 style={{
                   display: "flex",
                   alignItems: "baseline",
-                  marginBottom: "clamp(8px, 1vw, 14px)",
+                  marginBottom: "clamp(8px, calc(0.73 * var(--u)), 17px)",
                 }}
               >
                 <span
