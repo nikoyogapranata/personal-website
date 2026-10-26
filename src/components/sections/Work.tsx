@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import {
   motion,
   useMotionValue,
@@ -9,6 +10,8 @@ import {
   useScroll,
   useTransform,
 } from 'framer-motion'
+
+const MotionLink = motion.create(Link)
 
 const PROJECTS = [
   { id: 1, title: 'JAMUSARI',   category: 'Web · Fullstack',   year: '2025', image: '/jamusari.webp',   link: 'https://jamusari.com' },
@@ -102,16 +105,18 @@ export default function Work() {
           mouseY.set(e.clientY)
         }}
       >
-        {/* Rows 1–3 */}
-        {PROJECTS.slice(0, 3).map((project, index) => {
+        {PROJECTS.map((project, index) => {
           const isHovered = hoveredId === project.id
           return (
-            <motion.div
+            <motion.a
               key={project.id}
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: index * 0.08 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: (index % 3) * 0.08 }}
               className="work-row"
               style={{
                 position:       'relative',
@@ -123,10 +128,19 @@ export default function Work() {
                 justifyContent: 'space-between',
                 padding:        'clamp(28px, 3.5vw, 48px) clamp(24px, 4vw, 60px)',
                 gap:            'clamp(20px, 2.5vw, 40px)',
+                color:          'inherit',
+                textDecoration: 'none',
               }}
               onMouseEnter={() => enterRow(project.id)}
               onMouseLeave={() => setHoveredId(null)}
-              onClick={() => window.open(project.link, '_blank')}
+              onFocus={(e) => {
+                // Keyboard focus: show the same preview, anchored to the row
+                const rect = e.currentTarget.getBoundingClientRect()
+                mouseX.set(rect.left + rect.width / 2)
+                mouseY.set(rect.top + rect.height / 2)
+                enterRow(project.id)
+              }}
+              onBlur={() => setHoveredId(null)}
             >
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 'clamp(12px, 1.5vw, 24px)' }}>
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: '#888', letterSpacing: '0.1em', flexShrink: 0 }}>
@@ -141,6 +155,7 @@ export default function Work() {
                     {project.title}
                   </motion.span>
                   <motion.span
+                    aria-hidden="true"
                     animate={{ opacity: isHovered ? 1 : 0 }}
                     transition={{ duration: 0.8, ease: 'easeInOut' }}
                     style={{ position: 'absolute', top: 0, left: 0, fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 400, fontSize: 'clamp(28px, 4vw, 64px)', letterSpacing: '-0.02em', color: 'var(--color-accent-primary)', lineHeight: 1.1, whiteSpace: 'nowrap' }}
@@ -154,66 +169,7 @@ export default function Work() {
                   {project.category}
                 </span>
               </div>
-            </motion.div>
-          )
-        })}
-
-        {/* Rows 4–5 */}
-        {PROJECTS.slice(3).map((project, i) => {
-          const index     = i + 3
-          const isLast    = i === PROJECTS.slice(3).length - 1
-          const isHovered = hoveredId === project.id
-          return (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: i * 0.08 }}
-              className="work-row"
-              style={{
-                position:       'relative',
-                overflow:       'hidden',
-                minHeight:      'clamp(80px, 8vw, 120px)',
-                borderTop:      '0.5px solid #1e1e1e',
-                ...(isLast && { borderBottom: '0.5px solid #1e1e1e' }),
-                display:        'flex',
-                alignItems:     'center',
-                justifyContent: 'space-between',
-                padding:        'clamp(28px, 3.5vw, 48px) clamp(24px, 4vw, 60px)',
-                gap:            'clamp(20px, 2.5vw, 40px)',
-              }}
-              onMouseEnter={() => enterRow(project.id)}
-              onMouseLeave={() => setHoveredId(null)}
-              onClick={() => window.open(project.link, '_blank')}
-            >
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 'clamp(12px, 1.5vw, 24px)' }}>
-                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 12, color: '#888', letterSpacing: '0.1em', flexShrink: 0 }}>
-                  {'0' + (index + 1)}
-                </span>
-                <span style={{ position: 'relative', display: 'inline-block' }}>
-                  <motion.span
-                    animate={{ opacity: isHovered ? 0 : 1 }}
-                    transition={{ duration: 0.5, ease: 'easeInOut' }}
-                    style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: 'clamp(28px, 4vw, 64px)', letterSpacing: '-0.02em', color: '#f8f8f5', lineHeight: 1.1, display: 'block' }}
-                  >
-                    {project.title}
-                  </motion.span>
-                  <motion.span
-                    animate={{ opacity: isHovered ? 1 : 0 }}
-                    transition={{ duration: 0.8, ease: 'easeInOut' }}
-                    style={{ position: 'absolute', top: 0, left: 0, fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 400, fontSize: 'clamp(28px, 4vw, 64px)', letterSpacing: '-0.02em', color: 'var(--color-accent-primary)', lineHeight: 1.1, whiteSpace: 'nowrap' }}
-                  >
-                    {project.title}
-                  </motion.span>
-                </span>
-              </div>
-              <div style={{ flexShrink: 0 }}>
-                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 13, color: isHovered ? '#aaa' : '#777', letterSpacing: '0.05em', transition: 'color 0.2s ease' }}>
-                  {project.category}
-                </span>
-              </div>
-            </motion.div>
+            </motion.a>
           )
         })}
 
@@ -273,7 +229,7 @@ export default function Work() {
         justifyContent: 'center',
         padding:        'clamp(40px, 5vw, 80px) clamp(24px, 4vw, 60px) clamp(60px, 8vw, 120px)',
       }}>
-        <motion.a
+        <MotionLink
           href="/work"
           style={{
             fontFamily:     'var(--font-serif)',
@@ -316,7 +272,7 @@ export default function Work() {
               display:    'block',
             }}
           />
-        </motion.a>
+        </MotionLink>
       </div>
 
       <style>{`
@@ -325,6 +281,9 @@ export default function Work() {
         }
         .work-row {
           cursor: pointer;
+        }
+        a.work-row:last-of-type {
+          border-bottom: 0.5px solid #1e1e1e;
         }
         @media (max-width: 1400px) {
           .work-title {

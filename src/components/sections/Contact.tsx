@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { EMAIL, SOCIAL } from "@/lib/site";
 
-const MotionLink = motion(Link);
+const MotionLink = motion.create(Link);
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
