@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
@@ -15,31 +15,86 @@ const menuItems = [
   { link: '/work',  text: 'Work',     image: '/menu-winter.webp' },
 ]
 
+// Relative luminance of a computed `rgb()/rgba()` colour, or null when it's (nearly) transparent
+function luminance(color: string): number | null {
+  const m = color.match(/[\d.]+/g)
+  if (!m || m.length < 3 || (m.length > 3 && Number(m[3]) < 0.5)) return null
+  const [r, g, b] = m.slice(0, 3).map(v => {
+    const c = Number(v) / 255
+    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4
+  })
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b
+}
+
+// Is the painted background under (x, y) dark? Skips the navbar itself; pointer-events:none
+// overlays are skipped by hit-testing, and clip-path is respected, so this tracks what's visible.
+function isDarkAt(x: number, y: number, ignore: (el: Element) => boolean) {
+  const hit = document.elementsFromPoint(x, y).find(el => !ignore(el))
+  for (let el: Element | null = hit ?? null; el; el = el.parentElement) {
+    const l = luminance(getComputedStyle(el).backgroundColor)
+    if (l !== null) return l < 0.4
+  }
+  return false
+}
+
 export default function Navbar() {
   const [menuOpen, setMenuOpen]               = useState(false)
   const [isDark, setIsDark]                   = useState(false)
   const [nikoHovered, setNikoHovered]         = useState(false)
   const [contactHovered, setContactHovered]   = useState(false)
+  const navRef                                = useRef<HTMLElement>(null)
+  const menuButtonRef                         = useRef<HTMLButtonElement>(null)
+  const panelRef                              = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    let frame = 0
     const update = () => {
-      // mark isDark when navbar (bottom edge = 64px) sits inside a dark section
-      const darkSections = document.querySelectorAll('#tech-stack, #work')
-      let over = false
-      darkSections.forEach(el => {
-        const { top, bottom } = el.getBoundingClientRect()
-        if (top <= 64 && bottom > 0) over = true
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(() => {
+        const nav = navRef.current
+        if (!nav) return
+        setIsDark(isDarkAt(window.innerWidth / 2, 32, el => nav.contains(el)))
       })
-      setIsDark(over)
     }
     window.addEventListener('scroll', update, { passive: true })
+    window.addEventListener('resize', update)
     update()
-    return () => window.removeEventListener('scroll', update)
+    return () => {
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', update)
+      window.removeEventListener('resize', update)
+    }
   }, [])
+
+  // Escape closes the menu and returns focus to the toggle
+  useEffect(() => {
+    if (!menuOpen) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      setMenuOpen(false)
+      menuButtonRef.current?.focus()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [menuOpen])
+
+  // Move focus into the panel once its (lazy-loaded) links have rendered
+  useEffect(() => {
+    if (!menuOpen) return
+    let frame = 0
+    let tries = 0
+    const focusFirst = () => {
+      const link = panelRef.current?.querySelector('a')
+      if (link) link.focus()
+      else if (tries++ < 120) frame = requestAnimationFrame(focusFirst)
+    }
+    frame = requestAnimationFrame(focusFirst)
+    return () => cancelAnimationFrame(frame)
+  }, [menuOpen])
 
   const goTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
 
-  // base color flips with background; accent stays blue; transitions on every text element
+  // base color flips with the background under the navbar
   const base   = isDark ? '#f8f8f5' : '#0a0a0a'
   const accent = 'var(--color-accent-primary)'
 
@@ -52,6 +107,7 @@ export default function Navbar() {
         }
       `}</style>
       <nav
+        ref={navRef}
         className="nav-root"
         style={{
           position:            'fixed',
@@ -95,15 +151,23 @@ export default function Navbar() {
         </button>
 
         {/* CENTER — MENU */}
-        <div
+        <button
+          ref={menuButtonRef}
+          type="button"
+          aria-expanded={menuOpen}
+          aria-controls="site-menu"
           onClick={() => setMenuOpen(v => !v)}
           onPointerEnter={loadFlowingMenu}
+          onFocus={loadFlowingMenu}
           style={{
             display:       'flex',
             flexDirection: 'column',
             alignItems:    'center',
             gap:           6,
             cursor:        'pointer',
+            background:    'none',
+            border:        'none',
+            padding:       0,
           }}
         >
           <motion.div
@@ -122,7 +186,7 @@ export default function Navbar() {
           }}>
             MENU
           </span>
-        </div>
+        </button>
 
         {/* RIGHT — CONTACT */}
         <div style={{ justifySelf: 'end', display: 'flex', alignItems: 'center', gap: 32 }}>
@@ -170,6 +234,10 @@ export default function Navbar() {
             {/* FlowingMenu panel — slides down from top */}
             <motion.div
               key="panel"
+              id="site-menu"
+              ref={panelRef}
+              // Close after following a menu link (client-side navigation keeps the layout mounted)
+              onClick={(e) => { if ((e.target as Element).closest('a')) setMenuOpen(false) }}
               initial={{ y: '-100%' }}
               animate={{ y: 0 }}
               exit={{ y: '-100%' }}
