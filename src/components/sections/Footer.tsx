@@ -1,7 +1,5 @@
 "use client";
-import { motion, useAnimationFrame, useMotionValue } from "framer-motion";
-import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -11,19 +9,30 @@ const HREF: Record<string, string> = { Home: "/", About: "/about", Work: "/work"
 const MARQUEE_TEXT = "NIKO PRANATA";
 const SPEED = 60; // px per second
 
+// CSS keyframe loop (footer-marquee in globals.css): the track holds 6 identical units and
+// shifts by one unit per cycle. Layout is only read on resize, and it pauses off-screen.
 function MarqueeTrack({ textColor }: { textColor: string }) {
-  const x = useMotionValue(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const unitRef = useRef<HTMLDivElement>(null);
-  const reduceMotion = usePrefersReducedMotion();
+  const trackRef = useRef<HTMLDivElement>(null);
+  const unitRef = useRef<HTMLSpanElement>(null);
 
-  useAnimationFrame((_, delta) => {
-    if (reduceMotion) return;
-    const unitW = unitRef.current?.offsetWidth ?? 0;
-    if (!unitW) return;
-    const next = (x.get() - (delta / 1000) * SPEED) % unitW;
-    x.set(next);
-  });
+  useEffect(() => {
+    const track = trackRef.current;
+    const unit = unitRef.current;
+    if (!track || !unit) return;
+    // Keep a constant speed in px/s whatever the unit width at this viewport
+    const ro = new ResizeObserver(() => {
+      track.style.setProperty("--marquee-duration", `${unit.offsetWidth / SPEED}s`);
+    });
+    ro.observe(unit);
+    const io = new IntersectionObserver(([entry]) => {
+      track.style.animationPlayState = entry.isIntersecting ? "running" : "paused";
+    });
+    io.observe(track);
+    return () => {
+      ro.disconnect();
+      io.disconnect();
+    };
+  }, []);
 
   const unit = (
     <span style={{ display: "inline-flex", alignItems: "center", gap: "clamp(40px, 5vw, 80px)", paddingRight: "clamp(120px, 16vw, 240px)" }}>
@@ -45,10 +54,12 @@ function MarqueeTrack({ textColor }: { textColor: string }) {
   );
 
   return (
-    <div ref={containerRef} aria-hidden="true" style={{ overflow: "hidden", position: "relative" }}>
-      <motion.div
+    <div aria-hidden="true" style={{ overflow: "hidden", position: "relative" }}>
+      <div
+        ref={trackRef}
+        className="footer-marquee-track"
         style={{
-          x,
+          animation: "footer-marquee var(--marquee-duration, 20s) linear infinite",
           display: "inline-flex",
           whiteSpace: "nowrap",
           fontFamily: "var(--font-display)",
@@ -61,7 +72,7 @@ function MarqueeTrack({ textColor }: { textColor: string }) {
       >
         <span ref={unitRef} style={{ display: "inline-flex" }}>{unit}</span>
         {unit}{unit}{unit}{unit}{unit}
-      </motion.div>
+      </div>
     </div>
   );
 }

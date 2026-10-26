@@ -1,33 +1,19 @@
-'use client'
-
-export default function UniversalGrain() {
+// Film grain overlay. grain.webp is the same feTurbulence noise (baseFrequency 0.65,
+// 3 octaves, desaturated) pre-rendered to a seamless 128px tile. A live SVG filter with
+// mix-blend-mode over the whole viewport had to be re-blended on every scroll frame.
+export default function FilmGrain() {
   return (
-    <svg
+    <div
       aria-hidden="true"
       style={{
         position: 'fixed',
         inset: 0,
-        width: '100vw',
-        height: '100vh',
         zIndex: 9998,
         pointerEvents: 'none',
-        // 1. Difference mode automatically adapts to light AND dark backgrounds
-        mixBlendMode: 'difference', 
-        // 2. Kept fairly low because 'difference' can be intense on light themes
-        opacity: 0.06, 
+        backgroundImage: 'url(/grain.webp)',
+        backgroundRepeat: 'repeat',
+        opacity: 0.06,
       }}
-    >
-      <filter id="film-grain">
-        <feTurbulence
-          type="fractalNoise"
-          // 3. Slightly smoothed out the frequency
-          baseFrequency="0.65" 
-          numOctaves="3"
-          stitchTiles="stitch"
-        />
-        <feColorMatrix type="saturate" values="0" />
-      </filter>
-      <rect width="100%" height="100%" filter="url(#film-grain)" />
-    </svg>
+    />
   )
 }
