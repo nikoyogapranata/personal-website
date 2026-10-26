@@ -25,7 +25,7 @@ export default function AboutPage() {
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
-            gap: "clamp(32px, calc(3.33 * var(--u)), 77px)",
+            gap: "clamp(32px, calc(3.3333 * var(--u)), 77px)",
             alignItems: "start",
           }}
         >
@@ -66,7 +66,7 @@ export default function AboutPage() {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "clamp(14px, calc(1.15 * var(--u)), 26px)",
+                gap: "clamp(14px, calc(1.1458 * var(--u)), 26px)",
               }}
             >
               <p

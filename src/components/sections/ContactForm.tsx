@@ -60,7 +60,7 @@ export default function ContactForm() {
       ) : (
         <form
           onSubmit={handleSubmit}
-          style={{ display: "flex", flexDirection: "column", gap: "clamp(20px, calc(1.46 * var(--u)), 34px)" }}
+          style={{ display: "flex", flexDirection: "column", gap: "clamp(20px, calc(1.4583 * var(--u)), 34px)" }}
         >
           {/* Honeypot — hidden from people, filled by bots */}
           <input

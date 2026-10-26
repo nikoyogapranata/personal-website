@@ -189,8 +189,8 @@ export default function Work() {
             translateY:    '-50%',
             zIndex:        100,
             pointerEvents: 'none',
-            width:         'clamp(280px, calc(29.17 * var(--u)), 672px)',
-            height:        'clamp(200px, calc(19.79 * var(--u)), 456px)',
+            width:         'clamp(280px, calc(29.1667 * var(--u)), 672px)',
+            height:        'clamp(200px, calc(19.7917 * var(--u)), 456px)',
             overflow:      'hidden',
             borderRadius:  4,
           }}
@@ -233,7 +233,7 @@ export default function Work() {
       <div style={{
         display:        'flex',
         justifyContent: 'center',
-        padding:        'clamp(40px, calc(4.17 * var(--u)), 96px) clamp(24px, calc(3.125 * var(--u)), 72px) var(--space-2xl)',
+        padding:        'clamp(40px, calc(4.1667 * var(--u)), 96px) clamp(24px, calc(3.125 * var(--u)), 72px) var(--space-2xl)',
       }}>
         <MotionLink
           href="/work"

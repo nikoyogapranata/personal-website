@@ -37,8 +37,8 @@ const CARD: React.CSSProperties = {
   background: BG,
   display: "flex",
   alignItems: "center",
-  gap: "clamp(12px, calc(1.04 * var(--u)), 24px)",
-  padding: "0 clamp(16px, calc(1.46 * var(--u)), 34px)",
+  gap: "clamp(12px, calc(1.0417 * var(--u)), 24px)",
+  padding: "0 clamp(16px, calc(1.4583 * var(--u)), 34px)",
   overflow: "hidden",
   boxShadow: SHADOW,
 };
@@ -177,14 +177,14 @@ export default function Hero() {
           transform-origin: center center;
           /* Card spacing scales with the hero text; values at 1920×1080 in comments */
           --hu: min(var(--u), 23.04px);               /* same 1.2× cap as --text-hero */
-          --hero-card-h: max(calc(var(--text-hero) * 2.18), min(100px, 13svh)); /* 170 */
-          --hero-gap-xs: calc(0.21 * var(--hu));      /* 4 */
+          --hero-card-h: max(calc(var(--text-hero) * 2.1795), min(100px, 13svh)); /* 170 */
+          --hero-gap-xs: calc(0.2083 * var(--hu));      /* 4 */
           --hero-gap-s: calc(0.625 * var(--hu));      /* 12 */
-          --hero-gap-m: calc(0.73 * var(--hu));       /* 14 */
-          --hero-gap: calc(0.83 * var(--hu));         /* 16 */
-          --hero-gap-l: calc(0.94 * var(--hu));       /* 18 */
-          --hero-lift: calc(-0.47 * var(--hu));       /* -9: optical baseline for the serif words */
-          --hero-badge: max(0.8125rem, calc(0.83 * var(--hu))); /* 16 */
+          --hero-gap-m: calc(0.7292 * var(--hu));       /* 14 */
+          --hero-gap: calc(0.8333 * var(--hu));         /* 16 */
+          --hero-gap-l: calc(0.9375 * var(--hu));       /* 18 */
+          --hero-lift: calc(-0.4688 * var(--hu));       /* -9: optical baseline for the serif words */
+          --hero-badge: max(0.8125rem, calc(0.8333 * var(--hu))); /* 16 */
         }
         /* Phones keep their fixed spacing; the whole stack is scaled down instead */
         @media (max-width: 640px) {

@@ -51,7 +51,7 @@ export default function Contact({
           display: "flex",
           alignItems: "flex-end",
           justifyContent: "space-between",
-          marginBottom: "clamp(40px, calc(4.17 * var(--u)), 96px)",
+          marginBottom: "clamp(40px, calc(4.1667 * var(--u)), 96px)",
         }}
       >
         <h2 style={{ margin: 0, font: "inherit" }}>
@@ -116,7 +116,7 @@ export default function Contact({
         style={{
           height: "0.5px",
           background: c.divider,
-          marginBottom: "clamp(40px, calc(4.17 * var(--u)), 96px)",
+          marginBottom: "clamp(40px, calc(4.1667 * var(--u)), 96px)",
           transformOrigin: "left",
         }}
       />

@@ -35,7 +35,7 @@ function MarqueeTrack({ textColor }: { textColor: string }) {
   }, []);
 
   const unit = (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: "clamp(40px, calc(4.17 * var(--u)), 96px)", paddingRight: "clamp(120px, calc(12.5 * var(--u)), 288px)" }}>
+    <span style={{ display: "inline-flex", alignItems: "center", gap: "clamp(40px, calc(4.1667 * var(--u)), 96px)", paddingRight: "clamp(120px, calc(12.5 * var(--u)), 288px)" }}>
       {MARQUEE_TEXT}
       <Image
         src="/spark.png"
@@ -110,7 +110,7 @@ export default function Footer({ theme = "dark" }: { theme?: "dark" | "light" })
           alignItems: "center",
           justifyContent: "space-between",
           padding: "0 max(var(--page-x), calc((100% - var(--content-max)) / 2))",
-          marginBottom: "clamp(48px, calc(5.21 * var(--u)), 120px)",
+          marginBottom: "clamp(48px, calc(5.2083 * var(--u)), 120px)",
           flexWrap: "wrap",
           gap: "16px",
         }}

@@ -17,7 +17,7 @@ export default function Error({ retry }: { error: unknown; retry: () => void }) 
         style={{
           fontFamily: "var(--font-display)",
           fontWeight: 800,
-          fontSize: "clamp(3.25rem, calc(8.33 * var(--u)), 192px)",
+          fontSize: "clamp(3.25rem, calc(8.3333 * var(--u)), 192px)",
           letterSpacing: "-0.04em",
           lineHeight: 1,
           color: "var(--color-text)",

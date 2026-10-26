@@ -32,36 +32,36 @@
   --u: min(1.25vw, max(1vw, 12.8px), 1.7778svh);
 
   /* Display type: values in comments are the size at 1920×1080 */
-  --text-poster:    clamp(11.25rem, calc(23.44 * var(--u)), 540px); /* 450  GOT A PROJECT? */
-  --text-marquee:   clamp( 6.25rem, calc(14.58 * var(--u)), 336px); /* 280  footer marquee */
-  --text-title:     clamp(  5.5rem, calc(13.54 * var(--u)), 312px); /* 260  ABOUT / WORK / 404 */
-  --text-section:   clamp( 3.75rem, calc(10.42 * var(--u)), 240px); /* 200  A GLIMPSE OF… */
-  --text-display:   clamp( 3.25rem, calc( 7.29 * var(--u)), 168px); /* 140  LET'S WORK TOGETHER */
-  --text-statement: clamp(    3rem, calc( 6.46 * var(--u)), 149px); /* 124  FROM THE first pixel… */
-  --text-lead:      clamp(  2.5rem, calc( 4.79 * var(--u)), 110px); /*  92  home About paragraph */
-  --text-hero:      clamp( 1.75rem, calc( 4.06 * var(--u)),  94px); /*  78  hero cards */
-  --text-h2:        clamp( 1.75rem, calc( 3.33 * var(--u)),  77px); /*  64  project row titles */
-  --text-h3:        clamp( 1.75rem, calc( 2.92 * var(--u)),  67px); /*  56  /about quote, See all projects */
-  --text-h4:        clamp(  1.5rem, calc( 2.29 * var(--u)),  53px); /*  44  /contact and 404 taglines */
+  --text-poster:    clamp(11.25rem, calc(23.4375 * var(--u)), 540px); /* 450  GOT A PROJECT? */
+  --text-marquee:   clamp( 6.25rem, calc(14.5833 * var(--u)), 336px); /* 280  footer marquee */
+  --text-title:     clamp(  5.5rem, calc(13.5417 * var(--u)), 312px); /* 260  ABOUT / WORK / 404 */
+  --text-section:   clamp( 3.75rem, calc(10.4167 * var(--u)), 240px); /* 200  A GLIMPSE OF… */
+  --text-display:   clamp( 3.25rem, calc(7.2917 * var(--u)), 168px); /* 140  LET'S WORK TOGETHER */
+  --text-statement: clamp(    3rem, calc(6.4583 * var(--u)), 149px); /* 124  FROM THE first pixel… */
+  --text-lead:      clamp(  2.5rem, calc(4.7917 * var(--u)), 110px); /*  92  home About paragraph */
+  --text-hero:      clamp( 1.75rem, calc(4.0625 * var(--u)),  94px); /*  78  hero cards */
+  --text-h2:        clamp( 1.75rem, calc(3.3333 * var(--u)),  77px); /*  64  project row titles */
+  --text-h3:        clamp( 1.75rem, calc(2.9167 * var(--u)),  67px); /*  56  /about quote, See all projects */
+  --text-h4:        clamp(  1.5rem, calc(2.2917 * var(--u)),  53px); /*  44  /contact and 404 taglines */
 
   /* Readable text: rem base + capped bonus above a start width */
-  --text-h5:      calc(    1rem + clamp(0px, (100vw -  768px) * 0.0104, 16px)); /* 28  tech list, contact links */
+  --text-h5:      calc(    1rem + clamp(0px, (100vw -  768px) * 0.010417, 16px)); /* 28  tech list, contact links */
   --text-body-lg: calc(    1rem + clamp(0px, (100vw - 1536px) / 96,      6px)); /* 20  long-form paragraphs */
   --text-body:    calc(    1rem + clamp(0px, (100vw - 1536px) / 192,     3px)); /* 18  form fields, link lists */
-  --text-small:   calc(0.8125rem + clamp(0px, (100vw - 1280px) / 213,    4px)); /* 16  captions, buttons */
+  --text-small:   calc(0.8125rem + clamp(0px, (100vw - 1280px) / 213.33, 4px)); /* 16  captions, buttons */
   --text-caption: calc(0.8125rem + clamp(0px, (100vw - 1536px) / 384,    2px)); /* 14  footer, dates */
   --text-label:   calc(0.8125rem + clamp(0px, (100vw - 1920px) / 320,    2px)); /* 13  labels, MENU (13px floor) */
   --text-nav:     calc( 0.875rem + clamp(0px, (100vw - 1536px) / 96,      6px)); /* 18  navbar; 14 at ≤1536 */
   --nav-h:        calc(  3.5rem + clamp(0px, (100vw - 1536px) / 48,     14px)); /* 64  navbar; 56 at ≤1536 */
 
   /* Large spacing */
-  --space-m:   clamp(24px, calc(2.08 * var(--u)),  48px); /*  40 */
-  --space-l:   clamp(32px, calc(2.92 * var(--u)),  67px); /*  56 */
+  --space-m:   clamp(24px, calc(2.0833 * var(--u)),  48px); /*  40 */
+  --space-l:   clamp(32px, calc(2.9167 * var(--u)),  67px); /*  56 */
   --space-xl:  clamp(40px, calc(3.75 * var(--u)),  86px); /*  72 */
   --space-2xl: clamp(64px, calc(6.25 * var(--u)), 144px); /* 120 */
-  --page-x:    clamp(32px, calc(4.17 * var(--u)),  96px); /*  80  side padding */
-  --page-top:  clamp(110px, calc(9.38 * var(--u)), 216px); /* 180  subpage top padding */
-  --section-y: clamp(80px, calc(7.29 * var(--u)), 168px); /* 140  section vertical padding */
+  --page-x:    clamp(32px, calc(4.1667 * var(--u)),  96px); /*  80  side padding */
+  --page-top:  clamp(110px, calc(9.375 * var(--u)), 216px); /* 180  subpage top padding */
+  --section-y: clamp(80px, calc(7.2917 * var(--u)), 168px); /* 140  section vertical padding */
   --content-max: 2112px;                                   /* (1920 − 2×80) × 1.2 */
 }
 

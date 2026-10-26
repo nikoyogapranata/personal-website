@@ -16,7 +16,7 @@ export default function PageHeader({
   title,
   fontSize = "var(--text-title)",
   mobileFontSize = "clamp(52px, 16vw, 88px)",
-  marginBottom = "clamp(56px, calc(5.21 * var(--u)), 120px)",
+  marginBottom = "clamp(56px, calc(5.2083 * var(--u)), 120px)",
 }: PageHeaderProps) {
   return (
     <Reveal

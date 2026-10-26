@@ -25,7 +25,7 @@ export default function ContactPage() {
         {/* Smaller than /about and /work: CONTACT is a longer word and must leave room for the asterisk */}
         <PageHeader
           title="CONTACT"
-          fontSize="calc(var(--text-title) * 0.85)"
+          fontSize="calc(var(--text-title) * 0.8462)"
           mobileFontSize="clamp(44px, 12vw, 88px)"
         />
 

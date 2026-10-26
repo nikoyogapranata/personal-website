@@ -75,14 +75,14 @@ export default function TechExperience() {
       <div className="te-row" style={{
         display:    'flex',
         alignItems: 'baseline',
-        gap:        'clamp(200px, calc(20.83 * var(--u)), 480px)',
+        gap:        'clamp(200px, calc(20.8333 * var(--u)), 480px)',
       }}>
         <span style={LABEL}>Tech Stack</span>
 
         <div style={{
           display:    'flex',
           flexWrap:   'wrap',
-          gap:        'clamp(16px, calc(1.67 * var(--u)), 38px) 0',
+          gap:        'clamp(16px, calc(1.6667 * var(--u)), 38px) 0',
           alignItems: 'baseline',
         }}>
           {TECH.map((name, i) => (
@@ -112,7 +112,7 @@ export default function TechExperience() {
               {i < TECH.length - 1 && (
                 <span style={{
                   color:    'var(--color-accent-primary)',
-                  fontSize: 'calc(var(--text-h5) * 1.29)',
+                  fontSize: 'calc(var(--text-h5) * 1.2857)',
                   margin:   '0 0.67em',
                   lineHeight: 1,
                 }}>
@@ -131,7 +131,7 @@ export default function TechExperience() {
       <div className="te-row" style={{
         display:    'flex',
         alignItems: 'flex-start',
-        gap:        'clamp(200px, calc(20.83 * var(--u)), 480px)',
+        gap:        'clamp(200px, calc(20.8333 * var(--u)), 480px)',
       }}>
         <span style={{ ...LABEL, paddingTop: 4 }}>Experience</span>
 
@@ -174,7 +174,7 @@ export default function TechExperience() {
                   fontFamily: 'var(--font-serif)',
                   fontStyle:  'italic',
                   fontWeight: 400,
-                  fontSize:   'max(1rem, calc(var(--text-h5) * 0.86))',
+                  fontSize:   'max(1rem, calc(var(--text-h5) * 0.8571))',
                   color:      'var(--color-accent-secondary)',
                 }}>
                   {item.company}

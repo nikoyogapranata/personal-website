@@ -62,7 +62,7 @@ export default function WorkGrid() {
                 style={{
                   display: "flex",
                   alignItems: "baseline",
-                  marginBottom: "clamp(8px, calc(0.73 * var(--u)), 17px)",
+                  marginBottom: "clamp(8px, calc(0.7292 * var(--u)), 17px)",
                 }}
               >
                 <span

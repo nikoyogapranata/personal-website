@@ -228,7 +228,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                   fontFamily:    "var(--font-display)",
                   fontWeight:    800,
                   // Reduced motion: the text can't scroll across, so size it to fit and let it wrap
-                  fontSize:      reduceMotion ? "clamp(3.5rem, calc(10.42 * var(--u)), 240px)" : "var(--text-poster)",
+                  fontSize:      reduceMotion ? "clamp(3.5rem, calc(10.4167 * var(--u)), 240px)" : "var(--text-poster)",
                   letterSpacing: "-0.04em",
                   color:         gotColor,
                   lineHeight:    1,
