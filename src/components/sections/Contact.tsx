@@ -85,7 +85,6 @@ export default function Contact({
           ))}
         </div>
 
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <motion.img
           src="/spark-2.png"
           alt=""
