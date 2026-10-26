@@ -79,7 +79,7 @@ export default function Work() {
             style={{
               fontFamily:    'var(--font-display)',
               fontWeight:    700,
-              fontSize:      'clamp(72px, 15vw, 200px)',
+              fontSize:      'var(--text-section)',
               color:         'var(--color-text-inverse)',
               letterSpacing: '-0.03em',
               lineHeight:    1.05,
@@ -123,13 +123,13 @@ export default function Work() {
               style={{
                 position:       'relative',
                 overflow:       'hidden',
-                minHeight:      'clamp(80px, 8vw, 120px)',
+                minHeight:      'clamp(80px, calc(6.25 * var(--u)), 144px)',
                 borderTop:      '0.5px solid var(--color-border)',
                 display:        'flex',
                 alignItems:     'center',
                 justifyContent: 'space-between',
-                padding:        'clamp(28px, 3.5vw, 48px) clamp(24px, 4vw, 60px)',
-                gap:            'clamp(20px, 2.5vw, 40px)',
+                padding:        'var(--space-l) clamp(24px, calc(3.125 * var(--u)), 72px)',
+                gap:            'var(--space-m)',
                 color:          'inherit',
                 textDecoration: 'none',
               }}
@@ -144,8 +144,8 @@ export default function Work() {
               }}
               onBlur={() => setHoveredId(null)}
             >
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 'clamp(12px, 1.5vw, 24px)' }}>
-                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 13, color: '#888', letterSpacing: '0.1em', flexShrink: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 'clamp(12px, calc(1.25 * var(--u)), 29px)' }}>
+                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-label)', color: '#888', letterSpacing: '0.1em', flexShrink: 0 }}>
                   {'0' + (index + 1)}
                 </span>
                 <span style={{ position: 'relative', display: 'inline-block' }}>
@@ -153,7 +153,7 @@ export default function Work() {
                     initial={false}
                     animate={{ opacity: isHovered ? 0 : 1 }}
                     transition={{ duration: 0.5, ease: 'easeInOut' }}
-                    style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: 'clamp(28px, 4vw, 64px)', letterSpacing: '-0.02em', color: 'var(--color-text-inverse)', lineHeight: 1.1, display: 'block' }}
+                    style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: 'var(--text-h2)', letterSpacing: '-0.02em', color: 'var(--color-text-inverse)', lineHeight: 1.1, display: 'block' }}
                   >
                     {project.title}
                   </motion.span>
@@ -162,14 +162,14 @@ export default function Work() {
                     initial={false}
                     animate={{ opacity: isHovered ? 1 : 0 }}
                     transition={{ duration: 0.8, ease: 'easeInOut' }}
-                    style={{ position: 'absolute', top: 0, left: 0, fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 400, fontSize: 'clamp(28px, 4vw, 64px)', letterSpacing: '-0.02em', color: 'var(--color-accent-primary-light)', lineHeight: 1.1, whiteSpace: 'nowrap' }}
+                    style={{ position: 'absolute', top: 0, left: 0, fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 400, fontSize: 'var(--text-h2)', letterSpacing: '-0.02em', color: 'var(--color-accent-primary-light)', lineHeight: 1.1, whiteSpace: 'nowrap' }}
                   >
                     {project.title}
                   </motion.span>
                 </span>
               </div>
               <div style={{ flexShrink: 0 }}>
-                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 13, color: isHovered ? '#aaa' : 'var(--color-text-faint-inverse)', letterSpacing: '0.05em', transition: 'color 0.2s ease' }}>
+                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-label)', color: isHovered ? '#aaa' : 'var(--color-text-faint-inverse)', letterSpacing: '0.05em', transition: 'color 0.2s ease' }}>
                   {project.category}
                 </span>
               </div>
@@ -189,8 +189,8 @@ export default function Work() {
             translateY:    '-50%',
             zIndex:        100,
             pointerEvents: 'none',
-            width:         'clamp(280px, 35vw, 560px)',
-            height:        'clamp(200px, 24vw, 380px)',
+            width:         'clamp(280px, calc(29.17 * var(--u)), 672px)',
+            height:        'clamp(200px, calc(19.79 * var(--u)), 456px)',
             overflow:      'hidden',
             borderRadius:  4,
           }}
@@ -216,13 +216,13 @@ export default function Work() {
                 src={project.image}
                 alt=""
                 fill
-                sizes="560px"
+                sizes="(min-width: 1921px) 672px, 560px"
                 style={{ objectFit: 'cover', objectPosition: 'center' }}
               />
             </motion.div>
           ))}
           <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1 }}>
-            <span style={{ fontFamily: 'var(--font-display)', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.18em', color: 'var(--color-text-inverse)', padding: '10px 24px', border: '1px solid rgba(248,248,245,0.7)' }}>
+            <span style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-label)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.18em', color: 'var(--color-text-inverse)', padding: '0.77em 1.85em', border: '1px solid rgba(248,248,245,0.7)' }}>
               View
             </span>
           </div>
@@ -233,7 +233,7 @@ export default function Work() {
       <div style={{
         display:        'flex',
         justifyContent: 'center',
-        padding:        'clamp(40px, 5vw, 80px) clamp(24px, 4vw, 60px) clamp(60px, 8vw, 120px)',
+        padding:        'clamp(40px, calc(4.17 * var(--u)), 96px) clamp(24px, calc(3.125 * var(--u)), 72px) var(--space-2xl)',
       }}>
         <MotionLink
           href="/work"
@@ -241,7 +241,7 @@ export default function Work() {
             fontFamily:     'var(--font-serif)',
             fontStyle:      'italic',
             fontWeight:     400,
-            fontSize:       'clamp(28px, 4vw, 56px)',
+            fontSize:       'var(--text-h3)',
             color:          'var(--color-text-inverse)',
             textDecoration: 'none',
             position:       'relative',
@@ -283,7 +283,7 @@ export default function Work() {
 
       <style>{`
         .work-list {
-          padding: 0 clamp(24px, 4vw, 60px) clamp(60px, 8vw, 120px);
+          padding: 0 clamp(24px, calc(3.125 * var(--u)), 72px) var(--space-2xl);
         }
         .work-row {
           cursor: pointer;
@@ -291,12 +291,7 @@ export default function Work() {
         a.work-row:last-of-type {
           border-bottom: 0.5px solid var(--color-border);
         }
-        @media (max-width: 1400px) {
-          .work-title {
-            font-size: clamp(60px, 12vw, 160px) !important;
-          }
-        }
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
           .work-list { padding: 0 0 80px; }
           .work-row  { flex-wrap: wrap; gap: 16px !important; padding: clamp(20px, 3vw, 32px) clamp(16px, 3vw, 30px) !important; }
         }

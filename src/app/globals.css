@@ -35,7 +35,7 @@
   --text-poster:    clamp(11.25rem, calc(23.44 * var(--u)), 540px); /* 450  GOT A PROJECT? */
   --text-marquee:   clamp( 6.25rem, calc(14.58 * var(--u)), 336px); /* 280  footer marquee */
   --text-title:     clamp(  5.5rem, calc(13.54 * var(--u)), 312px); /* 260  ABOUT / WORK / 404 */
-  --text-section:   clamp(  4.5rem, calc(10.42 * var(--u)), 240px); /* 200  A GLIMPSE OF… */
+  --text-section:   clamp( 3.75rem, calc(10.42 * var(--u)), 240px); /* 200  A GLIMPSE OF… */
   --text-display:   clamp( 3.25rem, calc( 7.29 * var(--u)), 168px); /* 140  LET'S WORK TOGETHER */
   --text-statement: clamp(    3rem, calc( 6.46 * var(--u)), 149px); /* 124  FROM THE first pixel… */
   --text-lead:      clamp(  2.5rem, calc( 4.79 * var(--u)), 110px); /*  92  home About paragraph */
