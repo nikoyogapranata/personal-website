@@ -105,6 +105,8 @@ export default function Footer({ theme = "dark" }: { theme?: "dark" | "light" })
         }}
       >
         <span
+          // Server-rendered at build time; tolerate the year ticking over before a rebuild
+          suppressHydrationWarning
           style={{
             fontFamily: "var(--font-display)",
             fontWeight: 500,
@@ -113,7 +115,7 @@ export default function Footer({ theme = "dark" }: { theme?: "dark" | "light" })
             letterSpacing: "0.02em",
           }}
         >
-          © 2025 Niko Yoga Pranata
+          © {new Date().getFullYear()} Niko Yoga Pranata
         </span>
 
         <nav style={{ display: "flex", gap: "clamp(20px, 3vw, 48px)" }}>
