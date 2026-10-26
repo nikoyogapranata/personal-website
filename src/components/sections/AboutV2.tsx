@@ -98,13 +98,13 @@ export default function AboutV2() {
         display:        'flex',
         alignItems:     'center',
         justifyContent: 'center',
-        padding:        'clamp(80px, 10vw, 140px) 8vw',
+        padding:        'var(--section-y) 8vw',
         position:       'relative',
         overflow:       'hidden',
       }}
     >
       <p style={{
-        fontSize:      'clamp(40px, 6vw, 92px)',
+        fontSize:      'var(--text-lead)',
         lineHeight:    1.2,
         letterSpacing: '-0.025em',
         textAlign:     'center',
@@ -124,12 +124,7 @@ export default function AboutV2() {
       </p>
 
       <style>{`
-        @media (max-width: 1400px) {
-          section#about p {
-            font-size: clamp(28px, 4.8vw, 64px) !important;
-          }
-        }
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
           section#about {
             padding: clamp(48px, 6vw, 80px) 6vw !important;
             min-height: 100vh !important;
