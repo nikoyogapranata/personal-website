@@ -4,6 +4,8 @@ import localFont from "next/font/local";
 import FilmGrain from "@/components/ui/FilmGrain";
 import Navbar from "@/components/sections/Navbar";
 import LoadingScreen from "@/components/ui/LoadingScreen";
+import { loaderBootScript } from "@/lib/loader";
+import MotionProvider from "@/components/MotionProvider";
 import "./globals.css";
 
 const clashDisplay = localFont({
@@ -66,12 +68,19 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${clashDisplay.variable} ${spaceGrotesk.variable} ${playfairDisplay.variable}`}
+      // The boot script below may add data-loader before hydration
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: loaderBootScript }} />
+      </head>
       <body>
-        <LoadingScreen />
-        <FilmGrain />
-        <Navbar />
-        {children}
+        <MotionProvider>
+          <LoadingScreen />
+          <FilmGrain />
+          <Navbar />
+          {children}
+        </MotionProvider>
       </body>
     </html>
   );

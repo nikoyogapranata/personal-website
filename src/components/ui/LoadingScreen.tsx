@@ -1,87 +1,86 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { usePathname } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
 
-const STORAGE_KEY = 'niko_session_loaded'
-const DURATION    = 3000
+// Visibility is decided before first paint by loaderBootScript (src/lib/loader.ts)
+const DURATION = 3000
+
+const SKIP_EVENTS = ['keydown', 'pointerdown', 'wheel', 'touchstart'] as const
 
 export default function LoadingScreen() {
-  const pathname              = usePathname()
-  const initPath              = useRef(pathname)
-  const [visible, setVisible] = useState(false)
-  const [count,   setCount]   = useState(0)
-  const rafRef                = useRef<number | null>(null)
-  const startRef              = useRef<number | null>(null)
+  const [count, setCount] = useState(0)
+  const [done,  setDone]  = useState(false)
 
-  // Dismiss instantly if the user navigates away mid-load
   useEffect(() => {
-    if (pathname !== initPath.current && visible) {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current)
-      setVisible(false)
+    if (document.documentElement.dataset.loader !== '1') return
+
+    let frame = 0
+    let timer = 0
+    let start = 0
+
+    // Any interaction skips the intro
+    const finish = () => {
+      cancelAnimationFrame(frame)
+      clearTimeout(timer)
+      SKIP_EVENTS.forEach(e => window.removeEventListener(e, finish))
+      setDone(true)
     }
-  }, [pathname, visible])
-
-  useEffect(() => {
-    if (sessionStorage.getItem(STORAGE_KEY)) return
-    // Mark shown immediately so navigating away won't retrigger it
-    sessionStorage.setItem(STORAGE_KEY, '1')
-    document.body.style.overflow = 'hidden'
-    setVisible(true)
 
     const tick = (now: number) => {
-      if (!startRef.current) startRef.current = now
-      const elapsed  = now - startRef.current
-      const progress = Math.min(elapsed / DURATION, 1)
+      if (!start) start = now
+      const progress = Math.min((now - start) / DURATION, 1)
       setCount(Math.floor(progress * 100))
-      if (progress < 1) {
-        rafRef.current = requestAnimationFrame(tick)
-      } else {
-        setTimeout(() => setVisible(false), 300)
-      }
+      if (progress < 1) frame = requestAnimationFrame(tick)
+      else timer = window.setTimeout(finish, 300)
     }
-    rafRef.current = requestAnimationFrame(tick)
-    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current) }
+
+    SKIP_EVENTS.forEach(e => window.addEventListener(e, finish, { passive: true }))
+    frame = requestAnimationFrame(tick)
+    return () => {
+      cancelAnimationFrame(frame)
+      clearTimeout(timer)
+      SKIP_EVENTS.forEach(e => window.removeEventListener(e, finish))
+    }
   }, [])
 
-  const handleExitComplete = () => {
-    document.body.style.overflow = ''
-  }
-
   return (
-    <AnimatePresence onExitComplete={handleExitComplete}>
-      {visible && (
-        <motion.div
-          initial={{ opacity: 1 }}
-          exit={{ y: '-100%' }}
-          transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-          style={{
-            position:        'fixed',
-            inset:           0,
-            zIndex:          9999,
-            backgroundColor: '#5b21b6',
-          }}
-        >
-          <style>{`
-            .ls-number { font-size: clamp(200px, 38vw, 560px); }
-            @media (max-width: 768px) { .ls-number { font-size: 52vw; } }
-          `}</style>
-          <div className="ls-number" style={{
-            position:      'absolute',
-            bottom:        '-0.08em',
-            right:         'clamp(32px, 5vw, 60px)',
-            fontFamily:    'var(--font-display)',
-            fontWeight:    700,
-            color:         '#ffffff',
-            lineHeight:    1,
-            letterSpacing: '-0.04em',
-            userSelect:    'none',
-          }}>
-            {count}
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <motion.div
+      className="loading-screen"
+      aria-hidden="true"
+      initial={false}
+      animate={{ y: done ? '-100%' : 0 }}
+      transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+      onAnimationComplete={() => {
+        if (done) delete document.documentElement.dataset.loader
+      }}
+      style={{
+        position:        'fixed',
+        inset:           0,
+        zIndex:          9999,
+        backgroundColor: '#5b21b6',
+      }}
+    >
+      <style>{`
+        .loading-screen { display: none; }
+        html[data-loader] .loading-screen { display: block; }
+        html[data-loader] body { overflow: hidden; }
+        .ls-number { font-size: clamp(200px, 38vw, 560px); }
+        @media (max-width: 768px) { .ls-number { font-size: 52vw; } }
+      `}</style>
+      <div className="ls-number" style={{
+        position:      'absolute',
+        bottom:        '-0.08em',
+        right:         'clamp(32px, 5vw, 60px)',
+        fontFamily:    'var(--font-display)',
+        fontWeight:    700,
+        color:         '#ffffff',
+        lineHeight:    1,
+        letterSpacing: '-0.04em',
+        userSelect:    'none',
+      }}>
+        {count}
+      </div>
+    </motion.div>
   )
 }
