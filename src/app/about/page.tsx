@@ -25,7 +25,7 @@ export default function AboutPage() {
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
-            gap: "clamp(32px, 4vw, 64px)",
+            gap: "clamp(32px, calc(3.33 * var(--u)), 77px)",
             alignItems: "start",
           }}
         >
@@ -34,7 +34,7 @@ export default function AboutPage() {
             initial={{ opacity: 0, y: 36 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
-            style={{ display: "flex", flexDirection: "column", gap: "clamp(24px, 3vw, 40px)" }}
+            style={{ display: "flex", flexDirection: "column", gap: "var(--space-m)" }}
           >
             {/* Big quote */}
             <blockquote
@@ -47,7 +47,7 @@ export default function AboutPage() {
                 style={{
                   fontFamily: "var(--font-display)",
                   fontWeight: 700,
-                  fontSize: "clamp(28px, 3.6vw, 56px)",
+                  fontSize: "var(--text-h3)",
                   letterSpacing: "-0.03em",
                   lineHeight: 1.1,
                   color: "var(--color-text)",
@@ -66,14 +66,14 @@ export default function AboutPage() {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "clamp(14px, 1.6vw, 22px)",
+                gap: "clamp(14px, calc(1.15 * var(--u)), 26px)",
               }}
             >
               <p
                 style={{
                   fontFamily: "var(--font-sans)",
                   fontWeight: 400,
-                  fontSize: "clamp(16px, 1.5vw, 20px)",
+                  fontSize: "var(--text-body-lg)",
                   lineHeight: 1.75,
                   color: "var(--color-text-muted)",
                   margin: 0,
@@ -85,7 +85,7 @@ export default function AboutPage() {
                 style={{
                   fontFamily: "var(--font-sans)",
                   fontWeight: 400,
-                  fontSize: "clamp(16px, 1.5vw, 20px)",
+                  fontSize: "var(--text-body-lg)",
                   lineHeight: 1.75,
                   color: "var(--color-text-muted)",
                   margin: 0,
@@ -97,7 +97,7 @@ export default function AboutPage() {
                 style={{
                   fontFamily: "var(--font-sans)",
                   fontWeight: 400,
-                  fontSize: "clamp(16px, 1.5vw, 20px)",
+                  fontSize: "var(--text-body-lg)",
                   lineHeight: 1.75,
                   color: "var(--color-text-muted)",
                   margin: 0,
