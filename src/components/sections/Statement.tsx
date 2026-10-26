@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { motion, useScroll, useSpring, useTransform, MotionValue } from "framer-motion";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -60,7 +61,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
       ref={containerRef}
       style={{
         position:   "relative",
-        height:     "450vh",
+        height:     "300vh",
         zIndex:     10,
         background: "#0a0a0a",
       }}
@@ -219,24 +220,26 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
               willChange: "transform",
             }}
           >
-            <motion.span
-              className={reduceMotion ? undefined : "got-text"}
-              style={{
-                fontFamily:    "var(--font-display)",
-                fontWeight:    800,
-                // Reduced motion: the text can't scroll across, so size it to fit and let it wrap
-                fontSize:      reduceMotion ? "clamp(56px, 13vw, 200px)" : "clamp(180px, 30vw, 450px)",
-                letterSpacing: "-0.04em",
-                color:         gotColor,
-                lineHeight:    1,
-                userSelect:    "none",
-                whiteSpace:    reduceMotion ? "normal" : "nowrap",
-                textAlign:     reduceMotion ? "center" : undefined,
-                paddingLeft:   reduceMotion ? 0 : "4vw",
-              }}
-            >
-              GOT A PROJECT?
-            </motion.span>
+            <Link href="/contact" style={{ color: "inherit", textDecoration: "none" }}>
+              <motion.span
+                className={reduceMotion ? undefined : "got-text"}
+                style={{
+                  fontFamily:    "var(--font-display)",
+                  fontWeight:    800,
+                  // Reduced motion: the text can't scroll across, so size it to fit and let it wrap
+                  fontSize:      reduceMotion ? "clamp(56px, 13vw, 200px)" : "clamp(180px, 30vw, 450px)",
+                  letterSpacing: "-0.04em",
+                  color:         gotColor,
+                  lineHeight:    1,
+                  userSelect:    "none",
+                  whiteSpace:    reduceMotion ? "normal" : "nowrap",
+                  textAlign:     reduceMotion ? "center" : undefined,
+                  paddingLeft:   reduceMotion ? 0 : "4vw",
+                }}
+              >
+                GOT A PROJECT?
+              </motion.span>
+            </Link>
           </motion.div>
         </motion.div>
 

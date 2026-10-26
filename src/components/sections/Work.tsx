@@ -67,7 +67,7 @@ export default function Work() {
       id="work"
       style={{ background: sectionBg, position: 'relative' }}
     >
-      <div ref={titleRef} style={{ minHeight: '300vh', position: 'relative', zIndex: 1 }}>
+      <div ref={titleRef} style={{ minHeight: '180vh', position: 'relative', zIndex: 1 }}>
         <div style={{
           position:       'sticky',
           top:            0,

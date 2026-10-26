@@ -35,7 +35,7 @@ export default function Home() {
   return (
     <main style={{ background: '#f8f8f5', position: 'relative' }}>
 
-      {/* Scroll driver — 400vh for hero animation */}
+      {/* Scroll driver — 300vh for hero animation */}
       <div data-nav-transparent style={{ height: '300vh' }} />
 
       {/* Content */}
