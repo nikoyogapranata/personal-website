@@ -90,6 +90,7 @@ export default function TechExperience() {
           {TECH.map((name, i) => (
             <motion.span
               key={name}
+              data-reveal
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
@@ -146,6 +147,7 @@ export default function TechExperience() {
           {EXPERIENCE.map((item, i) => (
             <motion.div
               key={item.role}
+              data-reveal
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}

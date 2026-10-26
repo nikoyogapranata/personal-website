@@ -50,6 +50,7 @@ export default function ContactPage() {
       >
         {/* ── Title row ── */}
         <motion.div
+          data-reveal
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: EASE }}
@@ -103,6 +104,7 @@ export default function ContactPage() {
         >
           {/* ── LEFT — contact info ── */}
           <motion.div
+            data-reveal
             initial={{ x: -30, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
             viewport={{ once: true }}
@@ -210,6 +212,7 @@ export default function ContactPage() {
 
           {/* ── RIGHT — contact form ── */}
           <motion.div
+            data-reveal
             initial={{ x: 30, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
             viewport={{ once: true }}

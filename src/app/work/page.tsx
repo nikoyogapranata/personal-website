@@ -79,6 +79,7 @@ export default function WorkPage() {
       >
         {/* ── Title row ── */}
         <motion.div
+          data-reveal
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: EASE }}
@@ -139,6 +140,7 @@ export default function WorkPage() {
                 href={project.link}
                 target="_blank"
                 rel="noopener noreferrer"
+                data-reveal
                 initial={{ opacity: 0, y: 36 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
@@ -191,6 +193,7 @@ export default function WorkPage() {
                   }}
                 >
                   <motion.div
+                    initial={false}
                     animate={{
                       scale: isHovered ? 0.95 : 1,
                       filter: isDimmed ? "grayscale(100%)" : "grayscale(0%)",
@@ -212,6 +215,7 @@ export default function WorkPage() {
                     />
 
                     <motion.div
+                      initial={false}
                       animate={{ opacity: isHovered ? 0.22 : 0 }}
                       transition={{ duration: 0.5, ease: EASE }}
                       style={{

@@ -62,7 +62,7 @@ export default function Contact({
               whileInView="visible"
               viewport={{ once: true, amount: 0.3 }}
             >
-              <motion.div
+              <motion.div data-reveal
                 variants={{
                   hidden: { y: "100%", opacity: 0 },
                   visible: { y: 0, opacity: 1 },
@@ -89,6 +89,7 @@ export default function Contact({
         <motion.img
           src="/spark-2.png"
           alt=""
+          data-reveal
           initial={{ opacity: 0, scale: 0.85 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
@@ -107,6 +108,7 @@ export default function Contact({
 
       {/* ── Divider ──────────────────────────────────────────────── */}
       <motion.div
+        data-reveal
         initial={{ scaleX: 0 }}
         whileInView={{ scaleX: 1 }}
         viewport={{ once: true }}
@@ -132,6 +134,7 @@ export default function Contact({
       >
         {/* Col 1 — description */}
         <motion.p
+          data-reveal
           initial={{ x: -30, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
           viewport={{ once: true }}
@@ -151,6 +154,7 @@ export default function Contact({
 
         {/* Col 2 — email & socials */}
         <motion.div
+          data-reveal
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           viewport={{ once: true }}
@@ -199,6 +203,7 @@ export default function Contact({
 
         {/* Col 3 — GET IN TOUCH */}
         <motion.div
+          data-reveal
           initial={{ x: 30, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
           viewport={{ once: true }}

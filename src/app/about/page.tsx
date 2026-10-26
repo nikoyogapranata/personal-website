@@ -21,6 +21,7 @@ export default function AboutPage() {
       >
         {/* ── Title row ── */}
         <motion.div
+          data-reveal
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: EASE }}
@@ -74,6 +75,7 @@ export default function AboutPage() {
         >
           {/* Left — quote + paragraph */}
           <motion.div
+            data-reveal
             initial={{ opacity: 0, y: 36 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
@@ -153,6 +155,7 @@ export default function AboutPage() {
 
           {/* Right — squared hero image */}
           <motion.div
+            data-reveal
             initial={{ opacity: 0, y: 36 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.26, ease: EASE }}

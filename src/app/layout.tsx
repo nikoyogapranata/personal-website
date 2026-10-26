@@ -73,6 +73,10 @@ export default function RootLayout({
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: loaderBootScript }} />
+        {/* Scroll reveals are server-rendered at opacity 0; without JS they'd never appear */}
+        <noscript>
+          <style>{`[data-reveal]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
       </head>
       <body>
         <MotionProvider>

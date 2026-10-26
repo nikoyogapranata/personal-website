@@ -118,6 +118,7 @@ export default function Work() {
               href={project.link}
               target="_blank"
               rel="noopener noreferrer"
+              data-reveal
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
@@ -153,6 +154,7 @@ export default function Work() {
                 </span>
                 <span style={{ position: 'relative', display: 'inline-block' }}>
                   <motion.span
+                    initial={false}
                     animate={{ opacity: isHovered ? 0 : 1 }}
                     transition={{ duration: 0.5, ease: 'easeInOut' }}
                     style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: 'clamp(28px, 4vw, 64px)', letterSpacing: '-0.02em', color: '#f8f8f5', lineHeight: 1.1, display: 'block' }}
@@ -161,6 +163,7 @@ export default function Work() {
                   </motion.span>
                   <motion.span
                     aria-hidden="true"
+                    initial={false}
                     animate={{ opacity: isHovered ? 1 : 0 }}
                     transition={{ duration: 0.8, ease: 'easeInOut' }}
                     style={{ position: 'absolute', top: 0, left: 0, fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 400, fontSize: 'clamp(28px, 4vw, 64px)', letterSpacing: '-0.02em', color: 'var(--color-accent-primary)', lineHeight: 1.1, whiteSpace: 'nowrap' }}
@@ -195,6 +198,7 @@ export default function Work() {
             overflow:      'hidden',
             borderRadius:  4,
           }}
+          initial={false}
           animate={{
             opacity: hoveredId !== null ? 1 : 0,
             scale:   hoveredId !== null ? 1 : 0.85,
@@ -207,6 +211,7 @@ export default function Work() {
           {previewReady && PROJECTS.map(project => (
             <motion.div
               key={project.id}
+              initial={false}
               animate={{ opacity: hoveredId === project.id ? 1 : 0 }}
               transition={{ duration: 0.3 }}
               style={{ position: 'absolute', inset: 0 }}

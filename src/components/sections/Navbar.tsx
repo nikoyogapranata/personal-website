@@ -178,6 +178,7 @@ export default function Navbar() {
           }}
         >
           <motion.div
+            initial={false}
             animate={{ background: menuOpen ? accent : base }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             style={{ height: '1.5px', width: '100%' }}
