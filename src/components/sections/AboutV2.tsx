@@ -61,7 +61,7 @@ function ProgressiveWord({ text, font, index, total, scrollProgress }: Progressi
   const end        = Math.min(start + (1 / total) * 6, 1)
   const finalColor = font === 'serif' ? '#c41e3a' : '#0a0a0a'
 
-  const color = useTransform(scrollProgress, [start, end], ['#cccccc', finalColor])
+  const color = useTransform(scrollProgress, [start, end], ['#a3a3a3', finalColor])
 
   return (
     <motion.span

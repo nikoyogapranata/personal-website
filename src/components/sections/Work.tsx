@@ -166,7 +166,7 @@ export default function Work() {
                     initial={false}
                     animate={{ opacity: isHovered ? 1 : 0 }}
                     transition={{ duration: 0.8, ease: 'easeInOut' }}
-                    style={{ position: 'absolute', top: 0, left: 0, fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 400, fontSize: 'clamp(28px, 4vw, 64px)', letterSpacing: '-0.02em', color: 'var(--color-accent-primary)', lineHeight: 1.1, whiteSpace: 'nowrap' }}
+                    style={{ position: 'absolute', top: 0, left: 0, fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 400, fontSize: 'clamp(28px, 4vw, 64px)', letterSpacing: '-0.02em', color: 'var(--color-accent-primary-light)', lineHeight: 1.1, whiteSpace: 'nowrap' }}
                   >
                     {project.title}
                   </motion.span>
