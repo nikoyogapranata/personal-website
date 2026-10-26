@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Niko Pranata — Portfolio
 
-## Getting Started
+Personal portfolio of Niko Pranata, a CS student and frontend developer based in Yogyakarta, Indonesia.
+Live at **[nikopranata.vercel.app](https://nikopranata.vercel.app)**.
 
-First, run the development server:
+## Stack
+
+- [Next.js 16](https://nextjs.org) (App Router, statically prerendered pages)
+- TypeScript (strict)
+- Framer Motion for scroll-linked and entrance animation; GSAP for the menu marquee (lazy-loaded)
+- Tailwind CSS v4 (base layer)
+- Contact form sent through [Resend](https://resend.com) from a Route Handler
+- Deployed on Vercel
+
+## How it's built
+
+- **Scroll choreography.** The home page is a sequence of pinned scenes driven by `useScroll` and
+  `useTransform`: the hero cards fly apart, the work title shrinks into the project list, and a
+  statement is knocked off-screen by "GOT A PROJECT?".
+- **Reduced motion.** `MotionConfig reducedMotion="user"` covers declarative animations. Scroll-linked
+  scenes branch on a hydration-safe `usePrefersReducedMotion()` hook and crossfade in place instead of
+  moving.
+- **Works without JavaScript.** Entrance reveals are marked `data-reveal`, and a `<noscript>` style
+  shows them, so content is never stuck at `opacity: 0`.
+- **No loader flash.** An inline `<head>` script decides before first paint whether to show the intro
+  loader (first visit per session, never with reduced motion). Any input skips it.
+- **Navbar contrast.** The navbar samples the painted background under itself with
+  `elementsFromPoint`, so it stays readable over animated section colours.
+
+## Getting started
+
+Requires Node 20+ and pnpm (the version is pinned in `package.json`).
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm dev      # http://localhost:3000
+pnpm build    # production build
+pnpm lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The contact form needs these (see `.env.example`). Without them the form shows an error and offers the
+email address instead.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Purpose |
+|---|---|
+| `RESEND_API_KEY` | Resend API key |
+| `CONTACT_EMAIL` | Inbox that receives messages |
+| `CONTACT_FROM` | Optional sender; must be on a domain verified in Resend (defaults to `onboarding@resend.dev`) |
 
-## Learn More
+## Project structure
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+  app/          routes, metadata files (robots, sitemap, share image), /api/contact
+  components/   page sections and UI pieces
+  hooks/        shared hooks (usePrefersReducedMotion)
+  lib/          site constants, metadata helper, loader boot script
+public/         images and fonts
+```

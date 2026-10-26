@@ -36,4 +36,4 @@ Quiet confidence: restrained, nothing wasted, the work speaks for itself. Warm e
 
 ## Accessibility & Inclusion
 
-WCAG AA compliance. Dark-first: dark theme is the designed and intentional state; light mode is a supported alternate. Respect prefers-reduced-motion for all animations.
+WCAG AA compliance. A single designed palette (cream pages with near-black sections); there is no theme switching. Respect prefers-reduced-motion for all animations.
