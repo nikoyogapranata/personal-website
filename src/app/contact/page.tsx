@@ -19,13 +19,13 @@ export default function ContactPage() {
         style={{
           background: "var(--color-bg)",
           minHeight: "100vh",
-          padding: "clamp(110px, 14vw, 180px) clamp(32px, 6vw, 80px) clamp(80px, 10vw, 140px)",
+          padding: "var(--page-top) max(var(--page-x), calc((100% - var(--content-max)) / 2)) var(--section-y)",
         }}
       >
         {/* Smaller than /about and /work: CONTACT is a longer word and must leave room for the asterisk */}
         <PageHeader
           title="CONTACT"
-          fontSize="clamp(80px, 14vw, 220px)"
+          fontSize="calc(var(--text-title) * 0.85)"
           mobileFontSize="clamp(44px, 12vw, 88px)"
         />
 

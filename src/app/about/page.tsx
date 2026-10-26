@@ -14,7 +14,7 @@ export default function AboutPage() {
           background: "var(--color-bg)",
           minHeight: "100vh",
           padding:
-            "clamp(110px, 14vw, 180px) clamp(32px, 6vw, 80px) clamp(80px, 10vw, 140px)",
+            "var(--page-top) max(var(--page-x), calc((100% - var(--content-max)) / 2)) var(--section-y)",
         }}
       >
         <PageHeader title="ABOUT" />

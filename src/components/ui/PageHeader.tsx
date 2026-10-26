@@ -14,9 +14,9 @@ type PageHeaderProps = {
 // Giant display title + asterisk shared by /about, /work and /contact
 export default function PageHeader({
   title,
-  fontSize = "clamp(88px, 17vw, 260px)",
+  fontSize = "var(--text-title)",
   mobileFontSize = "clamp(52px, 16vw, 88px)",
-  marginBottom = "clamp(56px, 7vw, 100px)",
+  marginBottom = "clamp(56px, calc(5.21 * var(--u)), 120px)",
 }: PageHeaderProps) {
   return (
     <Reveal
@@ -53,7 +53,7 @@ export default function PageHeader({
         height={260}
         className="page-spark"
         style={{
-          height: "clamp(64px, 12vw, 180px)",
+          height: "clamp(64px, calc(9.375 * var(--u)), 216px)",
           width: "auto",
           objectFit: "contain",
           flexShrink: 0,

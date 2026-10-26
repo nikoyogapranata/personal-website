@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 const LINK: React.CSSProperties = {
   fontFamily: "var(--font-display)",
   fontWeight: 500,
-  fontSize: "clamp(16px, 1.6vw, 22px)",
+  fontSize: "calc(var(--text-body-lg) * 1.1)",
   color: "var(--color-text)",
   textDecoration: "none",
   display: "inline-flex",
@@ -27,7 +27,7 @@ export default function NotFound() {
           background: "var(--color-bg)",
           minHeight: "100vh",
           padding:
-            "clamp(110px, 14vw, 180px) clamp(32px, 6vw, 80px) clamp(80px, 10vw, 140px)",
+            "var(--page-top) max(var(--page-x), calc((100% - var(--content-max)) / 2)) var(--section-y)",
         }}
       >
         <div
@@ -36,14 +36,14 @@ export default function NotFound() {
             alignItems: "center",
             justifyContent: "space-between",
             gap: 16,
-            marginBottom: "clamp(40px, 5vw, 72px)",
+            marginBottom: "var(--space-xl)",
           }}
         >
           <h1
             style={{
               fontFamily: "var(--font-display)",
               fontWeight: 800,
-              fontSize: "clamp(88px, 17vw, 260px)",
+              fontSize: "var(--text-title)",
               letterSpacing: "-0.04em",
               lineHeight: 1,
               color: "var(--color-text)",
@@ -58,7 +58,7 @@ export default function NotFound() {
             width={260}
             height={260}
             style={{
-              height: "clamp(64px, 12vw, 180px)",
+              height: "clamp(64px, calc(9.375 * var(--u)), 216px)",
               width: "auto",
               flexShrink: 1,
               minWidth: 0,
@@ -71,12 +71,12 @@ export default function NotFound() {
           style={{
             fontFamily: "var(--font-display)",
             fontWeight: 700,
-            fontSize: "clamp(24px, 3vw, 44px)",
+            fontSize: "var(--text-h4)",
             letterSpacing: "-0.02em",
             lineHeight: 1.2,
             color: "var(--color-text)",
             maxWidth: 720,
-            margin: "0 0 clamp(32px, 4vw, 56px)",
+            margin: "0 0 var(--space-l)",
           }}
         >
           This page{" "}
