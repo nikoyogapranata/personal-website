@@ -124,7 +124,7 @@ export default function Navbar() {
       <style>{`
         @media (max-width: 640px) {
           .nav-root { padding: 0 20px !important; }
-          .nav-name, .nav-contact { font-size: 13px !important; letter-spacing: 0.04em !important; }
+          .nav-name, .nav-contact { letter-spacing: 0.04em !important; }
         }
       `}</style>
       <nav
@@ -139,7 +139,7 @@ export default function Navbar() {
           display:             'grid',
           gridTemplateColumns: '1fr auto 1fr',
           alignItems:          'center',
-          height:              64,
+          height:              'var(--nav-h)',
           padding:             '0 40px',
           // Solid once past the hero so content never runs under the links
           background:          surface.color ?? 'transparent',
@@ -164,7 +164,7 @@ export default function Navbar() {
         >
           <span className="nav-name" style={{
             fontFamily:    'var(--font-sans)',
-            fontSize:      18,
+            fontSize:      'var(--text-nav)',
             letterSpacing: '0.06em',
             textTransform: 'uppercase',
             color:         base,
@@ -203,7 +203,7 @@ export default function Navbar() {
           />
           <span style={{
             fontFamily:    'var(--font-sans)',
-            fontSize:      13,
+            fontSize:      'var(--text-label)',
             textTransform: 'uppercase',
             letterSpacing: '0.2em',
             color:         menuOpen ? accent : base,
@@ -223,7 +223,7 @@ export default function Navbar() {
           >
             <span className="nav-contact" style={{
               fontFamily:    'var(--font-sans)',
-              fontSize:      18,
+              fontSize:      'var(--text-nav)',
               textTransform: 'uppercase',
               letterSpacing: '0.06em',
               color:         base,
@@ -269,10 +269,11 @@ export default function Navbar() {
               transition={{ duration: 0.5, ease: EASE }}
               style={{
                 position: 'fixed',
-                top:      64,
+                top:      'var(--nav-h)',
                 left:     0,
                 width:    '100%',
-                height:   'calc(33vh - 0px)',
+                // At high zoom 33vh gets short, so keep room for three rem-sized links
+                height:   'max(33vh, 9rem)',
                 zIndex:   99,
               }}
             >
