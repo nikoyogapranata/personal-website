@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { EMAIL, SOCIAL } from "@/lib/site";
 import { EASE } from "@/lib/motion";
 
@@ -86,9 +87,7 @@ export default function Contact({
           ))}
         </h2>
 
-        <motion.img
-          src="/spark-2.png"
-          alt=""
+        <motion.div
           data-reveal
           initial={{ opacity: 0, scale: 0.85 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -96,14 +95,21 @@ export default function Contact({
           transition={{ duration: 0.9, delay: 0.25, ease: EASE }}
           className="contact-spark"
           style={{
+            position: "relative",
             flexShrink: 0,
-            display: "block",
             height: "calc(var(--text-display) * 1.9)",
-            width: "auto",
-            objectFit: "contain",
-            filter: "none",
+            aspectRatio: "1",
           }}
-        />
+        >
+          {/* 1.9 × --text-display: up to 319px; 56px on phones */}
+          <Image
+            src="/spark-2.png"
+            alt=""
+            fill
+            sizes="(max-width: 640px) 56px, 320px"
+            style={{ objectFit: "contain" }}
+          />
+        </motion.div>
       </div>
 
       {/* ── Divider ──────────────────────────────────────────────── */}
@@ -241,7 +247,7 @@ export default function Contact({
         @media (max-width: 640px) {
           .contact-grid          { grid-template-columns: 1fr !important; gap: 40px !important; }
           .contact-title-line    { font-size: clamp(28px, 9vw, 52px) !important; }
-          .contact-spark         { height: 56px !important; width: 56px !important; object-fit: contain !important; }
+          .contact-spark         { height: 56px !important; width: 56px !important; }
           .contact-cta-col       { justify-content: flex-start !important; }
         }
       `}</style>
