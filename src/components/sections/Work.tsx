@@ -133,10 +133,12 @@ export default function Work() {
                 color:          'inherit',
                 textDecoration: 'none',
               }}
-              onMouseEnter={() => enterRow(project.id)}
-              onMouseLeave={() => setHoveredId(null)}
+              // A tap also fires enter events; touch gets no preview (the link opens a new tab)
+              onPointerEnter={(e) => { if (e.pointerType !== 'touch') enterRow(project.id) }}
+              onPointerLeave={() => setHoveredId(null)}
               onFocus={(e) => {
-                // Keyboard focus: show the same preview, anchored to the row
+                // Keyboard focus: show the same preview, anchored to the row (a tap focuses too)
+                if (!e.currentTarget.matches(':focus-visible')) return
                 const rect = e.currentTarget.getBoundingClientRect()
                 mouseX.set(rect.left + rect.width / 2)
                 mouseY.set(rect.top + rect.height / 2)
@@ -216,7 +218,8 @@ export default function Work() {
                 src={project.image}
                 alt=""
                 fill
-                sizes="(min-width: 1921px) 672px, 560px"
+                // Card is max(280px, min(29.17 × --u, 672px)): 280 on phones, ≤374 up to 1280, then ~29vw
+                sizes="(max-width: 767px) 280px, (max-width: 1280px) 374px, min(29.2vw, 672px)"
                 style={{ objectFit: 'cover', objectPosition: 'center' }}
               />
             </motion.div>
