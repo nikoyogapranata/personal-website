@@ -75,6 +75,41 @@
   --dur-slow: 0.9s;
 }
 
+/* ── Tone ───────────────────────────────────────────────────────
+   ToneProvider (components/ui/Tone.tsx) sets html[data-fg] at the midpoint of each
+   light/dark crossfade. Text on the shared backdrop takes its colour from these. */
+:root {
+  --tone-fg:    var(--color-text);
+  --tone-faint: var(--color-text-faint);
+  --tone-serif: var(--color-accent-secondary);
+}
+:root[data-fg="violet"],
+:root[data-fg="dark"] {
+  --tone-fg:    var(--color-text-inverse);
+  --tone-faint: var(--color-text-faint-inverse);
+}
+/* Crimson fails on violet; cream italic keeps the serif contrast */
+:root[data-fg="violet"] { --tone-serif: var(--color-text-inverse); }
+
+/* A light panel inside a dark tone (the Statement window as it opens) */
+[data-tone-island] {
+  --tone-fg:    var(--color-text);
+  --tone-faint: var(--color-text-faint);
+  --tone-serif: var(--color-accent-secondary);
+}
+
+.tone-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.tone-layer {
+  position: absolute;
+  inset: 0;
+  transition: opacity var(--dur-base) var(--ease-in-out);
+}
+
 /* ── Font tokens ────────────────────────────────────────────────── */
 @theme {
   --font-mono: ui-monospace, "SF Mono", "Cascadia Code", monospace;
@@ -128,8 +163,9 @@
     text-rendering: optimizeLegibility;
   }
 
+  /* No background on body: it would paint over the z-index:-1 tone backdrop.
+     html's background is the page canvas instead. */
   body {
-    background-color: #f8f8f5;
     color: #0a0a0a;
     min-height: 100dvh;
     line-height: 1.6;

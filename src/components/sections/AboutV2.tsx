@@ -57,12 +57,11 @@ interface ProgressiveWordProps {
 }
 
 function ProgressiveWord({ text, font, index, total, scrollProgress }: ProgressiveWordProps) {
-  const start      = (index / total) * 0.5
-  const end        = Math.min(start + (1 / total) * 6, 1)
-  // Literal hex: useTransform interpolates these, which CSS variables can't do (--color-accent-secondary / --color-text)
-  const finalColor = font === 'serif' ? '#c41e3a' : '#0a0a0a'
-
-  const color = useTransform(scrollProgress, [start, end], ['#a3a3a3', finalColor])
+  const start   = (index / total) * 0.5
+  const end     = Math.min(start + (1 / total) * 6, 1)
+  // Words fade up from 36%: on cream that's the #a3a3a3 grey the paragraph used to start from.
+  // Colour comes from the tone tokens, so a word still on screen flips with the backdrop.
+  const opacity = useTransform(scrollProgress, [start, end], [0.36, 1])
 
   return (
     <motion.span
@@ -72,7 +71,8 @@ function ProgressiveWord({ text, font, index, total, scrollProgress }: Progressi
         fontStyle:  font === 'serif' ? 'italic' : 'normal',
         fontSize:   font === 'serif' ? '1.08em' : '1em',
         display:    'inline',
-        color,
+        color:      font === 'serif' ? 'var(--tone-serif)' : 'var(--tone-fg)',
+        opacity,
       }}
     >
       {text}
@@ -92,8 +92,8 @@ export default function AboutV2() {
     <section
       ref={sectionRef}
       id="about"
+      data-tone="light"
       style={{
-        background:     'var(--color-bg)',
         minHeight:      '150vh',
         display:        'flex',
         alignItems:     'center',

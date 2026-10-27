@@ -1,12 +1,17 @@
 "use client";
-import { useRef } from "react";
-import { motion, useScroll, useSpring, useTransform, MotionValue } from "framer-motion";
+import { useRef, useState } from "react";
+import { motion, useMotionValueEvent, useScroll, useSpring, useTransform } from "framer-motion";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { SCROLL_SPRING } from "@/lib/motion";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }) {
+// Tone zones (see page.tsx): light from the top of the 300vh track, dark from 40vh down.
+// A zone switches when it crosses the viewport midline, i.e. at progress (50 + offset) / 200:
+// light at 0.25, as the window finishes opening, and dark at 0.45, as GOT A PROJECT? takes over.
+const DARK_FROM = "40vh";
+
+export default function Statement() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -40,9 +45,11 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
 
   // GOT A PROJECT? enters (collision), then continues scrolling left to reveal full text
   const gotX     = useTransform(smooth, [0.10, 0.75, 1.2], ["120vw", "0vw", "-240vw"]);
-  // Literal hex: interpolated colours can't be CSS variables (--color-bg / --color-bg-dark)
-  const clipBg   = useTransform(smooth, [0.25, 0.60], ["#f8f8f5", "#0a0a0a"]);
-  const gotColor = useTransform(smooth, [0.25, 0.60], ["#0a0a0a", "#f8f8f5"]);
+  // While it opens, the window is a cream panel inside the dark tone from Work. Once the light
+  // tone has taken over the backdrop it goes transparent, so the later switch to dark is the
+  // backdrop's crossfade rather than a scrubbed cream → black blend.
+  const [island, setIsland] = useState(true);
+  useMotionValueEvent(scrollYProgress, "change", (v) => setIsland(v < 0.3));
 
   // Statement gets pushed out — starts moving after GOT A PROJECT? is already mid-screen
   const statX = useTransform(smooth, [0.30, 0.70], ["0vw", "-130vw"]);
@@ -65,9 +72,10 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
         position:   "relative",
         height:     "300vh",
         zIndex:     10,
-        background: "var(--color-bg-dark)",
       }}
     >
+      <div data-tone="light" style={{ position: "absolute", top: 0, left: 0, right: 0, height: DARK_FROM }} />
+      <div data-tone="dark" style={{ position: "absolute", top: DARK_FROM, left: 0, right: 0, bottom: 0 }} />
       <div
         style={{
           position: "sticky",
@@ -77,11 +85,12 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
         }}
       >
         <motion.div
+          data-tone-island={island ? "" : undefined}
           style={{
             position:   "absolute",
             inset:      0,
             clipPath:   reduceMotion ? "none" : clipPath,
-            background: clipBg,
+            background: island ? "var(--color-bg)" : "transparent",
             overflow:   "hidden",
           }}
         >
@@ -107,7 +116,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                     fontWeight:    700,
                     fontSize:      "var(--text-statement)",
                     letterSpacing: "-0.03em",
-                    color:         "var(--color-text)",
+                    color:         "var(--tone-fg)",
                   }}
                 >
                   FROM THE{" "}
@@ -119,7 +128,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                     fontWeight:    400,
                     fontSize:      "var(--text-statement)",
                     letterSpacing: "-0.03em",
-                    color:         "var(--color-accent-secondary)",
+                    color:         "var(--tone-serif)",
                   }}
                 >
                   first pixel
@@ -134,7 +143,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                   fontWeight:    700,
                   fontSize:      "var(--text-statement)",
                   letterSpacing: "-0.03em",
-                  color:         "var(--color-text)",
+                  color:         "var(--tone-fg)",
                 }}
               >
                 TO THE FINAL DEPLOY,
@@ -147,7 +156,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                     fontWeight:    700,
                     fontSize:      "var(--text-statement)",
                     letterSpacing: "-0.03em",
-                    color:         "var(--color-text)",
+                    color:         "var(--tone-fg)",
                   }}
                 >
                   I
@@ -188,7 +197,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                     fontWeight:    700,
                     fontSize:      "var(--text-statement)",
                     letterSpacing: "-0.03em",
-                    color:         "var(--color-text)",
+                    color:         "var(--tone-fg)",
                   }}
                 >
                   HANDLE THE WHOLE{" "}
@@ -200,7 +209,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                     fontWeight:    400,
                     fontSize:      "var(--text-statement)",
                     letterSpacing: "-0.03em",
-                    color:         "var(--color-accent-secondary)",
+                    color:         "var(--tone-serif)",
                   }}
                 >
                   product.
@@ -231,7 +240,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                   // Reduced motion: the text can't scroll across, so size it to fit and let it wrap
                   fontSize:      reduceMotion ? "clamp(3.5rem, calc(10.4167 * var(--u)), 240px)" : "var(--text-poster)",
                   letterSpacing: "-0.04em",
-                  color:         gotColor,
+                  color:         "var(--tone-fg)",
                   lineHeight:    1,
                   userSelect:    "none",
                   whiteSpace:    reduceMotion ? "normal" : "nowrap",
@@ -245,18 +254,6 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
           </motion.div>
         </motion.div>
 
-        {/* Exit dim — driven from page.tsx as Contact slides in */}
-        {exitDim && (
-          <motion.div
-            style={{
-              position:      "absolute",
-              inset:         0,
-              background:    "var(--color-bg-dark)",
-              opacity:       exitDim,
-              pointerEvents: "none",
-            }}
-          />
-        )}
       </div>
     </div>
     </>

@@ -2,7 +2,6 @@
 
 import { useRef } from 'react'
 import { useScroll, useTransform, motion } from 'framer-motion'
-import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import Hero      from '@/components/sections/Hero'
 import AboutV2   from '@/components/sections/AboutV2'
 import Work      from '@/components/sections/Work'
@@ -10,49 +9,22 @@ import Statement from '@/components/sections/Statement'
 import Contact   from '@/components/sections/Contact'
 import Footer    from '@/components/sections/Footer'
 
+// Sections are transparent over the tone backdrop (components/ui/Tone.tsx); each declares its
+// tone with data-tone and the backdrop crossfades as one crosses the middle of the viewport.
 export default function Home() {
-  const reduceMotion = usePrefersReducedMotion()
-  const { scrollYProgress } = useScroll()
-
-  const overlayOpacity    = useTransform(scrollYProgress, [0.3, 0.75], [1, 0])
-  const heroPointerEvents = useTransform(scrollYProgress, (v) => v > 0.6 ? 'none' : 'auto')
-
-  const workRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress: workProgress } = useScroll({
-    target: workRef,
-    offset: ['start end', 'start start'],
+  // The hero animates over its own scroll driver, so other sections' lengths can't shift it
+  const heroRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress: heroProgress } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
   })
-  const aboutY   = useTransform(workProgress, [0, 1], [0, -50])
-  const aboutDim = useTransform(workProgress, [0, 1], [0, 0.55])
-
-  const contactRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress: contactProgress } = useScroll({
-    target: contactRef,
-    offset: ['start end', 'start start'],
-  })
-  const statementDim = useTransform(contactProgress, [0, 1], [0, 0.55])
+  const heroPointerEvents = useTransform(heroProgress, (v) => v > 0.5 ? 'none' : 'auto')
 
   return (
-    <main style={{ background: 'var(--color-bg)', position: 'relative' }}>
+    <main style={{ position: 'relative' }}>
 
-      {/* Fixed layers come first in the DOM so the hero h1 precedes the section h2s;
-          paint order is set by their z-index, not source order */}
-
-      {/* Fixed overlay — fades out during scroll */}
+      {/* Fixed hero comes first in the DOM so its h1 precedes the section h2s */}
       <motion.div style={{
-        position:      'fixed',
-        top:           0,
-        left:          0,
-        width:         '100%',
-        height:        '100vh',
-        zIndex:        5,
-        background:    'var(--color-bg)',
-        opacity:       overlayOpacity,
-        pointerEvents: 'none',
-      }} />
-
-      {/* Hero — fixed on top */}
-      <motion.div data-nav-transparent style={{
         position:      'fixed',
         top:           0,
         left:          0,
@@ -61,41 +33,22 @@ export default function Home() {
         zIndex:        6,
         pointerEvents: heroPointerEvents,
       }}>
-        <Hero />
+        <Hero progress={heroProgress} />
       </motion.div>
 
-      {/* Scroll driver — 300vh for hero animation */}
-      <div data-nav-transparent style={{ height: '300vh' }} />
+      {/* Scroll driver for the hero: About starts arriving as the cards leave */}
+      <div ref={heroRef} data-nav-transparent data-tone="light" style={{ height: '150vh' }} />
 
-      {/* Content */}
-      <div style={{ position: 'relative', zIndex: 10, background: 'var(--color-bg)' }}>
+      <div style={{ position: 'relative', zIndex: 10 }}>
+        <AboutV2 />
+        <Work />
+        <Statement />
 
-        {/* About */}
-        <motion.div style={{ position: 'sticky', top: '-25vh', zIndex: 1, y: reduceMotion ? 0 : aboutY }}>
-          <AboutV2 />
-          <motion.div style={{
-            position:      'absolute',
-            inset:         0,
-            background:    'var(--color-bg-dark)',
-            opacity:       aboutDim,
-            pointerEvents: 'none',
-          }} />
-        </motion.div>
-
-        {/* Work — zIndex 2, dark bg covers About beneath */}
-        <div ref={workRef} style={{ position: 'relative', zIndex: 2, background: 'var(--color-bg-dark)' }}>
-          <Work />
-        </div>
-
-        {/* Statement — receives dim MotionValue so Contact can fade it out */}
-        <Statement exitDim={statementDim} />
-
-        {/* Contact — zIndex 11 so it slides over Statement */}
-        <div ref={contactRef} style={{ position: "relative", zIndex: 11, background: "var(--color-bg-dark)" }}>
+        {/* Opaque, and above Statement, so it covers the pinned GOT A PROJECT? as it slides in */}
+        <div data-tone="dark" style={{ position: 'relative', zIndex: 11, background: 'var(--color-bg-dark)' }}>
           <Contact />
           <Footer />
         </div>
-
       </div>
 
     </main>

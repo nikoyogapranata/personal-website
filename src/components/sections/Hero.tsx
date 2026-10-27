@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  useScroll,
   useTransform,
   motion,
   useMotionValue,
@@ -129,29 +128,29 @@ function HoverPushCard({
 }
 
 /* ── hero ────────────────────────────────────────────────────── */
-export default function Hero() {
+/** progress: 0 → 1 over the hero's scroll driver in page.tsx */
+export default function Hero({ progress }: { progress: MotionValue<number> }) {
   const reduceMotion = usePrefersReducedMotion();
-  const { scrollYProgress } = useScroll();
 
-  const box1Y = useTransform(scrollYProgress, [0, 0.35], ["0%", "-300%"]);
-  const box1X = useTransform(scrollYProgress, [0, 0.35], ["0%", "80%"]);
-  const box1Rotate = useTransform(scrollYProgress, [0, 0.35], [-1.8, -25]);
+  const box1Y = useTransform(progress, [0, 1], ["0%", "-300%"]);
+  const box1X = useTransform(progress, [0, 1], ["0%", "80%"]);
+  const box1Rotate = useTransform(progress, [0, 1], [-1.8, -25]);
 
-  const box2Y = useTransform(scrollYProgress, [0, 0.35], ["0%", "-300%"]);
-  const box2X = useTransform(scrollYProgress, [0, 0.35], ["0%", "-80%"]);
-  const box2Rotate = useTransform(scrollYProgress, [0, 0.35], [1, 20]);
+  const box2Y = useTransform(progress, [0, 1], ["0%", "-300%"]);
+  const box2X = useTransform(progress, [0, 1], ["0%", "-80%"]);
+  const box2Rotate = useTransform(progress, [0, 1], [1, 20]);
 
-  const box3Y = useTransform(scrollYProgress, [0, 0.35], ["0%", "300%"]);
-  const box3X = useTransform(scrollYProgress, [0, 0.35], ["0%", "80%"]);
-  const box3Rotate = useTransform(scrollYProgress, [0, 0.35], [-0.6, -20]);
+  const box3Y = useTransform(progress, [0, 1], ["0%", "300%"]);
+  const box3X = useTransform(progress, [0, 1], ["0%", "80%"]);
+  const box3Rotate = useTransform(progress, [0, 1], [-0.6, -20]);
 
-  const box4Y = useTransform(scrollYProgress, [0, 0.35], ["0%", "300%"]);
-  const box4X = useTransform(scrollYProgress, [0, 0.35], ["0%", "-80%"]);
-  const box4Rotate = useTransform(scrollYProgress, [0, 0.35], [1.4, 25]);
+  const box4Y = useTransform(progress, [0, 1], ["0%", "300%"]);
+  const box4X = useTransform(progress, [0, 1], ["0%", "-80%"]);
+  const box4Rotate = useTransform(progress, [0, 1], [1.4, 25]);
 
-  const heroScale = useTransform(scrollYProgress, [0, 0.35], [1, 4.5]);
-  const heroOpacity = useTransform(scrollYProgress, [0.3, 0.42], [1, 0]);
-  const heroBlur = useTransform(scrollYProgress, [0.26, 0.42], [0, 14]);
+  const heroScale = useTransform(progress, [0, 1], [1, 4.5]);
+  const heroOpacity = useTransform(progress, [0.4, 0.6], [1, 0]);
+  const heroBlur = useTransform(progress, [0.3, 0.6], [0, 14]);
   const heroFilter = useTransform(heroBlur, (b) => `blur(${b}px)`);
 
   return (

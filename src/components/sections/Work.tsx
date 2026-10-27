@@ -40,25 +40,19 @@ export default function Work() {
   // Reduced motion: fade the pinned title out instead of shrinking it
   const titleFade    = useTransform(smoothProgress, [0, 0.85], [1, 0])
 
-  // Literal hex: interpolated colours can't be CSS variables (--color-accent-primary / --color-bg-dark)
-  const sectionBg = useTransform(
-    smoothProgress,
-    [0, 0.45],
-    ['#5b21b6', '#0a0a0a'],
-  )
-
   const mouseX = useMotionValue(0)
   const mouseY = useMotionValue(0)
   const cardX  = useSpring(mouseX, { stiffness: 120, damping: 20, mass: 0.5 })
   const cardY  = useSpring(mouseY, { stiffness: 120, damping: 20, mass: 0.5 })
 
   return (
-    <motion.section
+    <section
       ref={sectionRef}
       id="work"
-      style={{ background: sectionBg, position: 'relative' }}
+      style={{ position: 'relative' }}
     >
-      <div ref={titleRef} style={{ minHeight: '180vh', position: 'relative', zIndex: 1 }}>
+      {/* Violet while the title is large; the list below switches the page to dark */}
+      <div ref={titleRef} data-tone="violet" style={{ minHeight: '180vh', position: 'relative', zIndex: 1 }}>
         <div style={{
           position:       'sticky',
           top:            0,
@@ -75,9 +69,11 @@ export default function Work() {
               fontFamily:    'var(--font-display)',
               fontWeight:    700,
               fontSize:      'var(--text-section)',
-              color:         'var(--color-text-inverse)',
+              color:         'var(--tone-fg)',
               letterSpacing: '-0.03em',
               lineHeight:    1.05,
+              // Own layer, so scaling doesn't re-raster the glyphs every frame
+              willChange:    'transform',
               textAlign:     'center',
               margin:        0,
               scale:         reduceMotion ? 1 : titleScale,
@@ -95,6 +91,7 @@ export default function Work() {
       {/* ── Project list ── */}
       <div
         className="work-list"
+        data-tone="dark"
         style={{ position: 'relative', zIndex: 2, marginTop: '-20vh' }}
         onMouseMove={(e) => {
           mouseX.set(e.clientX)
@@ -146,7 +143,7 @@ export default function Work() {
                     initial={false}
                     animate={{ opacity: isHovered ? 0 : 1 }}
                     transition={{ duration: DURATION.base, ease: EASE_IN_OUT }}
-                    style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: 'var(--text-h2)', letterSpacing: '-0.02em', color: 'var(--color-text-inverse)', lineHeight: 1.1, display: 'block' }}
+                    style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: 'var(--text-h2)', letterSpacing: '-0.02em', color: 'var(--tone-fg)', lineHeight: 1.1, display: 'block' }}
                   >
                     {project.title}
                   </motion.span>
@@ -162,7 +159,7 @@ export default function Work() {
                 </span>
               </div>
               <div style={{ flexShrink: 0 }}>
-                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-label)', color: isHovered ? '#aaa' : 'var(--color-text-faint-inverse)', letterSpacing: '0.05em', transition: 'color var(--dur-fast) var(--ease)' }}>
+                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-label)', color: isHovered ? '#aaa' : 'var(--tone-faint)', letterSpacing: '0.05em', transition: 'color var(--dur-fast) var(--ease)' }}>
                   {project.category}
                 </span>
               </div>
@@ -224,7 +221,7 @@ export default function Work() {
       </div>
 
       {/* ── Bottom CTA ── */}
-      <div style={{
+      <div data-tone="dark" style={{
         display:        'flex',
         justifyContent: 'center',
         padding:        'clamp(40px, calc(4.1667 * var(--u)), 96px) clamp(24px, calc(3.125 * var(--u)), 72px) var(--space-2xl)',
@@ -236,7 +233,7 @@ export default function Work() {
             fontStyle:      'italic',
             fontWeight:     400,
             fontSize:       'var(--text-h3)',
-            color:          'var(--color-text-inverse)',
+            color:          'var(--tone-fg)',
             textDecoration: 'none',
             position:       'relative',
             display:        'inline-block',
@@ -253,7 +250,7 @@ export default function Work() {
             fontWeight:    400,
             letterSpacing: '0.05em',
             verticalAlign: 'super',
-            color:         'var(--color-text-inverse)',
+            color:         'var(--tone-fg)',
             marginLeft:    '0.2em',
           }}>(4)</sup>
           <motion.span
@@ -290,6 +287,6 @@ export default function Work() {
           .work-row  { flex-wrap: wrap; gap: 16px !important; padding: clamp(20px, 3vw, 32px) clamp(16px, 3vw, 30px) !important; }
         }
       `}</style>
-    </motion.section>
+    </section>
   )
 }

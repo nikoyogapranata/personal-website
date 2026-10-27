@@ -6,6 +6,7 @@ import Navbar from "@/components/sections/Navbar";
 import LoadingScreen from "@/components/ui/LoadingScreen";
 import { loaderBootScript } from "@/lib/loader";
 import MotionProvider from "@/components/MotionProvider";
+import ToneProvider from "@/components/ui/Tone";
 import { EMAIL, SITE_URL, SOCIAL } from "@/lib/site";
 import "./globals.css";
 
@@ -99,10 +100,12 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c") }}
         />
         <MotionProvider>
-          <LoadingScreen />
-          <FilmGrain />
-          <Navbar />
-          {children}
+          <ToneProvider>
+            <LoadingScreen />
+            <FilmGrain />
+            <Navbar />
+            {children}
+          </ToneProvider>
         </MotionProvider>
       </body>
     </html>

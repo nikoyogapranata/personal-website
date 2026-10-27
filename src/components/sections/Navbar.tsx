@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
+import { usePathname } from 'next/navigation'
+import { TONE_COLOR, useTone } from '../ui/Tone'
 import { DURATION, EASE, EASE_IN_OUT } from '@/lib/motion'
 
 // FlowingMenu pulls in GSAP; only load it when the menu is about to open
@@ -16,73 +18,45 @@ const menuItems = [
   { link: '/work',  text: 'Work',     image: '/menu-winter.webp' },
 ]
 
-// Relative luminance of a computed `rgb()/rgba()` colour, or null when it's (nearly) transparent
-function luminance(color: string): number | null {
-  const m = color.match(/[\d.]+/g)
-  if (!m || m.length < 3 || (m.length > 3 && Number(m[3]) < 0.5)) return null
-  const [r, g, b] = m.slice(0, 3).map(v => {
-    const c = Number(v) / 255
-    return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4
-  })
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b
-}
-
-type Surface = {
-  dark:  boolean
-  /** Background for the bar, or null to stay transparent (home hero, top of a page) */
-  color: string | null
-}
-
-// What's painted under (x, y)? Skips the navbar itself; pointer-events:none overlays are skipped
-// by hit-testing, and clip-path is respected, so this tracks what's actually visible.
-function surfaceAt(x: number, y: number, ignore: (el: Element) => boolean): Surface {
-  const hit = document.elementsFromPoint(x, y).find(el => !ignore(el)) ?? null
-  const transparent = window.scrollY < 8 || !!hit?.closest('[data-nav-transparent]')
-  for (let el: Element | null = hit; el; el = el.parentElement) {
-    const color = getComputedStyle(el).backgroundColor
-    const l = luminance(color)
-    // 0.18 is where #0a0a0a and #f8f8f5 text have equal contrast, so this picks the more readable one
-    if (l !== null) return { dark: l < 0.18, color: transparent ? null : color }
-  }
-  return { dark: false, color: null }
-}
-
-const sameSurface = (a: Surface, b: Surface) => a.dark === b.dark && a.color === b.color
-
 export default function Navbar() {
   const [menuOpen, setMenuOpen]               = useState(false)
-  const [surface, setSurface]                 = useState<Surface>({ dark: false, color: null })
-  const isDark                                = surface.dark
-  const navRef                                = useRef<HTMLElement>(null)
+  const pathname                              = usePathname()
+  // Same signal as the page backdrop: the bar's surface changes with it, its text at the midpoint
+  const tone                                  = useTone()
+  const isDark                                = tone.fg !== 'light'
+  const [atTop, setAtTop]                     = useState(true)
+  const [overHero, setOverHero]               = useState(false)
   const menuButtonRef                         = useRef<HTMLButtonElement>(null)
   const panelRef                              = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    let frame = 0
-    let sampleUntil = 0
-    const sample = () => {
-      const nav = navRef.current
-      if (nav) {
-        const next = surfaceAt(window.innerWidth / 2, 32, el => nav.contains(el))
-        setSurface(prev => (sameSurface(prev, next) ? prev : next))
-      }
-      // Section backgrounds are spring-driven and keep changing briefly after scrolling stops
-      if (performance.now() < sampleUntil) frame = requestAnimationFrame(sample)
-    }
-    const update = () => {
-      sampleUntil = performance.now() + 800
-      cancelAnimationFrame(frame)
-      frame = requestAnimationFrame(sample)
-    }
-    window.addEventListener('scroll', update, { passive: true })
-    window.addEventListener('resize', update)
-    update()
-    return () => {
-      cancelAnimationFrame(frame)
-      window.removeEventListener('scroll', update)
-      window.removeEventListener('resize', update)
-    }
+    const onScroll = () => setAtTop(window.scrollY < 8)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  // Transparent while a [data-nav-transparent] area (the home hero) is under the bar
+  useEffect(() => {
+    const areas = document.querySelectorAll('[data-nav-transparent]')
+    if (!areas.length) return
+    const under = new Set<Element>()
+    const io = new IntersectionObserver(entries => {
+      for (const e of entries) {
+        if (e.isIntersecting) under.add(e.target)
+        else under.delete(e.target)
+      }
+      setOverHero(under.size > 0)
+    }, { rootMargin: '0px 0px -95% 0px' }) // the top 5% of the viewport, where the bar sits
+    areas.forEach(el => io.observe(el))
+    return () => {
+      io.disconnect()
+      setOverHero(false) // the next page may have no hero
+    }
+  }, [pathname])
+
+  // Solid once past the hero so content never runs under the links
+  const surface = atTop || overHero ? null : TONE_COLOR[tone.bg]
 
   // Escape closes the menu and returns focus to the toggle
   useEffect(() => {
@@ -128,7 +102,6 @@ export default function Navbar() {
         }
       `}</style>
       <nav
-        ref={navRef}
         className="nav-root"
         style={{
           position:            'fixed',
@@ -142,11 +115,15 @@ export default function Navbar() {
           height:              'var(--nav-h)',
           padding:             '0 40px',
           // Solid once past the hero so content never runs under the links
-          background:          surface.color ?? 'transparent',
+          background:          surface ?? 'transparent',
           borderBottom:        `1px solid ${
-            surface.color === null ? 'transparent' : isDark ? 'var(--color-border)' : 'var(--color-border-light)'
+            surface === null ? 'transparent' : isDark ? 'var(--color-border)' : 'var(--color-border-light)'
           }`,
-          transition:          'background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease)',
+          // Matches the backdrop crossfade. Clearing to transparent is instant, so after a route
+          // change the old page's bar doesn't fade out over the new page's top.
+          transition:          surface === null
+            ? 'none'
+            : 'background-color var(--dur-base) var(--ease-in-out), border-color var(--dur-base) var(--ease-in-out)',
         }}
       >
         {/* LEFT — NIKO PRANATA */}
