@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
-import { EASE } from '@/lib/motion'
+import { DURATION, EASE, EASE_IN_OUT } from '@/lib/motion'
 
 // FlowingMenu pulls in GSAP; only load it when the menu is about to open
 const loadFlowingMenu = () => import('../ui/FlowingMenu')
@@ -146,7 +146,7 @@ export default function Navbar() {
           borderBottom:        `1px solid ${
             surface.color === null ? 'transparent' : isDark ? 'var(--color-border)' : 'var(--color-border-light)'
           }`,
-          transition:          'background-color 0.25s ease, border-color 0.25s ease',
+          transition:          'background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease)',
         }}
       >
         {/* LEFT — NIKO PRANATA */}
@@ -169,7 +169,7 @@ export default function Navbar() {
             textTransform: 'uppercase',
             color:         base,
             lineHeight:    1,
-            transition:    'color 0.25s ease',
+            transition:    'color var(--dur-fast) var(--ease)',
           }}>
             Niko Pranata
           </span>
@@ -198,7 +198,7 @@ export default function Navbar() {
           <motion.div
             initial={false}
             animate={{ background: menuOpen ? accent : base }}
-            transition={{ duration: 0.3, ease: EASE }}
+            transition={{ duration: DURATION.fast, ease: EASE }}
             style={{ height: '1.5px', width: '100%' }}
           />
           <span style={{
@@ -208,7 +208,7 @@ export default function Navbar() {
             letterSpacing: '0.2em',
             color:         menuOpen ? accent : base,
             lineHeight:    1,
-            transition:    'color 0.25s ease',
+            transition:    'color var(--dur-fast) var(--ease)',
           }}>
             MENU
           </span>
@@ -228,7 +228,7 @@ export default function Navbar() {
               letterSpacing: '0.06em',
               color:         base,
               lineHeight:    1,
-              transition:    'color 0.25s ease',
+              transition:    'color var(--dur-fast) var(--ease)',
             }}>
               Contact
             </span>
@@ -245,7 +245,7 @@ export default function Navbar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: DURATION.fast, ease: EASE_IN_OUT }}
               onClick={() => setMenuOpen(false)}
               style={{
                 position:       'fixed',
@@ -266,7 +266,7 @@ export default function Navbar() {
               initial={{ y: '-100%' }}
               animate={{ y: 0 }}
               exit={{ y: '-100%' }}
-              transition={{ duration: 0.5, ease: EASE }}
+              transition={{ duration: DURATION.base, ease: EASE }}
               style={{
                 position: 'fixed',
                 top:      'var(--nav-h)',

@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { DURATION, EASE_IN_OUT } from '@/lib/motion'
 
 // Visibility is decided before first paint by loaderBootScript (src/lib/loader.ts)
-const DURATION = 3000
+const COUNT_MS = 3000
 
 const SKIP_EVENTS = ['keydown', 'pointerdown', 'wheel', 'touchstart'] as const
 
@@ -29,7 +30,7 @@ export default function LoadingScreen() {
 
     const tick = (now: number) => {
       if (!start) start = now
-      const progress = Math.min((now - start) / DURATION, 1)
+      const progress = Math.min((now - start) / COUNT_MS, 1)
       setCount(Math.floor(progress * 100))
       if (progress < 1) frame = requestAnimationFrame(tick)
       else timer = window.setTimeout(finish, 300)
@@ -50,7 +51,7 @@ export default function LoadingScreen() {
       aria-hidden="true"
       initial={false}
       animate={{ y: done ? '-100%' : 0 }}
-      transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+      transition={{ duration: DURATION.slow, ease: EASE_IN_OUT }}
       onAnimationComplete={() => {
         if (done) delete document.documentElement.dataset.loader
       }}

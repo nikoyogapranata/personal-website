@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { EMAIL, SOCIAL } from "@/lib/site";
-import { EASE } from "@/lib/motion";
+import { DURATION, EASE, STAGGER, VIEWPORT, reveal } from "@/lib/motion";
 
 const MotionLink = motion.create(Link);
 
@@ -62,14 +62,14 @@ export default function Contact({
               style={{ overflow: "hidden", display: "block" }}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
+              viewport={VIEWPORT}
             >
               <motion.span data-reveal
                 variants={{
                   hidden: { y: "100%", opacity: 0 },
                   visible: { y: 0, opacity: 1 },
                 }}
-                transition={{ duration: 0.8, delay: i * 0.1, ease: EASE }}
+                transition={{ duration: DURATION.slow, delay: i * STAGGER, ease: EASE }}
                 className="contact-title-line"
                 style={{
                   fontFamily: "var(--font-display)",
@@ -88,11 +88,7 @@ export default function Contact({
         </h2>
 
         <motion.div
-          data-reveal
-          initial={{ opacity: 0, scale: 0.85 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.9, delay: 0.25, ease: EASE }}
+          {...reveal({ from: "scale", order: 3, duration: DURATION.slow })}
           className="contact-spark"
           style={{
             position: "relative",
@@ -117,8 +113,8 @@ export default function Contact({
         data-reveal
         initial={{ scaleX: 0 }}
         whileInView={{ scaleX: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.2, ease: EASE }}
+        viewport={VIEWPORT}
+        transition={{ duration: DURATION.slow, delay: 2 * STAGGER, ease: EASE }}
         style={{
           height: "0.5px",
           background: c.divider,
@@ -140,11 +136,7 @@ export default function Contact({
       >
         {/* Col 1 — description */}
         <motion.p
-          data-reveal
-          initial={{ x: -30, opacity: 0 }}
-          whileInView={{ x: 0, opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
+          {...reveal({ from: "left", order: 3 })}
           style={{
             fontFamily: "var(--font-display)",
             fontWeight: 500,
@@ -160,11 +152,7 @@ export default function Contact({
 
         {/* Col 2 — email & socials */}
         <motion.div
-          data-reveal
-          initial={{ y: 20, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.4, ease: EASE }}
+          {...reveal({ order: 4 })}
           style={{
             display: "flex",
             flexDirection: "column",
@@ -182,7 +170,7 @@ export default function Contact({
               target={target}
               rel={target === "_blank" ? "noopener noreferrer" : undefined}
               whileHover={{ x: 8 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: DURATION.fast, ease: EASE }}
               className="hover-accent"
               style={{
                 fontFamily: "var(--font-display)",
@@ -193,7 +181,7 @@ export default function Contact({
                 letterSpacing: "-0.01em",
                 display: "flex",
                 alignItems: "center",
-                transition: "color 0.2s ease",
+                transition: "color var(--dur-fast) var(--ease)",
               }}
             >
               {label}
@@ -203,18 +191,14 @@ export default function Contact({
 
         {/* Col 3 — GET IN TOUCH */}
         <motion.div
-          data-reveal
-          initial={{ x: 30, opacity: 0 }}
-          whileInView={{ x: 0, opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
+          {...reveal({ from: "right", order: 5 })}
           className="contact-cta-col"
           style={{ display: "flex", justifyContent: "flex-end" }}
         >
           <MotionLink
             href="/contact"
             whileHover={{ background: c.ctaHoverBg, color: c.ctaHoverText }}
-            transition={{ duration: 0.22 }}
+            transition={{ duration: DURATION.fast, ease: EASE }}
             style={{
               display: "inline-flex",
               alignItems: "center",

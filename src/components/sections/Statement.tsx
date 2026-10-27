@@ -2,6 +2,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useSpring, useTransform, MotionValue } from "framer-motion";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { SCROLL_SPRING } from "@/lib/motion";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -13,7 +14,7 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
     offset: ["start end", "end end"],
   });
 
-  const springCfg = { stiffness: 60, damping: 18, mass: 0.6 };
+  const springCfg = SCROLL_SPRING;
 
   // Phase 1 (0 → 0.23): clip-path expands — same feel, rescaled for taller container
   const clipTopRaw    = useTransform(scrollYProgress, [0, 0.23], [28, 0]);

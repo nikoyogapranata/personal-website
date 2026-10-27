@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { EASE } from '@/lib/motion'
+import { reveal, STAGGER_TIGHT } from '@/lib/motion'
 
 
 const TECH = [
@@ -88,11 +88,7 @@ export default function TechExperience() {
           {TECH.map((name, i) => (
             <motion.span
               key={name}
-              data-reveal
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.4, delay: i * 0.04 }}
+              {...reveal({ order: i, stagger: STAGGER_TIGHT })}
               style={{ display: 'inline-flex', alignItems: 'baseline' }}
             >
               <span
@@ -103,7 +99,7 @@ export default function TechExperience() {
                   fontSize:      'var(--text-h5)',
                   color:         'var(--color-text)',
                   letterSpacing: '-0.01em',
-                  transition:    'color 0.2s ease',
+                  transition:    'color var(--dur-fast) var(--ease)',
                   cursor:        'default',
                 }}
               >
@@ -144,11 +140,7 @@ export default function TechExperience() {
           {EXPERIENCE.map((item, i) => (
             <motion.div
               key={item.role}
-              data-reveal
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.7, delay: i * 0.1, ease: EASE }}
+              {...reveal({ order: i })}
               style={{
                 display:       'flex',
                 justifyContent:'space-between',

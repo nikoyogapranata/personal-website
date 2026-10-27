@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { PROJECTS } from "@/lib/projects";
-import { EASE } from "@/lib/motion";
+import { DURATION, EASE, reveal } from "@/lib/motion";
 
 const INFO: React.CSSProperties = {
   fontFamily: "var(--font-sans)",
@@ -39,14 +39,7 @@ export default function WorkGrid() {
               href={project.link}
               target="_blank"
               rel="noopener noreferrer"
-              data-reveal
-              initial={{ opacity: 0, y: 36 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.8,
-                delay: 0.12 + i * 0.09,
-                ease: EASE,
-              }}
+              {...reveal({ onMount: true, order: 1 + i })}
               onMouseEnter={() => setHoveredId(project.id)}
               onMouseLeave={() => setHoveredId(null)}
               onFocus={() => setHoveredId(project.id)}
@@ -99,7 +92,7 @@ export default function WorkGrid() {
                     scale: isHovered ? 0.95 : 1,
                     filter: isDimmed ? "grayscale(100%)" : "grayscale(0%)",
                   }}
-                  transition={{ duration: 1.0, ease: EASE }}
+                  transition={{ duration: DURATION.slow, ease: EASE }}
                   style={{ position: "absolute", inset: 0 }}
                 >
                   <Image
@@ -118,7 +111,7 @@ export default function WorkGrid() {
                   <motion.div
                     initial={false}
                     animate={{ opacity: isHovered ? 0.22 : 0 }}
-                    transition={{ duration: 0.5, ease: EASE }}
+                    transition={{ duration: DURATION.base, ease: EASE }}
                     style={{
                       position: "absolute",
                       inset: 0,

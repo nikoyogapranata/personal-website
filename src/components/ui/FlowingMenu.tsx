@@ -3,6 +3,7 @@ import { useRef, useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { gsap } from 'gsap'
+import { DURATION } from '@/lib/motion'
 import './FlowingMenu.css'
 
 interface MenuItemData {
@@ -39,7 +40,8 @@ function MenuItem({
   const animationRef     = useRef<gsap.core.Tween | null>(null)
   const [repetitions, setRepetitions] = useState(4)
 
-  const animationDefaults = { duration: 0.6, ease: 'expo' }
+  // GSAP's expo.out is the closest built-in match to EASE
+  const animationDefaults = { duration: DURATION.base, ease: 'expo.out' }
 
   const distMetric = (x: number, y: number, x2: number, y2: number) =>
     (x - x2) ** 2 + (y - y2) ** 2

@@ -144,7 +144,7 @@ export default function Footer({ theme = "dark" }: { theme?: "dark" | "light" })
                 textDecoration: "none",
                 letterSpacing: "0.04em",
                 textTransform: "uppercase",
-                transition: "color 0.2s ease",
+                transition: "color var(--dur-fast) var(--ease)",
                 "--hover-color": c.linkHover,
               } as React.CSSProperties}
               className="hover-to"

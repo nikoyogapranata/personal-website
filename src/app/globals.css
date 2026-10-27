@@ -65,6 +65,16 @@
   --content-max: 2112px;                                   /* (1920 − 2×80) × 1.2 */
 }
 
+/* ── Motion tokens ──────────────────────────────────────────────
+   Same scale as src/lib/motion.ts; keep the two in sync. */
+:root {
+  --ease:        cubic-bezier(0.16, 1, 0.3, 1);  /* main: anything that arrives */
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1); /* secondary: symmetric changes, crossfades */
+  --dur-fast: 0.25s;
+  --dur-base: 0.6s;
+  --dur-slow: 0.9s;
+}
+
 /* ── Font tokens ────────────────────────────────────────────────── */
 @theme {
   --font-mono: ui-monospace, "SF Mono", "Cascadia Code", monospace;

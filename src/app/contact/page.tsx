@@ -2,7 +2,7 @@ import PageHeader from "@/components/ui/PageHeader";
 import Reveal from "@/components/ui/Reveal";
 import ContactForm from "@/components/sections/ContactForm";
 import Footer from "@/components/sections/Footer";
-import { EASE } from "@/lib/motion";
+import { reveal } from "@/lib/motion";
 import { EMAIL, RESUME_PATH, SOCIAL } from "@/lib/site";
 
 const LINKS = [
@@ -41,10 +41,7 @@ export default function ContactPage() {
         >
           {/* ── LEFT — contact info ── */}
           <Reveal
-            initial={{ x: -30, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: EASE }}
+            {...reveal({ from: "left", order: 1 })}
           >
             {/* Tagline */}
             <p style={{
@@ -102,7 +99,7 @@ export default function ContactPage() {
                     fontWeight: 500,
                     fontSize: "var(--text-body)",
                     color: "var(--color-text)",
-                    transition: "color 0.2s ease, transform 0.2s ease",
+                    transition: "color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease)",
                   }}
                   className="hover-accent hover-nudge"
                 >

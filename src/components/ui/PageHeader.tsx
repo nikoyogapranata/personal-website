@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Reveal from "@/components/ui/Reveal";
-import { EASE } from "@/lib/motion";
+import { DURATION, reveal } from "@/lib/motion";
 
 type PageHeaderProps = {
   title: string;
@@ -20,9 +20,7 @@ export default function PageHeader({
 }: PageHeaderProps) {
   return (
     <Reveal
-      initial={{ opacity: 0, y: 28 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.9, ease: EASE }}
+      {...reveal({ onMount: true, duration: DURATION.slow })}
       style={{
         display: "flex",
         alignItems: "center",

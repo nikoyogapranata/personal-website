@@ -3,7 +3,7 @@ import PageHeader from "@/components/ui/PageHeader";
 import Reveal from "@/components/ui/Reveal";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/sections/Footer";
-import { EASE } from "@/lib/motion";
+import { reveal } from "@/lib/motion";
 import TechExperience from "@/components/sections/TechExperience";
 
 export default function AboutPage() {
@@ -31,9 +31,7 @@ export default function AboutPage() {
         >
           {/* Left — quote + paragraph */}
           <Reveal
-            initial={{ opacity: 0, y: 36 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
+            {...reveal({ onMount: true, order: 1 })}
             style={{ display: "flex", flexDirection: "column", gap: "var(--space-m)" }}
           >
             {/* Big quote */}
@@ -110,9 +108,7 @@ export default function AboutPage() {
 
           {/* Right — squared hero image */}
           <Reveal
-            initial={{ opacity: 0, y: 36 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.26, ease: EASE }}
+            {...reveal({ onMount: true, order: 2 })}
             style={{
               position: "relative",
               aspectRatio: "1 / 1",

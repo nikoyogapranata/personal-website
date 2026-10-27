@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { EASE } from "@/lib/motion";
+import { DURATION, EASE, reveal } from "@/lib/motion";
 import { EMAIL } from "@/lib/site";
 
 // Right column of /contact: the form posts to /api/contact (Resend) and shows sending/error/sent states
@@ -32,11 +32,7 @@ export default function ContactForm() {
 
   return (
     <motion.div
-      data-reveal
-      initial={{ x: 30, opacity: 0 }}
-      whileInView={{ x: 0, opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
+      {...reveal({ from: "right", order: 2 })}
     >
       {status === "sent" ? (
         <div role="status" style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 16 }}>
@@ -163,7 +159,7 @@ export default function ContactForm() {
             type="submit"
             disabled={status === "sending"}
             whileHover={{ backgroundColor: "var(--color-accent-primary)", gap: "1.54em" }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: DURATION.fast, ease: EASE }}
             style={{
               marginTop: 8,
               display: "inline-flex",
@@ -192,7 +188,7 @@ export default function ContactForm() {
         .contact-field {
           border-bottom: 1px solid var(--color-line-strong) !important;
           outline: none;
-          transition: border-color 0.2s ease, box-shadow 0.2s ease;
+          transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
         }
         /* 2px accent underline: visible focus without shifting layout */
         .contact-field:focus-visible {

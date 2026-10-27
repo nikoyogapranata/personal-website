@@ -12,7 +12,7 @@ import {
 } from 'framer-motion'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import { PROJECTS } from '@/lib/projects'
-import { EASE } from '@/lib/motion'
+import { DURATION, EASE, EASE_IN_OUT, SCROLL_SPRING, reveal } from '@/lib/motion'
 
 const MotionLink = motion.create(Link)
 
@@ -33,12 +33,7 @@ export default function Work() {
     offset: ['start start', 'end start'],
   })
 
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 60,
-    damping:   18,
-    mass:      0.4,
-    restDelta: 0.001,
-  })
+  const smoothProgress = useSpring(scrollYProgress, SCROLL_SPRING)
 
   const reduceMotion = usePrefersReducedMotion()
   const titleScale   = useTransform(smoothProgress, [0, 0.85], [1, 0.26])
@@ -114,11 +109,7 @@ export default function Work() {
               href={project.link}
               target="_blank"
               rel="noopener noreferrer"
-              data-reveal
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.6, ease: EASE, delay: (index % 3) * 0.08 }}
+              {...reveal({ order: index % 3 })}
               className="work-row"
               style={{
                 position:       'relative',
@@ -154,7 +145,7 @@ export default function Work() {
                   <motion.span
                     initial={false}
                     animate={{ opacity: isHovered ? 0 : 1 }}
-                    transition={{ duration: 0.5, ease: 'easeInOut' }}
+                    transition={{ duration: DURATION.base, ease: EASE_IN_OUT }}
                     style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: 'var(--text-h2)', letterSpacing: '-0.02em', color: 'var(--color-text-inverse)', lineHeight: 1.1, display: 'block' }}
                   >
                     {project.title}
@@ -163,7 +154,7 @@ export default function Work() {
                     aria-hidden="true"
                     initial={false}
                     animate={{ opacity: isHovered ? 1 : 0 }}
-                    transition={{ duration: 0.8, ease: 'easeInOut' }}
+                    transition={{ duration: DURATION.base, ease: EASE_IN_OUT }}
                     style={{ position: 'absolute', top: 0, left: 0, fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 400, fontSize: 'var(--text-h2)', letterSpacing: '-0.02em', color: 'var(--color-accent-primary-light)', lineHeight: 1.1, whiteSpace: 'nowrap' }}
                   >
                     {project.title}
@@ -171,7 +162,7 @@ export default function Work() {
                 </span>
               </div>
               <div style={{ flexShrink: 0 }}>
-                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-label)', color: isHovered ? '#aaa' : 'var(--color-text-faint-inverse)', letterSpacing: '0.05em', transition: 'color 0.2s ease' }}>
+                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-label)', color: isHovered ? '#aaa' : 'var(--color-text-faint-inverse)', letterSpacing: '0.05em', transition: 'color var(--dur-fast) var(--ease)' }}>
                   {project.category}
                 </span>
               </div>
@@ -202,8 +193,8 @@ export default function Work() {
             scale:   hoveredId !== null ? 1 : 0.85,
           }}
           transition={{
-            opacity: { duration: 0.5, ease: 'easeInOut' },
-            scale:   { duration: 0.3, ease: EASE },
+            opacity: { duration: DURATION.base, ease: EASE_IN_OUT },
+            scale:   { duration: DURATION.fast, ease: EASE },
           }}
         >
           {previewReady && PROJECTS.map(project => (
@@ -211,7 +202,7 @@ export default function Work() {
               key={project.id}
               initial={false}
               animate={{ opacity: hoveredId === project.id ? 1 : 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: DURATION.fast, ease: EASE_IN_OUT }}
               style={{ position: 'absolute', inset: 0 }}
             >
               <Image
@@ -270,7 +261,7 @@ export default function Work() {
               rest:  { scaleX: 0, originX: 0 },
               hover: { scaleX: 1, originX: 0 },
             }}
-            transition={{ duration: 0.4, ease: EASE }}
+            transition={{ duration: DURATION.fast, ease: EASE }}
             style={{
               position:   'absolute',
               bottom:     -4,
