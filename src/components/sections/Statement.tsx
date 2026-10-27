@@ -168,8 +168,8 @@ export default function Statement({ exitDim }: { exitDim?: MotionValue<number> }
                   <Image
                     src="/hero.jpeg"
                     alt=""
-                    width={1200}
-                    height={800}
+                    width={1280}
+                    height={1600}
                     sizes="160px"
                     style={{
                       height:         "100%",
