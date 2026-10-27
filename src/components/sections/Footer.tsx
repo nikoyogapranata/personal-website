@@ -40,8 +40,10 @@ function MarqueeTrack({ textColor }: { textColor: string }) {
       <Image
         src="/spark.png"
         alt=""
-        width={80}
-        height={80}
+        width={370}
+        height={373}
+        // 0.72em of --text-marquee: 72px on phones, 242px at its cap
+        sizes="(max-width: 640px) 72px, 242px"
         style={{
           height: "0.72em",
           width: "auto",
