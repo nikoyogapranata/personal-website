@@ -74,14 +74,18 @@
   font-family: var(--font-serif) !important;
   font-style: italic;
 }
+/* Holds a next/image fill; the sources are 400×160, 2× the desktop pill */
 .marquee__img {
+  position: relative;
+  overflow: hidden;
   width: 200px;
   height: 7vh;
   margin: 2em 2vw;
   padding: 1em 0;
   border-radius: 50px;
-  background-size: cover;
-  background-position: 50% 50%;
+}
+.marquee__img img {
+  object-fit: cover;
 }
 
 @media (max-width: 640px) {

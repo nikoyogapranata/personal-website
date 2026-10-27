@@ -1,6 +1,7 @@
 'use client'
 import { useRef, useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { gsap } from 'gsap'
 import './FlowingMenu.css'
 
@@ -142,10 +143,9 @@ function MenuItem({
                 style={{ color: marqueeTextColor }}
               >
                 <span>{text}</span>
-                <div
-                  className="marquee__img"
-                  style={{ backgroundImage: `url(${image})` }}
-                />
+                <div className="marquee__img">
+                  <Image src={image} alt="" fill sizes="(max-width: 640px) 120px, 200px" />
+                </div>
               </div>
             ))}
           </div>
