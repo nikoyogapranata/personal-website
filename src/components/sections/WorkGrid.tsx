@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { PROJECTS } from "@/lib/projects";
+import { PROJECTS } from "@/data";
 import { DURATION, EASE, reveal } from "@/lib/motion";
 
 const INFO: React.CSSProperties = {
@@ -120,6 +120,48 @@ export default function WorkGrid() {
                     }}
                   />
                 </motion.div>
+              </div>
+
+              {/* ── Description & Tech Stack Badges ── */}
+              <div style={{ marginTop: "clamp(12px, calc(0.8333 * var(--u)), 18px)" }}>
+                <p
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontWeight: 400,
+                    fontSize: "var(--text-small)",
+                    color: "var(--color-text-faint)",
+                    lineHeight: 1.5,
+                    margin: "0 0 10px 0",
+                  }}
+                >
+                  {project.shortDescription || project.description}
+                </p>
+
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "6px 8px",
+                  }}
+                >
+                  {project.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      style={{
+                        fontFamily: "var(--font-sans)",
+                        fontSize: "var(--text-caption)",
+                        color: "var(--color-text-muted)",
+                        background: "rgba(0,0,0,0.03)",
+                        border: "0.5px solid var(--color-border-light)",
+                        padding: "2px 8px",
+                        borderRadius: "2px",
+                        letterSpacing: "0.02em",
+                      }}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
             </motion.a>
           );

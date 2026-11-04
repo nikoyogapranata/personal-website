@@ -5,6 +5,7 @@ import Contact from "@/components/sections/Contact";
 import Footer from "@/components/sections/Footer";
 import { reveal } from "@/lib/motion";
 import TechExperience from "@/components/sections/TechExperience";
+import { PROFILE } from "@/data";
 
 export default function AboutPage() {
   return (
@@ -29,7 +30,7 @@ export default function AboutPage() {
             alignItems: "start",
           }}
         >
-          {/* Left — quote + paragraph */}
+          {/* Left - quote + paragraph */}
           <Reveal
             {...reveal({ onMount: true, order: 1 })}
             style={{ display: "flex", flexDirection: "column", gap: "var(--space-m)" }}
@@ -59,7 +60,7 @@ export default function AboutPage() {
               </p>
             </blockquote>
 
-            {/* Paragraph */}
+            {/* Paragraphs */}
             <div
               style={{
                 display: "flex",
@@ -67,46 +68,25 @@ export default function AboutPage() {
                 gap: "clamp(14px, calc(1.1458 * var(--u)), 26px)",
               }}
             >
-              <p
-                style={{
-                  fontFamily: "var(--font-sans)",
-                  fontWeight: 400,
-                  fontSize: "var(--text-body-lg)",
-                  lineHeight: 1.75,
-                  color: "var(--color-text-muted)",
-                  margin: 0,
-                }}
-              >
-                I&apos;m Niko Pranata, a CS student and frontend developer based in Yogyakarta, Indonesia. I&apos;ve always been drawn to the parts of design that most people never notice: the easing curve on a transition, the spacing between letters, the moment a layout just clicks into place. Those details are what separate something functional from something that actually feels good to use.
-              </p>
-              <p
-                style={{
-                  fontFamily: "var(--font-sans)",
-                  fontWeight: 400,
-                  fontSize: "var(--text-body-lg)",
-                  lineHeight: 1.75,
-                  color: "var(--color-text-muted)",
-                  margin: 0,
-                }}
-              >
-                My work lives at the intersection of design and engineering. I build with Next.js, TypeScript, and Framer Motion, and I bring the same level of care to the code as I do to the visual. Things should work well and feel right. For me those aren&apos;t two separate goals.
-              </p>
-              <p
-                style={{
-                  fontFamily: "var(--font-sans)",
-                  fontWeight: 400,
-                  fontSize: "var(--text-body-lg)",
-                  lineHeight: 1.75,
-                  color: "var(--color-text-muted)",
-                  margin: 0,
-                }}
-              >
-                I&apos;m currently studying Informatics and looking for a frontend web developer internship where I can work on real products, learn from experienced teams, and contribute something that matters.
-              </p>
+              {PROFILE.bio.paragraphs.map((paragraph, index) => (
+                <p
+                  key={index}
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontWeight: 400,
+                    fontSize: "var(--text-body-lg)",
+                    lineHeight: 1.75,
+                    color: "var(--color-text-muted)",
+                    margin: 0,
+                  }}
+                >
+                  {paragraph}
+                </p>
+              ))}
             </div>
           </Reveal>
 
-          {/* Right — squared hero image */}
+          {/* Right - squared hero image */}
           <Reveal
             {...reveal({ onMount: true, order: 2 })}
             style={{
@@ -119,7 +99,7 @@ export default function AboutPage() {
           >
             <Image
               src="/hero.jpeg"
-              alt="Niko Pranata"
+              alt={PROFILE.name}
               fill
               sizes="(max-width: 640px) 100vw, 50vw"
               priority

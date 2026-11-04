@@ -2,45 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { reveal, STAGGER_TIGHT } from '@/lib/motion'
-
-
-const TECH = [
-  // Languages
-  'HTML', 'CSS', 'JavaScript', 'TypeScript',
-  'Python', 'PHP', 'Java', 'Swift',
-  // Frameworks & Libraries
-  'React', 'Next.js', 'Tailwind CSS',
-  'Framer Motion', 'Node.js', 'Express',
-  // Mobile
-  'SwiftUI',
-  // Database & Backend
-  'Supabase', 'Firebase', 'MySQL',
-  'PostgreSQL', 'REST API',
-  // Tools & Design
-  'Figma', 'Git', 'GitHub',
-  'VS Code', 'Xcode', 'Vercel',
-]
-
-const EXPERIENCE = [
-  {
-    role: 'IT Manager',
-    company: 'HelloCation',
-    period: 'Jan 2026 — Present',
-    description: 'Restructured the IT division into specialized squads, led the full redesign of Hellocation.id, and directed a remote team of designers and developers — bridging technical execution with C-level strategy.',
-  },
-  {
-    role: 'Web Developer',
-    company: 'Jamusari',
-    period: 'Aug 2025 — Nov 2025',
-    description: 'Designed and built the Jamusari website end-to-end — from UI concept and asset curation to SEO implementation and launch — using WordPress and Elementor to deliver a maintainable, performant site promoting the Modern Jamu and TOGA conservation initiative.',
-  },
-  {
-    role: 'UI/UX Designer',
-    company: 'HelloCation',
-    period: 'Mar 2024 — Jun 2024',
-    description: 'Redesigned the full HelloCation website across all key pages — modernizing layouts, improving visual hierarchy, and ensuring consistent branding and responsive, user-friendly interfaces throughout using Figma.',
-  },
-]
+import { ALL_SKILLS, EXPERIENCES } from '@/data'
 
 const LABEL: React.CSSProperties = {
   fontFamily:    'var(--font-display)',
@@ -61,7 +23,6 @@ const DIVIDER: React.CSSProperties = {
 }
 
 export default function TechExperience() {
-
   return (
     <section style={{
       background: 'var(--color-bg)',
@@ -85,7 +46,7 @@ export default function TechExperience() {
           gap:        'clamp(16px, calc(1.6667 * var(--u)), 38px) 0',
           alignItems: 'baseline',
         }}>
-          {TECH.map((name, i) => (
+          {ALL_SKILLS.map((name, i) => (
             <motion.span
               key={name}
               {...reveal({ order: i, stagger: STAGGER_TIGHT })}
@@ -105,7 +66,7 @@ export default function TechExperience() {
               >
                 {name}
               </span>
-              {i < TECH.length - 1 && (
+              {i < ALL_SKILLS.length - 1 && (
                 <span style={{
                   color:    'var(--color-accent-primary)',
                   fontSize: 'calc(var(--text-h5) * 1.2857)',
@@ -137,9 +98,9 @@ export default function TechExperience() {
           gap:           0,
           width:         '100%',
         }}>
-          {EXPERIENCE.map((item, i) => (
+          {EXPERIENCES.map((item, i) => (
             <motion.div
-              key={item.role}
+              key={item.id}
               {...reveal({ order: i })}
               style={{
                 display:       'flex',
@@ -148,10 +109,10 @@ export default function TechExperience() {
                 gap:           40,
                 paddingBottom: 'var(--space-l)',
                 paddingTop:    i > 0 ? 'var(--space-l)' : 0,
-                borderBottom:  i < EXPERIENCE.length - 1 ? '0.5px solid var(--color-border-light)' : 'none',
+                borderBottom:  i < EXPERIENCES.length - 1 ? '0.5px solid var(--color-border-light)' : 'none',
               }}
             >
-              {/* Left — role, company, description */}
+              {/* Left - role, company, description */}
               <div className="te-exp-left" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 <span style={{
                   fontFamily:    'var(--font-display)',
@@ -185,7 +146,7 @@ export default function TechExperience() {
                 </p>
               </div>
 
-              {/* Right — period */}
+              {/* Right - period */}
               <span className="te-period" style={{
                 fontFamily:    'var(--font-sans)',
                 fontSize:      'var(--text-caption)',

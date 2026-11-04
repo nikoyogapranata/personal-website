@@ -11,10 +11,12 @@ import {
   useTransform,
 } from 'framer-motion'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
-import { PROJECTS } from '@/lib/projects'
+import { PROJECTS } from '@/data'
 import { DURATION, EASE, EASE_IN_OUT, SCROLL_SPRING, reveal } from '@/lib/motion'
 
 const MotionLink = motion.create(Link)
+
+const MAX_HOMEPAGE_PROJECTS = 5
 
 export default function Work() {
   const sectionRef              = useRef<HTMLElement>(null)
@@ -22,6 +24,9 @@ export default function Work() {
   const [hoveredId, setHoveredId] = useState<number | null>(null)
   // The preview card is fixed and always "in view", so lazy loading alone would fetch every image on page load
   const [previewReady, setPreviewReady] = useState(false)
+
+  // Display max 5 of the newest projects on the homepage
+  const featuredProjects = PROJECTS.slice(0, MAX_HOMEPAGE_PROJECTS)
 
   const enterRow = (id: number) => {
     setHoveredId(id)
@@ -98,7 +103,7 @@ export default function Work() {
           mouseY.set(e.clientY)
         }}
       >
-        {PROJECTS.map((project, index) => {
+        {featuredProjects.map((project, index) => {
           const isHovered = hoveredId === project.id
           return (
             <motion.a
@@ -194,7 +199,7 @@ export default function Work() {
             scale:   { duration: DURATION.fast, ease: EASE },
           }}
         >
-          {previewReady && PROJECTS.map(project => (
+          {previewReady && featuredProjects.map(project => (
             <motion.div
               key={project.id}
               initial={false}
@@ -252,7 +257,7 @@ export default function Work() {
             verticalAlign: 'super',
             color:         'var(--tone-fg)',
             marginLeft:    '0.2em',
-          }}>(4)</sup>
+          }}>({PROJECTS.length})</sup>
           <motion.span
             variants={{
               rest:  { scaleX: 0, originX: 0 },

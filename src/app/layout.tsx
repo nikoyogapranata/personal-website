@@ -32,7 +32,7 @@ const playfairDisplay = Playfair_Display({
 
 const TITLE       = "Niko Pranata | Frontend Web Developer";
 const DESCRIPTION =
-  "CS student and frontend developer. I build interfaces that feel considered — from motion to markup.";
+  "CS student and frontend developer. I build interfaces that feel considered - from motion to markup.";
 
 // Icons and the share image come from the app/ file conventions (icon.png, favicon.ico, opengraph-image.png)
 export const metadata: Metadata = {

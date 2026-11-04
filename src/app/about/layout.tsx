@@ -3,7 +3,7 @@ import { pageMetadata } from "@/lib/metadata";
 export const metadata = pageMetadata(
   "/about",
   "About",
-  "About Niko Pranata, a CS student and frontend developer in Yogyakarta, Indonesia: tech stack, experience and approach to interface work.",
+  "About Niko Pranata, double degree student in Software Engineering (NJXZ, China) & Informatics (UII, Indonesia): tech stack, experience, and approach to interface engineering.",
 );
 
 export default function AboutLayout({ children }: { children: React.ReactNode }) {
