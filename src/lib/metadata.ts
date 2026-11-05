@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-const SHARE_IMAGE = { url: '/opengraph-image.jpg', width: 1200, height: 630, alt: 'Niko Pranata — Frontend Web Developer based in Yogyakarta, Indonesia. Currently open to work.' }
+const SHARE_IMAGE = { url: '/opengraph-image.jpg', width: 1200, height: 630, alt: 'Niko Pranata, Fullstack Web Developer based in Yogyakarta, Indonesia. Currently open to work.' }
 
 /**
  * Metadata for a top-level page. A child segment's openGraph/twitter objects replace the

@@ -6,6 +6,7 @@ import Footer from "@/components/sections/Footer";
 import { reveal } from "@/lib/motion";
 import TechExperience from "@/components/sections/TechExperience";
 import { PROFILE } from "@/data";
+import { RESUME_PATH } from "@/lib/site";
 
 export default function AboutPage() {
   return (
@@ -84,6 +85,27 @@ export default function AboutPage() {
                 </p>
               ))}
             </div>
+
+            <a
+              href={RESUME_PATH}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover-accent hover-nudge"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                textDecoration: "none",
+                fontFamily: "var(--font-display)",
+                fontWeight: 500,
+                fontSize: "var(--text-body)",
+                color: "var(--color-text)",
+                transition: "color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease)",
+              }}
+            >
+              <span aria-hidden="true" style={{ fontSize: "0.85em", opacity: 0.5 }}>↗</span>
+              Download CV
+            </a>
           </Reveal>
 
           {/* Right - squared hero image */}

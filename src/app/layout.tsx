@@ -30,9 +30,9 @@ const playfairDisplay = Playfair_Display({
   display: "swap",
 });
 
-const TITLE       = "Niko Pranata | Frontend Web Developer";
+const TITLE       = "Niko Pranata | Fullstack Web Developer";
 const DESCRIPTION =
-  "CS student and frontend developer. I build interfaces that feel considered - from motion to markup.";
+  "Informatics and Software Engineering student and fullstack web developer. I build interfaces that feel considered, from motion to markup.";
 
 // Icons and the share image come from the app/ file conventions (icon.png, favicon.ico, opengraph-image.png)
 export const metadata: Metadata = {
@@ -71,7 +71,7 @@ const personJsonLd = {
   alternateName: "Niko Pranata",
   url: SITE_URL,
   image: `${SITE_URL}/hero.jpeg`,
-  jobTitle: "Frontend Web Developer",
+  jobTitle: "Fullstack Web Developer",
   email: `mailto:${EMAIL}`,
   address: { "@type": "PostalAddress", addressLocality: "Yogyakarta", addressCountry: "ID" },
   sameAs: [SOCIAL.linkedin, SOCIAL.github],
