@@ -317,7 +317,7 @@ export default function Hero({ progress }: { progress: MotionValue<number> }) {
           {/* Text layout */}
           <div style={{ display: "flex", alignItems: "center", gap: "var(--hero-gap)" }}>
             <span style={{ ...serif(BG), transform: "translateY(var(--hero-lift))" }}>
-              Frontend
+              Fullstack
             </span>
             <span style={{ ...TEXT, color: BG, marginLeft: "var(--hero-gap-xs)" }}>WEB</span>
             <span style={{ ...TEXT, color: BG }}>DEVELOPER</span>

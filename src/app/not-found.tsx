@@ -88,9 +88,9 @@ export default function NotFound() {
               color: "var(--color-accent-secondary)",
             }}
           >
-            doesn&apos;t exist
+            doesn&apos;t exist.
           </span>{" "}
-          — it may have moved, or the link is mistyped.
+          It may have moved, or the link is mistyped.
         </p>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>

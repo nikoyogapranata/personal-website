@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { EMAIL, SOCIAL } from "@/lib/site";
+import { EMAIL, RESUME_PATH, SOCIAL } from "@/lib/site";
 import { DURATION, EASE, STAGGER, VIEWPORT, reveal } from "@/lib/motion";
 
 const MotionLink = motion.create(Link);
@@ -147,7 +147,7 @@ export default function Contact({
           }}
         >
           Open to freelance projects and internships. Based in Yogyakarta and
-          available remotely, I design it, build it, and ship it - end to end.
+          available remotely, I design it, build it, and ship it, end to end.
         </motion.p>
 
         {/* Col 2 — email & socials */}
@@ -163,6 +163,7 @@ export default function Contact({
             { href: `mailto:${EMAIL}`, label: EMAIL },
             { href: SOCIAL.linkedin, label: "LinkedIn", target: "_blank" },
             { href: SOCIAL.github, label: "GitHub", target: "_blank" },
+            { href: RESUME_PATH, label: "Download CV", target: "_blank" },
           ].map(({ href, label, target }) => (
             <motion.a
               key={href}

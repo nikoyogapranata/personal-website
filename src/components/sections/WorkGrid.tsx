@@ -131,10 +131,22 @@ export default function WorkGrid() {
                     fontSize: "var(--text-small)",
                     color: "var(--color-text-faint)",
                     lineHeight: 1.5,
-                    margin: "0 0 10px 0",
+                    margin: "0 0 4px 0",
                   }}
                 >
                   {project.shortDescription || project.description}
+                </p>
+                <p
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontWeight: 400,
+                    fontSize: "var(--text-small)",
+                    color: "var(--color-text-muted)",
+                    lineHeight: 1.5,
+                    margin: "0 0 10px 0",
+                  }}
+                >
+                  {project.contribution}
                 </p>
 
                 <div
