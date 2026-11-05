@@ -7,4 +7,4 @@ export const SOCIAL = {
   github:   'https://github.com/nikoyogapranata',
 } as const
 
-export const RESUME_PATH = '/resume.pdf'
+export const RESUME_PATH = '/cv.pdf'
