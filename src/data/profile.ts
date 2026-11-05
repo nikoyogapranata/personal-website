@@ -44,13 +44,13 @@ export interface Profile {
 export const PROFILE: Profile = {
   name: 'Niko Yoga Pranata',
   preferredName: 'Niko Pranata',
-  title: 'Frontend Web Developer',
-  headline: 'CS student and frontend developer. I build interfaces that feel considered - from motion to markup.',
+  title: 'Fullstack Web Developer',
+  headline: 'Informatics and Software Engineering student and fullstack web developer. I build interfaces that feel considered, from motion to markup.',
   status: 'Open to Work',
-  availability: 'Available for frontend developer internships & freelance collaborations',
+  availability: 'Available for web developer internships & freelance collaborations',
   email: 'nikopranatabusiness@gmail.com',
   siteUrl: 'https://nikopranata.vercel.app',
-  resumePath: '/resume.pdf',
+  resumePath: '/cv.pdf',
   locations: [
     { city: 'Nanjing', country: 'China', label: 'Nanjing, China' },
     { city: 'Yogyakarta', country: 'Indonesia', label: 'Yogyakarta, Indonesia' },
@@ -63,8 +63,8 @@ export const PROFILE: Profile = {
     lead: 'I build interfaces that feel considered, where every detail has a reason.',
     paragraphs: [
       "I'm Niko Pranata, an undergraduate pursuing a Double Degree in Informatics (Islamic University of Indonesia) and Software Engineering (Nanjing Xiaozhuang University, China). I've always been drawn to the parts of design that most people never notice: the easing curve on a transition, the spacing between letters, the moment a layout just clicks into place. Those details are what separate something functional from something that actually feels good to use.",
-      "My work lives at the intersection of design and engineering. I build with Next.js, TypeScript, Tailwind CSS, and Framer Motion, and I bring the same level of care to the code as I do to the visual. Things should work well and feel right. For me those aren't two separate goals.",
-      "I'm currently targeting a frontend web developer internship where I can work on real products, collaborate with experienced engineering teams, and deliver thoughtful user experiences.",
+      "My work lives at the intersection of design and engineering. I build with Next.js, TypeScript, Tailwind CSS, and Framer Motion, and I bring the same level of care to the code as I do to the visual. I also build backends with Node.js, PHP, and PostgreSQL. Things should work well and feel right. For me those aren't two separate goals.",
+      "I'm currently looking for a web developer internship where I can work on real products, collaborate with experienced engineering teams, and deliver thoughtful user experiences.",
     ],
   },
   education: [
