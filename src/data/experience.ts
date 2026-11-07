@@ -162,6 +162,8 @@ export const EXPERIENCES: ExperienceEntry[] = [
 export interface ExperienceCard {
   id: string
   company: string
+  /** Name in the /about index list; defaults to the company */
+  label?: string
   role: string
   /** Earlier roles at the same company, shown as one small line */
   previously?: string
@@ -205,6 +207,7 @@ export const EXPERIENCE_CARDS: ExperienceCard[] = [
   {
     id: 'teaching-assistant',
     company: `${entry('uii').company} · ${entry('integrated-informatics-lab').company}`,
+    label: 'Teaching Assistant',
     role: 'Teaching Assistant',
     // Both roles ran over the same months; joined if that ever changes
     period: ta.period === lab.period ? ta.period : `${ta.period} / ${lab.period}`,

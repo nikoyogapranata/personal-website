@@ -1,4 +1,5 @@
 import StoryHero from "@/components/about/StoryHero";
+import ExperienceStack from "@/components/about/ExperienceStack";
 import TechExperience from "@/components/sections/TechExperience";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/sections/Footer";
@@ -38,6 +39,7 @@ export default function AboutPage() {
           `}</style>
         </section>
 
+        <ExperienceStack />
         <TechExperience />
       </main>
 
