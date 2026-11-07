@@ -1,0 +1,6 @@
+NotoSerifSC-subset.woff2 contains four glyphs (日 惹 南 京) of Noto Serif SC,
+weight 500, subset by the Google Fonts API (text= parameter).
+
+Noto Serif SC: Copyright 2017 Adobe Systems Incorporated (http://www.adobe.com/),
+with Reserved Font Name 'Source'. Licensed under the SIL Open Font License,
+Version 1.1: https://openfontlicense.org
