@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { DURATION, EASE_IN_OUT } from '@/lib/motion'
-import { LOADER_FAILSAFE_MS, LOADER_PENDING, LOADER_RUNNING } from '@/lib/loader'
+import { LOADER_FAILSAFE_MS, LOADER_PENDING, LOADER_RUNNING, LOADER_WATCHDOG_MS } from '@/lib/loader'
 
 // Visibility is decided before first paint by loaderBootScript (src/lib/loader.ts).
 // Count + hold + exit ≈ 2s.
@@ -20,19 +20,31 @@ export default function LoadingScreen() {
 
   useEffect(() => {
     const root = document.documentElement
-    if (root.dataset.loader !== LOADER_PENDING) return
+    // Pending: first run after the boot script. Running: this effect already ran and was cleaned
+    // up before finishing (React Strict Mode's mount → cleanup → mount in dev, or a hot reload).
+    // The cleanup cancelled that run's count, so either way start the intro from scratch.
+    if (root.dataset.loader !== LOADER_PENDING && root.dataset.loader !== LOADER_RUNNING) return
 
-    // The CSS failsafe already hid the loader: JS arrived too late, so don't bring it back
+    // A failsafe already hid the loader: JS arrived too late, so don't bring it back
     if (ref.current && getComputedStyle(ref.current).visibility === 'hidden') {
       delete root.dataset.loader
       return
     }
-    // Taking over: the failsafe rules only match the pending value
+    // Taking over: the pending failsafe stops matching and the running watchdog takes its place
     root.dataset.loader = LOADER_RUNNING
 
     let frame = 0
     let timer = 0
     let start = 0
+
+    // Watchdog: if the intro hasn't exited in time, whatever went wrong, drop the loader and
+    // unlock scrolling. Cleared and re-armed with every (re)start of this effect.
+    const watchdog = window.setTimeout(() => {
+      cancelAnimationFrame(frame)
+      clearTimeout(timer)
+      setDone(true)
+      delete root.dataset.loader
+    }, LOADER_WATCHDOG_MS)
 
     // Any interaction skips the intro
     const finish = () => {
@@ -56,6 +68,7 @@ export default function LoadingScreen() {
     return () => {
       cancelAnimationFrame(frame)
       clearTimeout(timer)
+      clearTimeout(watchdog)
       SKIP_EVENTS.forEach(e => window.removeEventListener(e, finish))
     }
   }, [])
@@ -93,6 +106,17 @@ export default function LoadingScreen() {
         }
         @keyframes loader-failsafe-hide   { to { visibility: hidden; pointer-events: none; } }
         @keyframes loader-failsafe-unlock { to { overflow: visible; } }
+        /* Watchdog: the same release ${LOADER_WATCHDOG_MS / 1000}s after the loader starts running,
+           in case the loader's JS misbehaves or the main thread hangs. Separate keyframe names, so
+           the animation restarts when the attribute switches from pending to running. */
+        html[data-loader="${LOADER_RUNNING}"] .loading-screen {
+          animation: loader-watchdog-hide 0s ${LOADER_WATCHDOG_MS}ms forwards;
+        }
+        html[data-loader="${LOADER_RUNNING}"] body {
+          animation: loader-watchdog-unlock 0s ${LOADER_WATCHDOG_MS}ms forwards;
+        }
+        @keyframes loader-watchdog-hide   { to { visibility: hidden; pointer-events: none; } }
+        @keyframes loader-watchdog-unlock { to { overflow: visible; } }
         .ls-number { font-size: calc(var(--text-marquee) * 2); }
         @media (max-width: 900px) { .ls-number { font-size: 52vw; } }
       `}</style>

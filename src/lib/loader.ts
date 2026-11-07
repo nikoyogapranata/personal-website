@@ -12,6 +12,13 @@ export const LOADER_RUNNING = 'running'
 export const LOADER_FAILSAFE_MS = 4000
 
 /**
+ * Once LoadingScreen is running the intro, it must exit within this long of starting. A JS timer
+ * and a CSS animation both enforce it, so neither a bug in the loader nor a hung main thread can
+ * leave the page covered and unscrollable.
+ */
+export const LOADER_WATCHDOG_MS = 4000
+
+/**
  * Runs in <head> before first paint. Sets html[data-loader] on the first visit of a session,
  * unless the visitor prefers reduced motion. CSS shows the loader only while that attribute
  * exists, so there's no flash of content, and nothing shows when JavaScript is off.
