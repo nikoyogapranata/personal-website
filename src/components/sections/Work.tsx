@@ -86,9 +86,11 @@ export default function Work() {
               transformOrigin: 'center center',
             }}
           >
-            <motion.div style={{ display: 'block' }}>A GLIMPSE OF</motion.div>
-            <motion.div style={{ display: 'block' }}>WHAT I&apos;VE</motion.div>
-            <motion.div style={{ display: 'block' }}>BEEN BUILDING</motion.div>
+            {/* Spans, not divs (headings only take phrasing content). The {" "} keep the
+                words apart in the text; whitespace between block boxes isn't rendered. */}
+            <span style={{ display: 'block' }}>A GLIMPSE OF</span>{' '}
+            <span style={{ display: 'block' }}>WHAT I&apos;VE</span>{' '}
+            <span style={{ display: 'block' }}>BEEN BUILDING</span>
           </motion.h2>
         </div>
       </div>

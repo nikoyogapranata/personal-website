@@ -248,7 +248,9 @@ export default function Hero({ progress }: { progress: MotionValue<number> }) {
             />
           </div>
 
-          {/* Text container — the page's h1 */}
+          {/* Text container — the page's h1. The {" "} give the text real word breaks
+              ("I'm Niko Yoga Pranata"); whitespace between flex items isn't rendered, so the
+              gap still does the visual spacing. TEXT uppercases the display words. */}
           <h1
             style={{
               display: "flex",
@@ -258,11 +260,11 @@ export default function Hero({ progress }: { progress: MotionValue<number> }) {
               font: "inherit",
             }}
           >
-            <span style={{ ...TEXT, color: DARK }}>I&apos;m</span>
-            <span style={{ ...TEXT, color: DARK }}>NIKO</span>
+            <span style={{ ...TEXT, color: DARK }}>I&apos;m</span>{" "}
+            <span style={{ ...TEXT, color: DARK }}>Niko</span>{" "}
             <span style={{ ...TEXT, color: DARK, marginRight: "var(--hero-gap-s)" }}>
-              YOGA
-            </span>
+              Yoga
+            </span>{" "}
             <span style={{ ...serif(DARK), transform: "translateY(var(--hero-lift))" }}>
               Pranata
             </span>
