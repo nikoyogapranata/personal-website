@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, type Variants } from 'framer-motion'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 import { usePathname } from 'next/navigation'
@@ -18,6 +18,17 @@ const menuItems = [
   { link: '/work',  text: 'Work',     image: '/menu-winter.webp' },
 ]
 
+// Menu backdrop and panel. The custom value is true when a navigation closes the menu: the page
+// is under the transition curtain then, so the exit is instant instead of animated.
+const backdropVariants: Variants = {
+  hidden: (instant?: boolean) => ({ opacity: 0, transition: { duration: instant ? 0 : DURATION.fast, ease: EASE_IN_OUT } }),
+  shown:  { opacity: 1, transition: { duration: DURATION.fast, ease: EASE_IN_OUT } },
+}
+const panelVariants: Variants = {
+  hidden: (instant?: boolean) => ({ y: '-100%', transition: { duration: instant ? 0 : DURATION.base, ease: EASE } }),
+  shown:  { y: 0, transition: { duration: DURATION.base, ease: EASE } },
+}
+
 export default function Navbar() {
   const [menuOpen, setMenuOpen]               = useState(false)
   const pathname                              = usePathname()
@@ -30,11 +41,22 @@ export default function Navbar() {
   const panelRef                              = useRef<HTMLDivElement>(null)
 
   // Close the menu when the route changes. With the page transition that happens while the
-  // curtain covers the screen, so the menu is simply gone when the new page is revealed.
+  // curtain covers the screen, and the menu must be gone before the curtain lifts: its 0.6s
+  // slide-up would outlast the reveal and come to rest with its last item (the destination's
+  // name) showing through the transparent navbar. So a navigation close skips the exit animation;
+  // closing with Escape, the backdrop or the toggle keeps it.
   const [menuPath, setMenuPath] = useState(pathname)
+  const [closedByNav, setClosedByNav] = useState(false)
   if (menuPath !== pathname) {
     setMenuPath(pathname)
-    setMenuOpen(false)
+    if (menuOpen) {
+      setMenuOpen(false)
+      setClosedByNav(true)
+    }
+  }
+  const toggleMenu = () => {
+    setClosedByNav(false)
+    setMenuOpen(v => !v)
   }
 
   useEffect(() => {
@@ -166,7 +188,7 @@ export default function Navbar() {
           type="button"
           aria-expanded={menuOpen}
           aria-controls="site-menu"
-          onClick={() => setMenuOpen(v => !v)}
+          onClick={toggleMenu}
           onPointerEnter={loadFlowingMenu}
           onFocus={loadFlowingMenu}
           style={{
@@ -221,16 +243,18 @@ export default function Navbar() {
         </div>
       </nav>
 
-      <AnimatePresence>
+      {/* custom: true when a navigation closed the menu, so it exits instantly (see closedByNav) */}
+      <AnimatePresence custom={closedByNav}>
         {menuOpen && (
           <>
             {/* Backdrop — click to close */}
             <motion.div
               key="backdrop"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: DURATION.fast, ease: EASE_IN_OUT }}
+              custom={closedByNav}
+              variants={backdropVariants}
+              initial="hidden"
+              animate="shown"
+              exit="hidden"
               onClick={() => setMenuOpen(false)}
               style={{
                 position:       'fixed',
@@ -252,10 +276,11 @@ export default function Navbar() {
                 const a = (e.target as Element).closest('a')
                 if (a && new URL(a.href).pathname === pathname) setMenuOpen(false)
               }}
-              initial={{ y: '-100%' }}
-              animate={{ y: 0 }}
-              exit={{ y: '-100%' }}
-              transition={{ duration: DURATION.base, ease: EASE }}
+              custom={closedByNav}
+              variants={panelVariants}
+              initial="hidden"
+              animate="shown"
+              exit="hidden"
               style={{
                 position: 'fixed',
                 top:      'var(--nav-h)',
