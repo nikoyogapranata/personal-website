@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import FilmGrain from "@/components/ui/FilmGrain";
 import Navbar from "@/components/sections/Navbar";
 import LoadingScreen from "@/components/ui/LoadingScreen";
+import PageTransition from "@/components/ui/PageTransition";
 import { loaderBootScript } from "@/lib/loader";
 import MotionProvider from "@/components/MotionProvider";
 import ToneProvider from "@/components/ui/Tone";
@@ -105,6 +106,7 @@ export default function RootLayout({
             <FilmGrain />
             <Navbar />
             {children}
+            <PageTransition />
           </ToneProvider>
         </MotionProvider>
       </body>

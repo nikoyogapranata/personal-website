@@ -75,6 +75,16 @@
   --dur-slow: 0.9s;
 }
 
+/* ── Page transition curtain ────────────────────────────────────
+   PageTransition (components/ui/PageTransition.tsx). Restyle the curtain here, nowhere else. */
+:root {
+  --curtain-bg: var(--color-accent-primary); /* matches the intro loader */
+  --curtain-fg: #ffffff;
+}
+
+/* Headings get programmatic focus after a curtain transition; the ring would only add noise */
+h1[tabindex="-1"]:focus { outline: none; }
+
 /* ── Tone ───────────────────────────────────────────────────────
    ToneProvider (components/ui/Tone.tsx) sets html[data-fg] at the midpoint of each
    light/dark crossfade. Text on the shared backdrop takes its colour from these. */

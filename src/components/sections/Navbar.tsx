@@ -29,6 +29,14 @@ export default function Navbar() {
   const menuButtonRef                         = useRef<HTMLButtonElement>(null)
   const panelRef                              = useRef<HTMLDivElement>(null)
 
+  // Close the menu when the route changes. With the page transition that happens while the
+  // curtain covers the screen, so the menu is simply gone when the new page is revealed.
+  const [menuPath, setMenuPath] = useState(pathname)
+  if (menuPath !== pathname) {
+    setMenuPath(pathname)
+    setMenuOpen(false)
+  }
+
   useEffect(() => {
     const onScroll = () => setAtTop(window.scrollY < 8)
     onScroll()
@@ -238,8 +246,12 @@ export default function Navbar() {
               key="panel"
               id="site-menu"
               ref={panelRef}
-              // Close after following a menu link (client-side navigation keeps the layout mounted)
-              onClick={(e) => { if ((e.target as Element).closest('a')) setMenuOpen(false) }}
+              // A link to the page we're on doesn't navigate, so close here; other links close
+              // the menu through the route change above
+              onClick={(e) => {
+                const a = (e.target as Element).closest('a')
+                if (a && new URL(a.href).pathname === pathname) setMenuOpen(false)
+              }}
               initial={{ y: '-100%' }}
               animate={{ y: 0 }}
               exit={{ y: '-100%' }}
