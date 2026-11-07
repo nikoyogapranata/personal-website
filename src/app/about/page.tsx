@@ -1,143 +1,46 @@
-import Image from "next/image";
-import PageHeader from "@/components/ui/PageHeader";
-import Reveal from "@/components/ui/Reveal";
+import StoryHero from "@/components/about/StoryHero";
+import TechExperience from "@/components/sections/TechExperience";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/sections/Footer";
-import { reveal } from "@/lib/motion";
-import TechExperience from "@/components/sections/TechExperience";
 import { PROFILE } from "@/data";
 import { RESUME_PATH } from "@/lib/site";
 
+// Sections sit on the tone backdrop (components/ui/Tone.tsx), so main stays transparent
 export default function AboutPage() {
   return (
     <>
-      <main
-        style={{
-          background: "var(--color-bg)",
-          minHeight: "100vh",
-          padding:
-            "var(--page-top) max(var(--page-x), calc((100% - var(--content-max)) / 2)) var(--section-y)",
-        }}
-      >
-        <PageHeader title="ABOUT" />
+      <main>
+        <StoryHero />
 
-        {/* ── Two-column section ── */}
-        <div
-          className="about-body"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "clamp(32px, calc(3.3333 * var(--u)), 77px)",
-            alignItems: "start",
-          }}
-        >
-          {/* Left - quote + paragraph */}
-          <Reveal
-            {...reveal({ onMount: true, order: 1 })}
-            style={{ display: "flex", flexDirection: "column", gap: "var(--space-m)" }}
-          >
-            {/* Big quote */}
-            <blockquote
-              style={{
-                margin: 0,
-                padding: 0,
-              }}
-            >
-              <p
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 700,
-                  fontSize: "var(--text-h3)",
-                  letterSpacing: "-0.03em",
-                  lineHeight: 1.1,
-                  color: "var(--color-text)",
-                  margin: 0,
-                }}
-              >
-                I build interfaces that feel{" "}
-                <span style={{ fontFamily: "var(--font-serif)", fontStyle: "italic", fontWeight: 400, color: "var(--color-accent-secondary)" }}>considered,</span>
-                {" "}where every detail has a{" "}
-                <span style={{ fontFamily: "var(--font-serif)", fontStyle: "italic", fontWeight: 400, color: "var(--color-accent-secondary)" }}>reason.</span>
-              </p>
-            </blockquote>
+        {/* The short bio, at reading size */}
+        <section className="about-bio" data-tone="light" aria-label="Bio">
+          <p>{PROFILE.bio.short}</p>
+          <a href={RESUME_PATH} target="_blank" rel="noopener noreferrer" className="hover-accent hover-nudge about-cv">
+            <span aria-hidden="true">↗</span> Download CV
+          </a>
+          <style>{`
+            .about-bio {
+              padding: var(--section-y) max(var(--page-x), calc((100% - var(--content-max)) / 2));
+              display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-m);
+            }
+            .about-bio p {
+              margin: 0; max-width: 38rem;
+              font-family: var(--font-sans); font-size: var(--text-body-lg); line-height: 1.75;
+              color: var(--color-text-muted);
+            }
+            .about-cv {
+              display: inline-flex; align-items: center; gap: 12px; text-decoration: none;
+              font-family: var(--font-display); font-weight: 500; font-size: var(--text-body);
+              color: var(--color-text);
+              transition: color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+            }
+            .about-cv span { font-size: 0.85em; opacity: 0.5; }
+          `}</style>
+        </section>
 
-            {/* Paragraphs */}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "clamp(14px, calc(1.1458 * var(--u)), 26px)",
-              }}
-            >
-              {PROFILE.bio.paragraphs.map((paragraph, index) => (
-                <p
-                  key={index}
-                  style={{
-                    fontFamily: "var(--font-sans)",
-                    fontWeight: 400,
-                    fontSize: "var(--text-body-lg)",
-                    lineHeight: 1.75,
-                    color: "var(--color-text-muted)",
-                    margin: 0,
-                  }}
-                >
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-
-            <a
-              href={RESUME_PATH}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover-accent hover-nudge"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 12,
-                textDecoration: "none",
-                fontFamily: "var(--font-display)",
-                fontWeight: 500,
-                fontSize: "var(--text-body)",
-                color: "var(--color-text)",
-                transition: "color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease)",
-              }}
-            >
-              <span aria-hidden="true" style={{ fontSize: "0.85em", opacity: 0.5 }}>↗</span>
-              Download CV
-            </a>
-          </Reveal>
-
-          {/* Right - squared hero image */}
-          <Reveal
-            {...reveal({ onMount: true, order: 2 })}
-            style={{
-              position: "relative",
-              aspectRatio: "1 / 1",
-              overflow: "hidden",
-              borderRadius: "12px",
-              background: "#e8e8e5",
-            }}
-          >
-            <Image
-              src="/hero.jpeg"
-              alt={PROFILE.name}
-              fill
-              sizes="(max-width: 640px) 100vw, 50vw"
-              priority
-              style={{ objectFit: "cover", objectPosition: "center top" }}
-            />
-          </Reveal>
-        </div>
-
-        <style>{`
-          @media (max-width: 640px) {
-            .about-body  { grid-template-columns: 1fr !important; }
-          }
-        `}</style>
+        <TechExperience />
       </main>
 
-      <TechExperience />
       <Contact theme="light" />
       <Footer theme="light" />
     </>

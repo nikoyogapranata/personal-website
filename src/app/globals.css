@@ -75,6 +75,18 @@
   --dur-slow: 0.9s;
 }
 
+/* ── Objects ────────────────────────────────────────────────────
+   Editorial text and layout; "objects" (cards, chips) are brutalist: ink border, hard offset
+   shadow, accent fill. Used by /about; other pages keep their own values for now. */
+:root {
+  --border-ink:   1.5px solid var(--color-text);
+  --shadow-card:  6px 6px 0 var(--color-text);
+  --shadow-chip:  3px 3px 0 var(--color-text);
+  --radius-sm:    4px;
+  --radius-md:    12px;
+  --radius-pill:  999px;
+}
+
 /* ── Page transition curtain ────────────────────────────────────
    PageTransition (components/ui/PageTransition.tsx). Restyle the curtain here, nowhere else. */
 :root {
