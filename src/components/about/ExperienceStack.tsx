@@ -127,7 +127,8 @@ const CSS = `
 .xp-list li.is-active { font-weight: 700; color: var(--color-text); }
 .xp-now { font-family: var(--font-serif); font-style: italic; font-weight: 400; font-size: 0.85em; color: var(--color-accent-secondary); }
 .xp-count { margin: 0; font-family: var(--font-display); font-weight: 700; line-height: 1; letter-spacing: -0.04em; }
-.xp-count-now { font-size: var(--text-section); color: var(--color-text); }
+/* Fixed box: Clash digits differ in width ("01" 1.13em … "04" 1.46em), so the "/ 04" would jump */
+.xp-count-now { display: inline-block; width: 1.5em; font-size: var(--text-section); color: var(--color-text); }
 .xp-count-of  { font-size: var(--text-h3); color: var(--color-text-faint); }
 
 .xp-stage {

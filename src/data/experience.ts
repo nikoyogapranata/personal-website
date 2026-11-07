@@ -168,7 +168,7 @@ export interface ExperienceCard {
   /** Earlier roles at the same company, shown as one small line */
   previously?: string
   period: string
-  /** One line for the card. For now: the first sentence of the role's description */
+  /** One line for the card. TODO(copy): for now, the first sentence of the role's description */
   summary: string
   skills: string[]
 }

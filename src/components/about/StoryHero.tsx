@@ -9,6 +9,8 @@ import aboutHero from '../../../public/about-hero.jpg'
 /* ── The photo ──────────────────────────────────────────────────
    To change it, replace public/about-hero.jpg (any aspect ratio; landscape suits frame C best).
    Its size is read at build time. Crop and frame-A size are set here and nowhere else. */
+// TODO(photo): about-hero.jpg is a copy of the 1280×1600 portrait (hero.jpeg). Frame C fills the screen,
+// so it is enlarged ~2.3× at 2560px. Replace with a landscape photo at least 2560px wide.
 const PHOTO = {
   src: aboutHero,
   alt: 'Portrait of Niko Pranata',
@@ -296,8 +298,9 @@ const CSS = `
 .story-gray .story-img { filter: grayscale(1); }
 .story-dark, .story-shade { position: absolute; inset: 0; pointer-events: none; }
 .story-dark { background: #000; }
-/* Frame C: only the bottom third is darkened, under the closing line */
-.story-shade { background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.72) 22%, rgba(0,0,0,0) 36%); }
+/* Frame C: only the bottom third is darkened, under the closing line. 0.8 keeps the light-violet
+   line above 3:1 over a white shirt even with the film grain on top */
+.story-shade { background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.8) 22%, rgba(0,0,0,0) 36%); }
 
 .story-bio {
   position: absolute;
