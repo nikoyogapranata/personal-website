@@ -168,7 +168,10 @@ export interface ExperienceCard {
   /** Earlier roles at the same company, shown as one small line */
   previously?: string
   period: string
-  /** One line for the card. TODO(copy): for now, the first sentence of the role's description */
+  /**
+   * One line for the card. Written for Kelas Kampus and Teaching Assistant; TODO(copy): HelloCation
+   * and Jamusari still use the first sentence of the role's description
+   */
   summary: string
   skills: string[]
 }
@@ -202,7 +205,9 @@ const lab = entry('integrated-informatics-lab').roles[0]
 
 export const EXPERIENCE_CARDS: ExperienceCard[] = [
   card('hellocation'),
-  card('kelas-kampus'),
+  card('kelas-kampus', {
+    summary: 'Rebuilt the front end as reusable components, connected it to REST APIs, and built the design system behind it.',
+  }),
   card('jamusari'),
   {
     id: 'teaching-assistant',
@@ -211,7 +216,7 @@ export const EXPERIENCE_CARDS: ExperienceCard[] = [
     role: 'Teaching Assistant',
     // Both roles ran over the same months; joined if that ever changes
     period: ta.period === lab.period ? ta.period : `${ta.period} / ${lab.period}`,
-    summary: firstSentence(ta.description),
+    summary: 'Ran weekly Data Structures and Algorithms labs for 30+ students and graded coding assignments for the Software Engineering course.',
     skills: [...new Set([...(ta.skills ?? []), ...(lab.skills ?? [])])],
   },
 ]

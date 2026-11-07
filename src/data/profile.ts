@@ -39,7 +39,7 @@ export interface Profile {
   bio: {
     lead: string
     paragraphs: string[]
-    /** ~60 words, trimmed from `paragraphs`: the reading-size block on /about */
+    /** About 70 words: the reading-size bio block on /about */
     short: string
     /** One-liner beside the photo at the top of /about */
     tagline: string
@@ -78,7 +78,7 @@ export const PROFILE: Profile = {
       "My work lives at the intersection of design and engineering. I build with Next.js, TypeScript, Tailwind CSS, and Framer Motion, and I bring the same level of care to the code as I do to the visual. I also build backends with Node.js, PHP, and PostgreSQL. Things should work well and feel right. For me those aren't two separate goals.",
       "I'm currently looking for a web developer internship where I can work on real products, collaborate with experienced engineering teams, and deliver thoughtful user experiences.",
     ],
-    short: "My work lives at the intersection of design and engineering. I build with Next.js, TypeScript, Tailwind CSS, and Framer Motion, and I also build backends with Node.js, PHP, and PostgreSQL. Things should work well and feel right. I'm currently looking for a web developer internship where I can work on real products and deliver thoughtful user experiences.",
+    short: "I got into tech by fixing Zoom calls and running live streams at HelloCation. Since then I've redesigned their pages in Figma, built a client's website end to end, and now lead the IT team there. That path taught me to care about the whole product: how it looks, how it's built, and who maintains it after launch. Right now I'm looking for a web development internship on a team that ships real products.",
     tagline: "a developer with a designer's eye",
     story: [
       { text: 'A ' }, { text: 'developer ' }, { text: 'with ' }, { text: 'a ' },

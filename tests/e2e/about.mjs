@@ -307,8 +307,9 @@ function watchMatter(p) {
     const stops = []
     for (let i = 0; i < 40; i++) {
       await p.keyboard.press('Tab')
-      // Focus scrolls the element into view; sections that fade in on entering need their reveal (0.6–0.9s)
-      await p.waitForTimeout(1000)
+      // Two frames, far short of a 0.6–0.9s reveal: focused links must already be shown (Contact
+      // reveals its column on focus)
+      await p.evaluate(() => new Promise(res => requestAnimationFrame(() => requestAnimationFrame(res))))
       const s = await p.evaluate(() => {
         const a = document.activeElement
         if (!a || a === document.body) return null

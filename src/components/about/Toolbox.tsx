@@ -130,7 +130,8 @@ const CSS = `
   margin: 0; font-family: var(--font-display); font-weight: 700; font-size: var(--text-section);
   line-height: 0.9; letter-spacing: -0.04em; text-transform: uppercase; color: var(--color-text);
 }
-.tb-line { margin: 0.4em 0 0; font-family: var(--font-serif); font-style: italic; font-size: var(--text-h4); color: var(--color-accent-secondary); }
+/* Only where the chips can actually be thrown: shown by the physics media query below */
+.tb-line { display: none; margin: 0.4em 0 0; font-family: var(--font-serif); font-style: italic; font-size: var(--text-h4); color: var(--color-accent-secondary); }
 .tb-legend {
   list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, auto); gap: 8px 28px;
   font-family: var(--font-sans); font-size: var(--text-small); color: var(--color-text-muted);
@@ -162,6 +163,7 @@ const CSS = `
 
 /* Physics: a fixed-height arena (set before JS, so nothing shifts when it loads) */
 @media ${PHYSICS_QUERY} {
+  .tb-line { display: block; }
   .tb-arena { height: clamp(380px, 52svh, 560px); overflow: hidden; border-bottom: var(--border-ink); }
   .tb-chips[data-mode="physics"] { cursor: grab; }
   .tb-chips[data-mode="physics"] .chip { will-change: transform; }
