@@ -1,20 +1,34 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { DURATION, EASE_IN_OUT } from '@/lib/motion'
+import { LOADER_FAILSAFE_MS, LOADER_PENDING, LOADER_RUNNING } from '@/lib/loader'
 
-// Visibility is decided before first paint by loaderBootScript (src/lib/loader.ts)
-const COUNT_MS = 3000
+// Visibility is decided before first paint by loaderBootScript (src/lib/loader.ts).
+// Count + hold + exit ≈ 2s.
+const COUNT_MS = 1400
+const HOLD_MS  = 100
 
 const SKIP_EVENTS = ['keydown', 'pointerdown', 'wheel', 'touchstart'] as const
 
 export default function LoadingScreen() {
-  const [count, setCount] = useState(0)
+  // null until the count starts, so the server HTML never contains a number
+  const [count, setCount] = useState<number | null>(null)
   const [done,  setDone]  = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (document.documentElement.dataset.loader !== '1') return
+    const root = document.documentElement
+    if (root.dataset.loader !== LOADER_PENDING) return
+
+    // The CSS failsafe already hid the loader: JS arrived too late, so don't bring it back
+    if (ref.current && getComputedStyle(ref.current).visibility === 'hidden') {
+      delete root.dataset.loader
+      return
+    }
+    // Taking over: the failsafe rules only match the pending value
+    root.dataset.loader = LOADER_RUNNING
 
     let frame = 0
     let timer = 0
@@ -33,11 +47,12 @@ export default function LoadingScreen() {
       const progress = Math.min((now - start) / COUNT_MS, 1)
       setCount(Math.floor(progress * 100))
       if (progress < 1) frame = requestAnimationFrame(tick)
-      else timer = window.setTimeout(finish, 300)
+      else timer = window.setTimeout(finish, HOLD_MS)
     }
 
     SKIP_EVENTS.forEach(e => window.addEventListener(e, finish, { passive: true }))
-    frame = requestAnimationFrame(tick)
+    // Hydrated late (slow connection): skip the count and go straight to the exit
+    frame = requestAnimationFrame(performance.now() > LOADER_FAILSAFE_MS - COUNT_MS ? finish : tick)
     return () => {
       cancelAnimationFrame(frame)
       clearTimeout(timer)
@@ -47,11 +62,12 @@ export default function LoadingScreen() {
 
   return (
     <motion.div
+      ref={ref}
       className="loading-screen"
       aria-hidden="true"
       initial={false}
       animate={{ y: done ? '-100%' : 0 }}
-      transition={{ duration: DURATION.slow, ease: EASE_IN_OUT }}
+      transition={{ duration: DURATION.base, ease: EASE_IN_OUT }}
       onAnimationComplete={() => {
         if (done) delete document.documentElement.dataset.loader
       }}
@@ -66,6 +82,17 @@ export default function LoadingScreen() {
         .loading-screen { display: none; }
         html[data-loader] .loading-screen { display: block; }
         html[data-loader] body { overflow: hidden; }
+        /* Failsafe: if JS hasn't taken over (data-loader still "${LOADER_PENDING}") after
+           ${LOADER_FAILSAFE_MS / 1000}s, hide the loader and unlock scrolling. Pure CSS, so it works
+           when the app bundle is slow, blocked or throws. */
+        html[data-loader="${LOADER_PENDING}"] .loading-screen {
+          animation: loader-failsafe-hide 0s ${LOADER_FAILSAFE_MS}ms forwards;
+        }
+        html[data-loader="${LOADER_PENDING}"] body {
+          animation: loader-failsafe-unlock 0s ${LOADER_FAILSAFE_MS}ms forwards;
+        }
+        @keyframes loader-failsafe-hide   { to { visibility: hidden; pointer-events: none; } }
+        @keyframes loader-failsafe-unlock { to { overflow: visible; } }
         .ls-number { font-size: calc(var(--text-marquee) * 2); }
         @media (max-width: 900px) { .ls-number { font-size: 52vw; } }
       `}</style>
