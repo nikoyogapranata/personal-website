@@ -47,12 +47,21 @@ const label: Variants = {
 
 const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-/** Move focus to the new page's heading, so keyboard and screen-reader users start at the top */
-function focusHeading() {
-  const h1 = document.querySelector<HTMLElement>('main h1') ?? document.querySelector<HTMLElement>('h1')
-  if (!h1) return
-  if (!h1.hasAttribute('tabindex')) h1.setAttribute('tabindex', '-1')
-  h1.focus({ preventScroll: true })
+/** The element a URL's #hash points at, if it exists on the current page */
+function hashTarget(hash: string) {
+  if (!hash || hash === '#') return null
+  return document.getElementById(decodeURIComponent(hash.slice(1)))
+}
+
+/**
+ * Focus where the visitor lands, so keyboard and screen-reader users continue from there:
+ * the #hash target if there is one, otherwise the new page's heading.
+ */
+function focusLanding(target: HTMLElement | null) {
+  const el = target ?? document.querySelector<HTMLElement>('main h1') ?? document.querySelector<HTMLElement>('h1')
+  if (!el) return
+  if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1')
+  el.focus({ preventScroll: true })
 }
 
 export default function PageTransition() {
@@ -70,15 +79,23 @@ export default function PageTransition() {
     setPhase(next)
   }, [])
 
-  // The new page is in place (or we gave up waiting): reset scroll, then uncover it
-  const uncover = useCallback(() => {
+  // The new page is in place (or we gave up waiting): position it, then uncover it.
+  // `fromHistory`: back/forward took over, so leave the browser's scroll restoration alone.
+  const uncover = useCallback((fromHistory = false) => {
     if (phaseRef.current !== 'covered') return
     window.clearTimeout(timeout.current)
+    const target = pending.current
     pending.current = null
-    window.scrollTo(0, 0)
+    let anchor: HTMLElement | null = null
+    if (!fromHistory) {
+      // Land on the #hash target if the link had one, otherwise at the top
+      anchor = target ? hashTarget(new URL(target, location.href).hash) : null
+      if (anchor) anchor.scrollIntoView()
+      else window.scrollTo(0, 0)
+    }
     // Two frames: the new page lays out and the tone backdrop picks its colour before the reveal
     requestAnimationFrame(() => requestAnimationFrame(() => {
-      focusHeading()
+      if (!fromHistory) focusLanding(anchor)
       go('reveal')
     }))
   }, [go])
@@ -113,7 +130,7 @@ export default function PageTransition() {
     const onPopState = () => {
       if (phaseRef.current === 'idle' || phaseRef.current === 'reveal') return
       pending.current = null
-      if (phaseRef.current === 'covered') uncover()
+      if (phaseRef.current === 'covered') uncover(true)
     }
 
     document.addEventListener('click', onClick, true)
@@ -136,7 +153,7 @@ export default function PageTransition() {
       go('covered')
       const target = pending.current
       if (!target) return uncover() // cancelled by back/forward while covering
-      timeout.current = window.setTimeout(uncover, NAV_TIMEOUT_MS)
+      timeout.current = window.setTimeout(() => uncover(), NAV_TIMEOUT_MS)
       router.push(target)
     } else if (variant === 'reveal' && phaseRef.current === 'reveal') {
       go('idle')

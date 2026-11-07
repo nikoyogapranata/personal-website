@@ -82,8 +82,9 @@
   --curtain-fg: #ffffff;
 }
 
-/* Headings get programmatic focus after a curtain transition; the ring would only add noise */
-h1[tabindex="-1"]:focus { outline: none; }
+/* Headings and #hash targets get programmatic focus after a curtain transition; the ring would
+   only add noise */
+:where(h1, section)[tabindex="-1"]:focus { outline: none; }
 
 /* ── Tone ───────────────────────────────────────────────────────
    ToneProvider (components/ui/Tone.tsx) sets html[data-fg] at the midpoint of each
