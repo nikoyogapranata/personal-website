@@ -43,3 +43,6 @@ next-env.d.ts
 
 # Claude Code machine-local settings
 .claude/settings.local.json
+
+# e2e test output
+/tests/e2e/.artifacts
