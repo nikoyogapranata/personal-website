@@ -77,7 +77,7 @@ export const EXPERIENCES: ExperienceEntry[] = [
     roles: [
       {
         id: 'frontend-kelas-kampus',
-        role: 'Frontend Web Developer',
+        role: 'Frontend Developer Intern',
         period: 'Jul 2026 - Oct 2026',
         location: 'Remote',
         type: 'Work',
@@ -116,7 +116,7 @@ export const EXPERIENCES: ExperienceEntry[] = [
   },
   {
     id: 'uii',
-    company: 'Islamic University of Indonesia',
+    company: 'Universitas Islam Indonesia',
     roles: [
       {
         id: 'ta-software-engineering',
@@ -152,5 +152,63 @@ export const EXPERIENCES: ExperienceEntry[] = [
         skills: ['Data Structures', 'Algorithms'],
       },
     ],
+  },
+]
+
+/* ── /about experience cards ────────────────────────────────────────────────
+   Work only, in this order. Built from EXPERIENCES so the roles above stay the single source;
+   education lives in profile.ts (the /about cities section). */
+
+export interface ExperienceCard {
+  id: string
+  company: string
+  role: string
+  /** Earlier roles at the same company, shown as one small line */
+  previously?: string
+  period: string
+  /** One line for the card. For now: the first sentence of the role's description */
+  summary: string
+  skills: string[]
+}
+
+const firstSentence = (text: string) => text.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? text
+
+function entry(id: string) {
+  const found = EXPERIENCES.find(e => e.id === id)
+  if (!found) throw new Error(`experience.ts: no entry "${id}"`)
+  return found
+}
+
+function card(id: string, overrides: Partial<ExperienceCard> = {}): ExperienceCard {
+  const e = entry(id)
+  const [current, ...earlier] = e.roles
+  return {
+    id: e.id,
+    company: e.company,
+    role: current.role,
+    previously: earlier.length ? earlier.map(r => r.role).join(', ') : undefined,
+    period: current.period,
+    summary: firstSentence(current.description),
+    skills: current.skills ?? [],
+    ...overrides,
+  }
+}
+
+// The two teaching-assistant roles, shown as one card
+const ta = entry('uii').roles[0]
+const lab = entry('integrated-informatics-lab').roles[0]
+
+export const EXPERIENCE_CARDS: ExperienceCard[] = [
+  card('hellocation'),
+  card('kelas-kampus'),
+  card('jamusari'),
+  {
+    id: 'teaching-assistant',
+    company: `${entry('uii').company} · ${entry('integrated-informatics-lab').company}`,
+    role: 'Teaching Assistant',
+    // Both roles ran over the same months; joined if that ever changes
+    period: ta.period === lab.period ? ta.period : `${ta.period} / ${lab.period}`,
+    summary: firstSentence(ta.description),
+    skills: [...new Set([...(ta.skills ?? []), ...(lab.skills ?? [])])],
   },
 ]

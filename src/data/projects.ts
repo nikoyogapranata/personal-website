@@ -92,7 +92,7 @@ export const PROJECTS: Project[] = [
   {
     id: 4,
     slug: 'hellocation',
-    title: 'Hellocation.id',
+    title: 'HelloCation.id',
     category: 'Web · CMS & Redesign',
     year: '2026',
     featured: true,

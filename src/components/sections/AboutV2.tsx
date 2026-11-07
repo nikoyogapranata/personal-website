@@ -2,52 +2,10 @@
 
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
+import { PROFILE } from '@/data'
 
-const words = [
-  { text: 'A ', font: 'display' },
-  { text: 'developer ', font: 'display' },
-  { text: 'with ', font: 'display' },
-  { text: 'a ', font: 'display' },
-  { text: "designer's", font: 'serif' },
-  { text: ' eye. ', font: 'display' },
-  { text: 'I ', font: 'display' },
-  { text: 'build ', font: 'display' },
-  { text: 'interfaces ', font: 'display' },
-  { text: 'that ', font: 'display' },
-  { text: 'feel ', font: 'display' },
-  { text: 'as ', font: 'display' },
-
-  { text: 'good ', font: 'display' },
-  { text: 'as ', font: 'display' },
-  { text: 'they ', font: 'display' },
-  { text: 'look, ', font: 'display' },
-  { text: 'obsessed ', font: 'display' },
-  { text: 'with ', font: 'display' },
-  { text: 'motion,', font: 'serif' },
-  { text: ' the ', font: 'display' },
-  { text: 'type, ', font: 'display' },
-  { text: 'and ', font: 'display' },
-  { text: 'the ', font: 'display' },
-  { text: 'details', font: 'serif' },
-  { text: ' others ', font: 'display' },
-  { text: 'skip. ', font: 'display' },
-  { text: 'Studying ', font: 'display' },
-  { text: 'Informatics ', font: 'display' },
-  { text: 'and ', font: 'display' },
-  { text: 'Software ', font: 'display' },
-  { text: 'Engineering, ', font: 'display' },
-  { text: 'always ', font: 'display' },
-  { text: 'building. ', font: 'display' },
-  { text: 'Somewhere ', font: 'display' },
-  { text: 'between ', font: 'display' },
-  { text: 'engineering ', font: 'display' },
-  { text: 'and ', font: 'display' },
-  { text: 'design: ', font: 'display' },
-  { text: "that's ", font: 'display' },
-  { text: 'where ', font: 'display' },
-  { text: 'I ', font: 'display' },
-  { text: 'live.', font: 'serif' },
-] as const
+// The statement lives in src/data/profile.ts (shared with the /about scroll story)
+const words = PROFILE.bio.story.map(w => ({ text: w.text, font: w.accent ? 'serif' as const : 'display' as const }))
 
 interface ProgressiveWordProps {
   text: string

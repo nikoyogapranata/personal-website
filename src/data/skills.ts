@@ -1,31 +1,41 @@
+/** Toolbox categories on /about. Each has its own chip style there (see Toolbox.tsx) */
+export type SkillCategoryId = 'frontend' | 'backend' | 'databases' | 'ios' | 'ai' | 'design'
+
 export interface SkillCategory {
+  id: SkillCategoryId
   title: string
   skills: string[]
 }
 
 export const SKILL_CATEGORIES: SkillCategory[] = [
   {
-    title: 'Frontend',
-    skills: ['React', 'Next.js', 'TypeScript', 'JavaScript', 'HTML5', 'CSS3', 'Tailwind CSS', 'Framer Motion'],
+    id: 'frontend',
+    title: 'Web frontend',
+    skills: ['Next.js', 'React', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'Framer Motion', 'HTML5', 'CSS3'],
   },
   {
-    title: 'Backend & Database',
-    skills: ['Node.js', 'Express', 'PHP', 'REST API', 'PostgreSQL', 'MySQL', 'Supabase', 'Firebase'],
+    id: 'backend',
+    title: 'Web backend',
+    skills: ['Node.js', 'Express', 'PHP', 'Spring Boot', 'Jakarta EE', 'Thymeleaf', 'REST API'],
   },
   {
-    title: 'Mobile',
-    skills: ['Swift', 'SwiftUI', 'ARKit', 'Core ML'],
+    id: 'databases',
+    title: 'Databases',
+    skills: ['PostgreSQL', 'MySQL', 'Supabase', 'Firebase'],
   },
   {
-    title: 'AI',
-    skills: ['Google Gemini', 'Groq / LLaMA', 'crewAI'],
+    id: 'ios',
+    title: 'iOS',
+    skills: ['Swift', 'SwiftUI', 'ARKit', 'Core ML', 'HealthKit'],
   },
   {
-    title: 'Web & CMS',
-    skills: ['WordPress', 'Elementor', 'SEO', 'Google Analytics'],
+    id: 'ai',
+    title: 'AI and data',
+    skills: ['Python', 'Gemini', 'Groq / LLaMA', 'crewAI'],
   },
   {
-    title: 'Tools',
-    skills: ['Git', 'GitHub', 'Vercel', 'Figma', 'Notion', 'VS Code', 'Xcode'],
+    id: 'design',
+    title: 'Design and tools',
+    skills: ['Figma', 'WordPress', 'Git', 'Vercel'],
   },
 ]
