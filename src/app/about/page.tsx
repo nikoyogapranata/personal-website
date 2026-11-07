@@ -1,6 +1,6 @@
 import StoryHero from "@/components/about/StoryHero";
 import ExperienceStack from "@/components/about/ExperienceStack";
-import TechExperience from "@/components/sections/TechExperience";
+import Toolbox from "@/components/about/Toolbox";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/sections/Footer";
 import { PROFILE } from "@/data";
@@ -40,7 +40,7 @@ export default function AboutPage() {
         </section>
 
         <ExperienceStack />
-        <TechExperience />
+        <Toolbox />
       </main>
 
       <Contact theme="light" />
