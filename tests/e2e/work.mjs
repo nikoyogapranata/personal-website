@@ -12,7 +12,7 @@ const r = reporter()
 const SIZES = { 375: 812, 768: 1024, 1024: 768, 1440: 900, 2560: 1440 }
 /** Keep in sync with STEP_SVH in src/components/work/WorkGallery.tsx */
 const STEP = 0.6
-const COUNTS = { all: 8, web: 4, ios: 2, cms: 2 }
+const COUNTS = { all: 9, web: 4, ios: 2, cms: 2, design: 1 }
 const shot = (p, name) => p.screenshot({ path: path.join(OUT, `${name}.png`) })
 
 async function open(browser, w, opts = {}) {
@@ -75,11 +75,11 @@ const near = (a, b, tol = 3) => Math.abs(a - b) <= tol
     const h = await p.evaluate(() => [...document.querySelectorAll('h1,h2')].map(h => ({ l: h.tagName, t: h.textContent.replace(/\s+/g, ' ').trim() })))
     const h1 = h.filter(x => x.l === 'H1'), h2 = h.filter(x => x.l === 'H2')
     r.check(h1.length === 1 && /^WORK/.test(h1[0].t), `${w}: one h1 (${h1.map(x => x.t).join(' | ')})`)
-    r.check(h2.filter(x => /^(moink|HealthSync|Kelas Kampus|HelloCation\.id|KinetiQ|Wandr|JAMUSARI|WETRACK)$/.test(x.t)).length === 8, `${w}: an h2 per project`)
+    r.check(h2.filter(x => /^(moink|HealthSync|Kelas Kampus|HelloCation\.id|KinetiQ|Wandr|JAMUSARI|WETRACK|EduNovel)$/.test(x.t)).length === 9, `${w}: an h2 per project`)
     const s = await state(p)
     r.check(s.sticky === (w >= 768), `${w}: ${w >= 768 ? 'pinned' : 'list'} layout`)
     if (w >= 768) {
-      r.check(near(s.pinH, s.vh + 8 * STEP * s.vh, 2), `${w}: pin is 100svh + 8 × ${STEP * 100}svh (${s.pinH}px)`)
+      r.check(near(s.pinH, s.vh + 9 * STEP * s.vh, 2), `${w}: pin is 100svh + 9 × ${STEP * 100}svh (${s.pinH}px)`)
       const first = await p.evaluate(() => {
         const [a, b] = document.querySelectorAll('.wg-item')
         const ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect()
@@ -131,6 +131,16 @@ const near = (a, b, tol = 3) => Math.abs(a - b) <= tol
       overflow = Math.max(overflow, await p.evaluate(() => document.documentElement.scrollWidth - innerWidth))
     }
     r.check(overflow === 0, `${w}: no horizontal overflow (${overflow}px)`)
+    if (w >= 768) {
+      // Filtered, the top bar holds five chips and the "Showing" label
+      await p.evaluate(() => scrollTo(0, 0)); await p.waitForTimeout(200)
+      await p.click('.wg-chip[data-f="design"]'); await p.waitForTimeout(1100)
+      const top = await p.evaluate(() => {
+        const t = document.querySelector('.wg-top')
+        return { over: document.documentElement.scrollWidth - innerWidth, fits: t.scrollWidth <= t.clientWidth, hint: document.querySelector('.wg-hint').getBoundingClientRect().height }
+      })
+      r.check(top.over === 0 && top.fits, `${w}: filtered top bar fits (${JSON.stringify(top)})`)
+    }
     const cls = await p.evaluate(() => window.__cls)
     r.check(cls < 0.01, `${w}: CLS ${cls.toFixed(4)}`)
     r.check(p.__errors.length === 0, `${w}: no console errors ${p.__errors.length ? JSON.stringify(p.__errors.slice(0, 3)) : ''}`)
@@ -146,36 +156,36 @@ const near = (a, b, tol = 3) => Math.abs(a - b) <= tol
     await p.waitForTimeout(800)
     await shot(p, '1440-header')
     let ok = true
-    for (let k = 0; k <= 8; k++) {
-      await scrollToStep(p, k, 8, 450)
+    for (let k = 0; k <= 9; k++) {
+      await scrollToStep(p, k, 9, 450)
       const s = await state(p)
       const pose = await p.evaluate(i => {
         const el = [...document.querySelectorAll('.wg-item')][i]
         const m = new DOMMatrix(getComputedStyle(el.querySelector('.wg-tilt')).transform)
         return { scale: Math.hypot(m.a, m.b), rot: Math.atan2(m.b, m.a) * 180 / Math.PI }
       }, k)
-      const counter = `${String(Math.min(k, 7) + 1).padStart(2, '0')} / 08`
+      const counter = `${String(Math.min(k, 8) + 1).padStart(2, '0')} / 09`
       const good = s.centred.index === k && s.centred.off <= 3 && near(pose.scale, 1, 0.01) && Math.abs(pose.rot) < 0.5 && s.counter === counter
       if (!good) { ok = false; r.info(`step ${k}: ${JSON.stringify({ centred: s.centred, pose, counter: s.counter })}`) }
       if (k === 3) await shot(p, '1440-mid-gallery')
-      if (k === 8) await shot(p, '1440-end-card')
+      if (k === 9) await shot(p, '1440-end-card')
     }
-    r.check(ok, 'every step centres its card, flat and full size, with the right counter (01…08, then the end card)')
+    r.check(ok, 'every step centres its card, flat and full size, with the right counter (01…09, then the end card)')
     const side = await p.evaluate(() => {
-      const el = document.querySelectorAll('.wg-item')[7]
+      const el = document.querySelectorAll('.wg-item')[8]
       const m = new DOMMatrix(getComputedStyle(el.querySelector('.wg-tilt')).transform)
       return { scale: Math.hypot(m.a, m.b), rot: Math.atan2(m.b, m.a) * 180 / Math.PI }
     })
     r.check(near(side.scale, 0.9, 0.01) && side.rot < -3, `neighbour of the centred card is ~0.9 and tilted (${side.scale.toFixed(2)}, ${side.rot.toFixed(1)}°)`)
     const s = await state(p)
-    r.check(s.end === 'Yours could be number 09.', `end card: "${s.end}"`)
+    r.check(s.end === 'Yours could be number 10.', `end card: "${s.end}"`)
     // Past the pin, the page carries on to Contact
     await p.evaluate(() => { const pin = document.querySelector('.wg-pin'); scrollTo(0, pin.getBoundingClientRect().top + scrollY + pin.offsetHeight) })
     await p.waitForTimeout(500)
     const contactTop = await p.evaluate(() => document.querySelector('#contact')?.getBoundingClientRect().top)
     r.check(contactTop !== undefined && contactTop < 900, `section unpins into Contact (top ${Math.round(contactTop)})`)
     // Hover: lift + VIEW pill following the cursor
-    await scrollToStep(p, 1, 8, 500)
+    await scrollToStep(p, 1, 9, 500)
     await p.mouse.move(700, 400); await p.waitForTimeout(150); await p.mouse.move(760, 420); await p.waitForTimeout(500)
     const hover = await p.evaluate(() => {
       const pill = document.querySelector('.wg-pill--follow')
@@ -220,7 +230,7 @@ const near = (a, b, tol = 3) => Math.abs(a - b) <= tol
     const p = await open(browser, 1440)
     await p.goto(BASE + '/work', { waitUntil: 'networkidle' })
     const imgs = await p.evaluate(() => [...document.querySelectorAll('.wg-shot img')].map(i => ({ sizes: i.sizes, alt: i.alt })))
-    r.check(imgs.length === 6 && imgs.every(i => i.sizes && !/^100vw$/.test(i.sizes) && i.alt), `${imgs.length} screenshots, each with sizes and alt`)
+    r.check(imgs.length === 7 && imgs.every(i => i.sizes && !/^100vw$/.test(i.sizes) && i.alt), `${imgs.length} screenshots, each with sizes and alt`)
     const ph = await p.evaluate(() => document.querySelectorAll('.wg-placeholder').length)
     r.check(ph === 2, `placeholders for the 2 missing iOS screenshots (${ph})`)
     await p.context().close()
@@ -232,27 +242,27 @@ const near = (a, b, tol = 3) => Math.abs(a - b) <= tol
     const p = await open(browser, w)
     await p.goto(BASE + '/work', { waitUntil: 'networkidle' })
     await p.waitForTimeout(600)
-    for (const f of ['web', 'ios', 'cms']) {
+    for (const f of ['web', 'ios', 'cms', 'design']) {
       await p.click(`.wg-chip[data-f="${f}"]`); await p.waitForTimeout(1100)
       const s = await state(p)
       const n = COUNTS[f]
       const ok = s.url === `/work?filter=${f}` && s.cards.length === n && s.cards.every(c => c === f) && s.pressed.join() === f &&
-        s.hint === `Showing ${n} of 8` && s.end === `Yours could be number ${String(n + 1).padStart(2, '0')}.` &&
+        s.hint === `Showing ${n} of 9` && s.end === `Yours could be number ${String(n + 1).padStart(2, '0')}.` &&
         (w < 768 || (near(s.pinH, s.vh + n * STEP * s.vh, 2) && s.counter === `01 / ${String(n).padStart(2, '0')}`))
       r.check(ok, `${w} ${f}: ${n} cards, URL, chip, hint, end number${w >= 768 ? ', counter, pin length' : ''} ${ok ? '' : JSON.stringify(s)}`)
       if (f === 'ios') await shot(p, `${w}-filtered-ios`)
     }
     // Clear with the active chip's ✕
-    await p.click('.wg-chip[data-f="cms"]'); await p.waitForTimeout(1100)
+    await p.click('.wg-chip[data-f="design"]'); await p.waitForTimeout(1100)
     let s = await state(p)
-    r.check(s.url === '/work' && s.cards.length === 8 && s.pressed.join() === 'all', `${w}: pressing the active chip clears the filter (${s.url}, ${s.cards.length})`)
+    r.check(s.url === '/work' && s.cards.length === 9 && s.pressed.join() === 'all', `${w}: pressing the active chip clears the filter (${s.url}, ${s.cards.length})`)
     // Back/forward walk the filters
     await p.goBack(); await p.waitForTimeout(1100); s = await state(p)
-    r.check(s.url === '/work?filter=cms' && s.cards.length === 2 && s.pressed.join() === 'cms', `${w}: back → cms (${s.url}, ${s.cards.join()})`)
+    r.check(s.url === '/work?filter=design' && s.cards.join() === 'design' && s.pressed.join() === 'design', `${w}: back → design (${s.url}, ${s.cards.join()})`)
     await p.goBack(); await p.waitForTimeout(1100); s = await state(p)
-    r.check(s.url === '/work?filter=ios' && s.cards.join() === 'ios,ios', `${w}: back → ios (${s.url})`)
+    r.check(s.url === '/work?filter=cms' && s.cards.join() === 'cms,cms', `${w}: back → cms (${s.url})`)
     await p.goForward(); await p.waitForTimeout(1100); s = await state(p)
-    r.check(s.url === '/work?filter=cms' && s.pressed.join() === 'cms', `${w}: forward → cms (${s.url})`)
+    r.check(s.url === '/work?filter=design' && s.pressed.join() === 'design', `${w}: forward → design (${s.url})`)
     if (w === 375) {
       await p.click('.wg-chip[data-f="ios"]'); await p.waitForTimeout(1100)
       await p.evaluate(() => document.querySelector('.wg-card--ios').scrollIntoView({ block: 'center' })); await p.waitForTimeout(300)
@@ -266,7 +276,7 @@ const near = (a, b, tol = 3) => Math.abs(a - b) <= tol
   {
     const p = await open(browser, 1440)
     await p.goto(BASE + '/work', { waitUntil: 'networkidle' })
-    await scrollToStep(p, 4, 8, 600)
+    await scrollToStep(p, 4, 9, 600)
     await p.evaluate(() => {
       window.__ys = []
       const t = () => { window.__ys.push(scrollY); if (window.__ys.length < 120) requestAnimationFrame(t) }
@@ -339,7 +349,7 @@ const near = (a, b, tol = 3) => Math.abs(a - b) <= tol
       transforms: [...document.querySelectorAll('.wg-tilt, .wg-track')].every(el => getComputedStyle(el).transform === 'none'),
       h1: getComputedStyle(document.querySelector('.wh-title').parentElement).opacity,
     }))
-    r.check(s.sticky !== 'sticky' && s.cards === 9 && s.links === 6 && s.chips === 'none' && s.transforms && s.h1 === '1', `${w}: ${JSON.stringify(s)}`)
+    r.check(s.sticky !== 'sticky' && s.cards === 10 && s.links === 6 && s.chips === 'none' && s.transforms && s.h1 === '1', `${w}: ${JSON.stringify(s)}`)
     if (w === 1440) await p.screenshot({ path: path.join(OUT, '1440-nojs-full.png'), fullPage: true })
     await p.context().close()
   }
@@ -350,9 +360,9 @@ const near = (a, b, tol = 3) => Math.abs(a - b) <= tol
     const p = await open(browser, 1440)
     await p.goto(BASE + '/work', { waitUntil: 'networkidle' })
     await p.waitForTimeout(800)
-    await p.focus('.wg-chip[data-f="cms"]')
+    await p.focus('.wg-chip[data-f="design"]')
     const seen = []
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 16; i++) {
       await p.keyboard.press('Tab'); await p.waitForTimeout(1000)
       const f = await p.evaluate(() => {
         const a = document.activeElement
@@ -366,11 +376,11 @@ const near = (a, b, tol = 3) => Math.abs(a - b) <= tol
       seen.push(f)
     }
     const cards = [...new Set(seen.map(s => s.index))]
-    r.check(cards.length === 9 && cards.every((c, i) => c === i), `Tab reaches all 8 cards and the end card in order (${cards.join(',')})`)
+    r.check(cards.length === 10 && cards.every((c, i) => c === i), `Tab reaches all 9 cards and the end card in order (${cards.join(',')})`)
     const off = seen.filter(s => Math.abs(s.off) > 4)
     r.check(off.length === 0, `each focused card is centred ${off.length ? JSON.stringify(off) : ''}`)
     const noLink = seen.filter(s => /wg-card/.test(s.what)).length
-    r.check(noLink === 2, `the 2 cards without a link take focus themselves (${noLink})`)
+    r.check(noLink === 3, `the 3 cards without a link take focus themselves (${noLink})`)
     await p.context().close()
   }
 
@@ -442,7 +452,7 @@ const near = (a, b, tol = 3) => Math.abs(a - b) <= tol
     }))
     const names = ['moink', 'HealthSync', 'Kelas Kampus', 'HelloCation.id', 'JAMUSARI']
     r.check(home.rows.length === 5 && names.every((n, i) => home.rows[i].includes(n)), `5 featured rows (${home.rows.map(x => x.slice(0, 18)).join(' | ')})`)
-    r.check(home.all.some(t => t === 'See all 8 projects'), `"See all 8 projects" link (${home.all.join(' | ')})`)
+    r.check(home.all.some(t => t === 'See all 9 projects'), `"See all 9 projects" link (${home.all.join(' | ')})`)
     await p.context().close()
   }
 

@@ -109,7 +109,7 @@ async function freshTones(b) {
       check(s.path === to && t.visibleFrames > 5 && !s.menuInDom && s.scrollY === 0, `${from} ${locator} → ${s.path} label="${t.label}" menuInDom=${s.menuInDom}`)
     }
     await via('/', 'nav a[href="/contact"]', '/contact')
-    await via('/', 'a[href="/work"]:has-text("See all 8 projects")', '/work')
+    await via('/', 'a[href="/work"]:has-text("See all 9 projects")', '/work')
     await via('/about', '#contact a[href="/contact"]', '/contact')                       // Get in Touch CTA
     await via('/', 'a[href="/contact"]:has-text("GOT A PROJECT?")', '/contact', async () => {
       // Scroll to where GOT A PROJECT? sits mid-screen
@@ -174,7 +174,7 @@ async function freshTones(b) {
     await p.evaluate(() => scrollTo(0, 2600)); await p.waitForTimeout(600)
 
     // See all projects → /work
-    const l = p.locator('a[href="/work"]:has-text("See all 8 projects")')
+    const l = p.locator('a[href="/work"]:has-text("See all 9 projects")')
     await l.scrollIntoViewIfNeeded(); await p.waitForTimeout(400)
     const homeYAtClick = await p.evaluate(() => Math.round(scrollY))
     await p.evaluate(ARM); await l.click(); await settle(p)

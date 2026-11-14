@@ -6,13 +6,14 @@ export const TODO = 'TODO' as const
 export type Todo = typeof TODO
 export const isTodo = (v: unknown): v is Todo => v === TODO
 
-export type ProjectCategory = 'web' | 'ios' | 'cms'
+export type ProjectCategory = 'web' | 'ios' | 'cms' | 'design'
 
 /** Filter chips, in order, with their labels */
 export const CATEGORIES: { id: ProjectCategory; chip: string; label: string }[] = [
   { id: 'web', chip: 'Web apps', label: 'Web app' },
   { id: 'ios', chip: 'iOS',      label: 'iOS app' },
   { id: 'cms', chip: 'CMS',      label: 'CMS site' },
+  { id: 'design', chip: 'Design', label: 'UI/UX design' },
 ]
 export const CATEGORY_LABEL = Object.fromEntries(CATEGORIES.map(c => [c.id, c.label])) as Record<ProjectCategory, string>
 
@@ -37,6 +38,8 @@ export interface Project {
   /** Shown in the home page list */
   featured: boolean
   teamLead?: boolean
+  /** Team the project was made with. Not shown on the card yet */
+  team?: string
   description: string
   stack: string[]
   /** Landscape for web and cms, a portrait phone screenshot for ios */
@@ -169,6 +172,18 @@ export const PROJECTS: Project[] = [
       'Implemented location tracking and geofencing with Leaflet to alert authorities of boundary violations',
       'Designed a role-based, multi-user architecture that lets different authorities securely access and manage sensitive tracking data',
     ],
+  },
+  {
+    slug: 'edunovel',
+    title: 'EduNovel',
+    category: 'design',
+    period: 'Sep 2023 to Jan 2024',
+    featured: false,
+    team: 'EduConnect',
+    description: 'Designed the user flows, interface and visual theme for a gamified learning app, plus the posters and promo videos.',
+    stack: ['Figma'],
+    screenshot: { src: '/edunovel.webp', width: 2400, height: 1490 },
+    link: null,
   },
 ]
 

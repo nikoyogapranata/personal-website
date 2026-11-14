@@ -115,6 +115,12 @@
 .wg-chip-count { font-weight: 500; font-size: 0.85em; letter-spacing: 0.04em; }
 .wg-chip-x { font-size: 0.9em; letter-spacing: 0; opacity: 0; }
 .wg-chip[aria-pressed="true"] .wg-chip-x { opacity: 1; }
+/* Five chips and the "Showing" label share one row on tablets */
+@media (min-width: 768px) and (max-width: 1099px) {
+  .wg-chips { gap: 8px; }
+  .wg-chip { padding: 0.55em 0.8em; gap: 0.45em; }
+}
+.wg-hint { text-align: right; }
 .wg-hint {
   margin: 0;
   font-family: var(--font-sans);
