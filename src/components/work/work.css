@@ -1,0 +1,52 @@
+/* /work: WorkHeader (.wh) and WorkGallery (.wg).
+   The base rules are the list layout (phones, reduced motion, no JS). The pinned gallery is an
+   enhancement under html[data-js] (set before paint by workBootScript) in the PINNED media query
+   below, so the layout is decided in CSS and never switches after hydration. Transforms and opacity
+   are the only things that animate. */
+
+/* ── Header ─────────────────────────────────────────────────── */
+.wh {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: end;
+  gap: var(--space-l) var(--space-xl);
+  padding: var(--page-top) max(var(--page-x), calc((100% - var(--content-max)) / 2)) var(--space-m);
+}
+.wh-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-title);
+  letter-spacing: -0.04em;
+  line-height: 0.85;
+  color: var(--color-text);
+}
+.wh-count {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 0.12em;
+  font-size: 0.17em;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+.wh-intro-wrap { justify-self: end; }
+.wh-intro {
+  margin: 0;
+  max-width: 24ch;
+  font-family: var(--font-sans);
+  font-size: clamp(1.125rem, calc(1.75 * var(--u)), 2.5rem);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+.wh-intro em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--color-accent-secondary);
+}
+@media (max-width: 767px) {
+  .wh { grid-template-columns: minmax(0, 1fr); }
+  .wh-title { font-size: clamp(56px, 21vw, 140px); white-space: nowrap; }
+  .wh-intro-wrap { justify-self: start; }
+}

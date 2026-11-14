@@ -6,6 +6,7 @@ import Navbar from "@/components/sections/Navbar";
 import LoadingScreen from "@/components/ui/LoadingScreen";
 import PageTransition from "@/components/ui/PageTransition";
 import { loaderBootScript } from "@/lib/loader";
+import { workBootScript } from "@/lib/workFilter";
 import MotionProvider from "@/components/MotionProvider";
 import ToneProvider from "@/components/ui/Tone";
 import { EMAIL, SITE_URL, SOCIAL } from "@/lib/site";
@@ -85,11 +86,12 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${clashDisplay.variable} ${spaceGrotesk.variable} ${playfairDisplay.variable}`}
-      // The boot script below may add data-loader before hydration
+      // The boot scripts below add data-loader, data-js and data-work-filter before hydration
       suppressHydrationWarning
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: loaderBootScript }} />
+        <script dangerouslySetInnerHTML={{ __html: workBootScript }} />
         {/* Scroll reveals are server-rendered at opacity 0; without JS they'd never appear */}
         <noscript>
           <style>{`[data-reveal]{opacity:1!important;transform:none!important}`}</style>
