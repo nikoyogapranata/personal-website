@@ -88,6 +88,42 @@ const near = (a, b, tol = 3) => Math.abs(a - b) <= tol
       r.check(first.aTop < innerHeightOf(w) - 120 && near(first.aCx, w / 2, 2), `${w}: first card visible under the header and centred (top ${Math.round(first.aTop)})`)
       r.check(first.bLeft < w && first.bTilt !== 'none', `${w}: second card peeks in tilted from the right (left ${Math.round(first.bLeft)})`)
     }
+    // Card layout: nothing clips; web/cms text is a tight block under a ~70% screenshot with the
+    // description at 2 lines; iOS phones sit in a ~45% column, nearly the card's height.
+    // offset* sizes are layout boxes, so the tilt and scale transforms don't disturb them.
+    const lay = await p.evaluate(() => [...document.querySelectorAll('.wg-card')].map(card => {
+      const name = card.querySelector('.wg-name')?.textContent ?? 'end'
+      const clipped = [...card.querySelectorAll('.wg-body > *, .wg-head > *, .wg-end > *')].filter(el =>
+        el.offsetTop + el.offsetHeight > card.clientHeight + 1 || el.offsetLeft + el.offsetWidth > card.clientWidth + 1).map(el => el.className)
+      const head = card.querySelector('.wg-head')
+      if (head && head.scrollWidth > head.clientWidth + 1) clipped.push('wg-head (sideways)')
+      const shot = card.querySelector('.wg-shot'), phone = card.querySelector('.wg-phone'), desc = card.querySelector('.wg-desc')
+      const ios = card.classList.contains('wg-card--ios')
+      return {
+        name, clipped, ios,
+        shotH: shot && !ios ? shot.offsetHeight / card.clientHeight : null,
+        col: ios ? shot.offsetWidth / card.clientWidth : null,
+        phoneH: ios ? phone.offsetHeight / card.clientHeight : null,
+        descLines: desc && !ios ? Math.round(desc.clientHeight / parseFloat(getComputedStyle(desc).lineHeight)) : null,
+        sameRow: head ? [...head.querySelectorAll('.wg-num, .wg-name, .wg-cat')].every((el, _, a) => Math.abs(el.offsetTop + el.offsetHeight - (a[1].offsetTop + a[1].offsetHeight)) < 14) : true,
+      }
+    }))
+    const clip = lay.filter(c => c.clipped.length)
+    r.check(clip.length === 0, `${w}: nothing clips inside any card ${clip.length ? JSON.stringify(clip.map(c => [c.name, c.clipped])) : ''}`)
+    const lines = lay.filter(c => c.descLines !== null && c.descLines > 2)
+    r.check(lines.length === 0, `${w}: web/cms descriptions at most 2 lines ${JSON.stringify(lines.map(c => [c.name, c.descLines]))}`)
+    if (w >= 1024) {
+      const row = lay.filter(c => !c.sameRow)
+      r.check(row.length === 0, `${w}: number, name and category share one line ${JSON.stringify(row.map(c => c.name))}`)
+    }
+    if (w >= 768) {
+      const shots = lay.filter(c => c.shotH !== null)
+      const bad = shots.filter(c => c.shotH < 0.6 || c.shotH > 0.72)
+      r.check(bad.length === 0, `${w}: web/cms screenshots ~70% of the card (${shots.map(c => c.shotH.toFixed(2)).join(' ')})`)
+      const ios = lay.filter(c => c.ios)
+      r.check(ios.every(c => Math.abs(c.col - 0.45) < 0.01), `${w}: iOS phone column 45% (${ios.map(c => c.col.toFixed(2)).join(' ')})`)
+      if (w >= 1440) r.check(ios.every(c => c.phoneH >= 0.85), `${w}: iOS phone nearly the card's height (${ios.map(c => c.phoneH.toFixed(2)).join(' ')})`)
+    }
     let overflow = 0
     const H = await p.evaluate(() => document.documentElement.scrollHeight - innerHeight)
     for (let y = 0; y <= H; y += Math.round(SIZES[w] * 0.5)) {
@@ -163,7 +199,7 @@ const near = (a, b, tol = 3) => Math.abs(a - b) <= tol
       const out = []
       for (const card of document.querySelectorAll('.wg-card')) {
         const bg = rgb(getComputedStyle(card).backgroundColor)
-        for (const el of card.querySelectorAll('.wg-meta, .wg-name, .wg-cat, .wg-desc, .wg-stack, .wg-link, .wg-end-label, .wg-end-title, .wg-end-title em, .wg-end-cv'))
+        for (const el of card.querySelectorAll('.wg-num, .wg-name, .wg-cat, .wg-desc, .wg-stack, .wg-period, .wg-link, .wg-end-label, .wg-end-title, .wg-end-title em, .wg-end-cv'))
           out.push({ cls: card.className.split(' ').at(-1) + ' ' + el.className, fg: rgb(getComputedStyle(el).color), bg })
       }
       return out

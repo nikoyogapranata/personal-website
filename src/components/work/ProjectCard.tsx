@@ -127,21 +127,24 @@ export default function ProjectCard({ ref, project, projectIndex, index, f, inst
             </div>
 
             <div className="wg-body">
-              <p className="wg-meta">
+              {/* Number, name and category on one line, the link on the right of it */}
+              <div className="wg-head">
                 <span className="wg-num">{pad(index + 1)}</span>
-                {!isTodo(project.period) && <span>{project.period.replace(' to ', ' – ')}</span>}
-              </p>
-              <h2 id={titleId} className="wg-name">{project.title}</h2>
-              <p className="wg-cat">{CATEGORY_LABEL[project.category]}</p>
+                <h2 id={titleId} className="wg-name">{project.title}</h2>
+                <p className="wg-cat">{CATEGORY_LABEL[project.category]}</p>
+                {link && (
+                  <a className="wg-link" href={link.url} target="_blank" rel="noopener noreferrer">
+                    {link.kind === 'github' ? 'GitHub' : 'Visit'}
+                    <span className="sr-only"> {project.title}{link.kind === 'github' ? ' repository' : ''} (opens in new tab)</span>
+                    <span aria-hidden="true"> ↗</span>
+                  </a>
+                )}
+              </div>
               <p className="wg-desc">{project.description}</p>
-              <p className="wg-stack"><span className="sr-only">Built with </span>{project.stack.join(' · ')}</p>
-              {link && (
-                <a className="wg-link" href={link.url} target="_blank" rel="noopener noreferrer">
-                  {link.kind === 'github' ? 'GitHub' : 'Visit'}
-                  <span className="sr-only"> {project.title}{link.kind === 'github' ? ' repository' : ''} (opens in new tab)</span>
-                  <span aria-hidden="true"> ↗</span>
-                </a>
-              )}
+              <p className="wg-foot">
+                <span className="wg-stack"><span className="sr-only">Built with </span>{project.stack.join(' · ')}</span>
+                {!isTodo(project.period) && <span className="wg-period">{project.period.replace(' to ', ' – ')}</span>}
+              </p>
             </div>
           </article>
         </div>
