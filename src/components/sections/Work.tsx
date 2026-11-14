@@ -11,24 +11,24 @@ import {
   useTransform,
 } from 'framer-motion'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
-import { PROJECTS } from '@/data'
+import { CATEGORY_LABEL, FEATURED_PROJECTS, PROJECTS, isTodo } from '@/data'
 import { DURATION, EASE, EASE_IN_OUT, SCROLL_SPRING, reveal } from '@/lib/motion'
 
 const MotionLink = motion.create(Link)
 
-const MAX_HOMEPAGE_PROJECTS = 5
-
 export default function Work() {
   const sectionRef              = useRef<HTMLElement>(null)
   const titleRef                = useRef<HTMLDivElement>(null)
-  const [hoveredId, setHoveredId] = useState<number | null>(null)
+  const [hoveredId, setHoveredId] = useState<string | null>(null)
   // The preview card is fixed and always "in view", so lazy loading alone would fetch every image on page load
   const [previewReady, setPreviewReady] = useState(false)
 
-  // Display max 5 of the newest projects on the homepage
-  const featuredProjects = PROJECTS.slice(0, MAX_HOMEPAGE_PROJECTS)
+  // The `featured` flag picks them (src/data/projects.ts); every one has a live link and a screenshot
+  const featuredProjects = FEATURED_PROJECTS.flatMap(p =>
+    !p.link || isTodo(p.link) || isTodo(p.screenshot) ? [] : [{ ...p, href: p.link.url, image: p.screenshot.src }],
+  )
 
-  const enterRow = (id: number) => {
+  const enterRow = (id: string) => {
     setHoveredId(id)
     setPreviewReady(true)
   }
@@ -106,11 +106,11 @@ export default function Work() {
         }}
       >
         {featuredProjects.map((project, index) => {
-          const isHovered = hoveredId === project.id
+          const isHovered = hoveredId === project.slug
           return (
             <motion.a
-              key={project.id}
-              href={project.link}
+              key={project.slug}
+              href={project.href}
               target="_blank"
               rel="noopener noreferrer"
               {...reveal({ order: index % 3 })}
@@ -131,7 +131,7 @@ export default function Work() {
                 textDecoration: 'none',
               }}
               // A tap also fires enter events; touch gets no preview (the link opens a new tab)
-              onPointerEnter={(e) => { if (e.pointerType !== 'touch') enterRow(project.id) }}
+              onPointerEnter={(e) => { if (e.pointerType !== 'touch') enterRow(project.slug) }}
               onPointerLeave={() => setHoveredId(null)}
               onFocus={(e) => {
                 // Keyboard focus: show the same preview, anchored to the row (a tap focuses too)
@@ -139,7 +139,7 @@ export default function Work() {
                 const rect = e.currentTarget.getBoundingClientRect()
                 mouseX.set(rect.left + rect.width / 2)
                 mouseY.set(rect.top + rect.height / 2)
-                enterRow(project.id)
+                enterRow(project.slug)
               }}
               onBlur={() => setHoveredId(null)}
             >
@@ -169,7 +169,7 @@ export default function Work() {
               </div>
               <div style={{ flexShrink: 0 }}>
                 <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-label)', color: isHovered ? '#aaa' : 'var(--tone-faint)', letterSpacing: '0.05em', transition: 'color var(--dur-fast) var(--ease)' }}>
-                  {project.category}
+                  {CATEGORY_LABEL[project.category]}
                 </span>
               </div>
             </motion.a>
@@ -205,9 +205,9 @@ export default function Work() {
         >
           {previewReady && featuredProjects.map(project => (
             <motion.div
-              key={project.id}
+              key={project.slug}
               initial={false}
-              animate={{ opacity: hoveredId === project.id ? 1 : 0 }}
+              animate={{ opacity: hoveredId === project.slug ? 1 : 0 }}
               transition={{ duration: DURATION.fast, ease: EASE_IN_OUT }}
               style={{ position: 'absolute', inset: 0 }}
             >
@@ -252,16 +252,8 @@ export default function Work() {
           whileHover="hover"
           initial="rest"
         >
-          See all projects<sup style={{
-            fontFamily:    'var(--font-display)',
-            fontSize:      '0.35em',
-            fontStyle:     'normal',
-            fontWeight:    400,
-            letterSpacing: '0.05em',
-            verticalAlign: 'super',
-            color:         'var(--tone-fg)',
-            marginLeft:    '0.2em',
-          }}>({PROJECTS.length})</sup>
+          {/* The count sits inside the sentence, so it can't be read as the length of the list above */}
+          See all {PROJECTS.length} projects
           <motion.span
             variants={{
               rest:  { scaleX: 0, originX: 0 },

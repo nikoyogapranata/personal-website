@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { PROJECTS } from "@/data";
+import { CATEGORY_LABEL, PROJECTS, isTodo } from "@/data";
 import { DURATION, EASE, reveal } from "@/lib/motion";
 
 const INFO: React.CSSProperties = {
@@ -16,7 +16,7 @@ const INFO: React.CSSProperties = {
 
 // /work project grid: hovering or focusing one card dims the others
 export default function WorkGrid() {
-  const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   return (
     <>
@@ -30,19 +30,19 @@ export default function WorkGrid() {
         }}
       >
         {PROJECTS.map((project, i) => {
-          const isHovered = hoveredId === project.id;
+          const isHovered = hoveredId === project.slug;
           const isDimmed = hoveredId !== null && !isHovered;
 
           return (
             <motion.a
-              key={project.id}
-              href={project.link}
+              key={project.slug}
+              href={project.link && !isTodo(project.link) ? project.link.url : undefined}
               target="_blank"
               rel="noopener noreferrer"
               {...reveal({ onMount: true, order: 1 + i })}
-              onMouseEnter={() => setHoveredId(project.id)}
+              onMouseEnter={() => setHoveredId(project.slug)}
               onMouseLeave={() => setHoveredId(null)}
-              onFocus={() => setHoveredId(project.id)}
+              onFocus={() => setHoveredId(project.slug)}
               onBlur={() => setHoveredId(null)}
               style={{
                 display: "block",
@@ -70,10 +70,10 @@ export default function WorkGrid() {
                   {project.title}
                 </span>
                 <span style={{ ...INFO, flex: 1, textAlign: "center" }}>
-                  {project.year}
+                  {isTodo(project.period) ? "" : project.period}
                 </span>
                 <span style={{ ...INFO, flex: 1, textAlign: "right" }}>
-                  {project.category}
+                  {CATEGORY_LABEL[project.category]}
                 </span>
               </div>
 
@@ -95,8 +95,8 @@ export default function WorkGrid() {
                   transition={{ duration: DURATION.slow, ease: EASE }}
                   style={{ position: "absolute", inset: 0 }}
                 >
-                  <Image
-                    src={project.image}
+                  {!isTodo(project.screenshot) && <Image
+                    src={project.screenshot.src}
                     alt={project.title}
                     fill
                     sizes="(max-width: 640px) 100vw, 50vw"
@@ -106,7 +106,7 @@ export default function WorkGrid() {
                       objectPosition: "center",
                       display: "block",
                     }}
-                  />
+                  />}
 
                   <motion.div
                     initial={false}
@@ -124,30 +124,6 @@ export default function WorkGrid() {
 
               {/* ── Description & Tech Stack Badges ── */}
               <div style={{ marginTop: "clamp(12px, calc(0.8333 * var(--u)), 18px)" }}>
-                <p
-                  style={{
-                    fontFamily: "var(--font-sans)",
-                    fontWeight: 400,
-                    fontSize: "var(--text-small)",
-                    color: "var(--color-text-faint)",
-                    lineHeight: 1.5,
-                    margin: "0 0 4px 0",
-                  }}
-                >
-                  {project.shortDescription || project.description}
-                </p>
-                <p
-                  style={{
-                    fontFamily: "var(--font-sans)",
-                    fontWeight: 400,
-                    fontSize: "var(--text-small)",
-                    color: "var(--color-text-muted)",
-                    lineHeight: 1.5,
-                    margin: "0 0 10px 0",
-                  }}
-                >
-                  {project.contribution}
-                </p>
 
                 <div
                   style={{
@@ -156,7 +132,7 @@ export default function WorkGrid() {
                     gap: "6px 8px",
                   }}
                 >
-                  {project.tags.map((tag) => (
+                  {project.stack.map((tag) => (
                     <span
                       key={tag}
                       style={{
