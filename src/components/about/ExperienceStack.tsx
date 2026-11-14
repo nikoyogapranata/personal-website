@@ -96,7 +96,7 @@ function StackedCard({ card, index, total, p, enter }: {
         </div>
         <h3 className="xp-card-role">{card.role}</h3>
         <p className="xp-card-company">{card.company}</p>
-        {card.previously && <p className="xp-card-prev">previously {card.previously}</p>}
+        {card.previously && <p className="xp-card-prev">{card.previously}</p>}
         <p className="xp-card-summary">{card.summary}</p>
         {card.skills.length > 0 && (
           <ul className="xp-chips" aria-label="Skills">

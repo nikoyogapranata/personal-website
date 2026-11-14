@@ -165,18 +165,13 @@ export interface ExperienceCard {
   /** Name in the /about index list; defaults to the company */
   label?: string
   role: string
-  /** Earlier roles at the same company, shown as one small line */
+  /** Earlier roles at the same company: one small line, shown as written */
   previously?: string
   period: string
-  /**
-   * One line for the card. Written for Kelas Kampus and Teaching Assistant; HelloCation
-   * and Jamusari use the first sentence of the role's description
-   */
+  /** The card's description, written for the card */
   summary: string
   skills: string[]
 }
-
-const firstSentence = (text: string) => text.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? text
 
 function entry(id: string) {
   const found = EXPERIENCES.find(e => e.id === id)
@@ -184,19 +179,11 @@ function entry(id: string) {
   return found
 }
 
-function card(id: string, overrides: Partial<ExperienceCard> = {}): ExperienceCard {
+/** A card for an entry's current (first) role; the copy is written per card */
+function card(id: string, copy: { summary: string; previously?: string }): ExperienceCard {
   const e = entry(id)
-  const [current, ...earlier] = e.roles
-  return {
-    id: e.id,
-    company: e.company,
-    role: current.role,
-    previously: earlier.length ? earlier.map(r => r.role).join(', ') : undefined,
-    period: current.period,
-    summary: firstSentence(current.description),
-    skills: current.skills ?? [],
-    ...overrides,
-  }
+  const current = e.roles[0]
+  return { id: e.id, company: e.company, role: current.role, period: current.period, skills: current.skills ?? [], ...copy }
 }
 
 // The two teaching-assistant roles, shown as one card
@@ -204,11 +191,16 @@ const ta = entry('uii').roles[0]
 const lab = entry('integrated-informatics-lab').roles[0]
 
 export const EXPERIENCE_CARDS: ExperienceCard[] = [
-  card('hellocation'),
-  card('kelas-kampus', {
-    summary: 'Rebuilt the front end as reusable components, connected it to REST APIs, and built the design system behind it.',
+  card('hellocation', {
+    summary: 'Reorganized the IT division into development and support squads and led the website redesign with a remote team. I also run SEO and analytics, and work as the link between IT and the executives.',
+    previously: 'Previously UI/UX Designer (redesigned the main pages in Figma) and IT Support (Zoom, event live streams, engagement reports).',
   }),
-  card('jamusari'),
+  card('kelas-kampus', {
+    summary: 'Rebuilt the front end as reusable components, connected it to REST APIs, and built the design system behind it. Worked remotely with the Batch 8 team.',
+  }),
+  card('jamusari', {
+    summary: 'Built jamusari.com end to end on WordPress and Elementor. I handled the hosting, the domain setup and how the content is organized.',
+  }),
   {
     id: 'teaching-assistant',
     company: `${entry('uii').company} · ${entry('integrated-informatics-lab').company}`,
@@ -216,7 +208,7 @@ export const EXPERIENCE_CARDS: ExperienceCard[] = [
     role: 'Teaching Assistant',
     // Both roles ran over the same months; joined if that ever changes
     period: ta.period === lab.period ? ta.period : `${ta.period} / ${lab.period}`,
-    summary: 'Ran weekly Data Structures and Algorithms labs for 30+ students and graded coding assignments for the Software Engineering course.',
+    summary: 'Assisted weekly Data Structures and Algorithms labs for 30+ students and graded their coding assignments. In the Software Engineering course, I gave feedback on assignments and helped students with the material.',
     skills: [...new Set([...(ta.skills ?? []), ...(lab.skills ?? [])])],
   },
 ]

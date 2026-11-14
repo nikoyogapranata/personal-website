@@ -110,6 +110,13 @@ function watchMatter(p) {
     const h3s = h.filter(x => x.level === 3).map(x => x.text)
     r.check(h1s.length === 1 && h1s[0].text === 'Niko Yoga Pranata', `${w}px h1: ${JSON.stringify(h1s.map(x => x.text))}`)
     r.check(skips.length === 0 && h3s.length === 4, `${w}px heading outline: ${h.map(x => 'h' + x.level + ' ' + x.text.slice(0, 18)).join(' · ')}`)
+    // Experience cards: the copy fits inside every card (pinned stack and phone list)
+    const cards = await p.evaluate(() => [...document.querySelectorAll('.xp-card')].map(c => {
+      const box = c.getBoundingClientRect(); let bottom = 0
+      for (const k of c.children) bottom = Math.max(bottom, k.getBoundingClientRect().bottom)
+      return { h: Math.round(box.height), over: Math.round(Math.max(c.scrollHeight - c.clientHeight, bottom - box.bottom)) }
+    }))
+    r.check(cards.length === 4 && cards.every(c => c.over <= 1), `${w}px experience cards fit their copy (heights ${cards.map(c => c.h).join('/')}px${cards.some(c => c.over > 1) ? ', overflow ' + cards.map(c => c.over).join('/') : ''})`)
 
     if (w === 1440 || w === 375) {
       // Section screenshots (the story frames are captured separately below)
