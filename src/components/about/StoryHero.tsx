@@ -26,7 +26,6 @@ const ASPECT = PHOTO.src.width / PHOTO.src.height
    A (0): name, small photo. B (~0.3–0.7): photo full screen, gray, 30% bright, bio read word by
    word. C (~0.8–1): full colour, bottom third shaded, closing line. */
 const T = {
-  hint:    [0, 0.04],
   nameOut: [0.03, 0.2],
   grow:    [0.04, 0.32],
   gray:    [0.06, 0.2],
@@ -126,7 +125,6 @@ export default function StoryHero() {
   const nameOpacity = useTransform(() => 1 - at(p.get(), T.nameOut))
   const name1X      = useTransform(() => `${-8 * at(p.get(), T.nameOut)}vw`)
   const name2X      = useTransform(() => `${8 * at(p.get(), T.nameOut)}vw`)
-  const hintOpacity = useTransform(() => 1 - at(p.get(), T.hint))
 
   const bioOpacity     = useTransform(() => at(p.get(), T.bioIn) * (1 - at(p.get(), T.bioOut)))
   const closingOpacity = useTransform(() => at(p.get(), T.closing))
@@ -151,13 +149,11 @@ export default function StoryHero() {
 
         <div ref={stickyRef} className="story-sticky">
           {/* ── Frame A ── */}
-          <motion.p className="story-label" style={{ opacity: nameOpacity }}>(About me)</motion.p>
           <h1 id="about-title" className="story-name">
             <motion.span className="story-name-1" style={{ x: name1X, opacity: nameOpacity }}>Niko Yoga</motion.span>{' '}
             <motion.span className="story-name-2" style={{ x: name2X, opacity: nameOpacity }}>Pranata</motion.span>
           </h1>
           <motion.p className="story-tagline" style={{ opacity: nameOpacity }}>{PROFILE.bio.tagline}</motion.p>
-          <motion.p className="story-hint" aria-hidden="true" style={{ opacity: hintOpacity }}>Scroll ↓</motion.p>
 
           {/* ── The photo, frames A → C ── */}
           <motion.div className="story-photo" style={{ clipPath, opacity: photoShown }}>
@@ -238,20 +234,6 @@ const CSS = `
   height: 100svh;
   overflow: hidden;
 }
-
-.story-label, .story-hint {
-  position: absolute;
-  left: var(--page-x);
-  margin: 0;
-  font-family: var(--font-sans);
-  font-size: var(--text-label);
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--tone-faint);
-  z-index: 3;
-}
-.story-label { top: calc(var(--nav-h) + clamp(16px, 3svh, 40px)); }
-.story-hint  { bottom: clamp(16px, 4svh, 48px); }
 
 .story-name {
   position: absolute;
@@ -370,11 +352,11 @@ const STATIC_CSS = `
   display: flex; flex-direction: column; gap: var(--space-m);
   padding: var(--page-top) var(--page-x) var(--space-xl);
 }
-.story-label, .story-hint, .story-name, .story-name-1, .story-name-2, .story-tagline,
+.story-name, .story-name-1, .story-name-2, .story-tagline,
 .story-photo, .story-bio, .story-closing {
   position: static !important; inset: auto !important; transform: none !important; opacity: 1 !important;
 }
-.story-hint, .story-bio-read, .story-gray, .story-dark, .story-shade { display: none !important; }
+.story-bio-read, .story-gray, .story-dark, .story-shade { display: none !important; }
 .story-name { color: var(--color-text); }
 .story-name-1, .story-name-2 { white-space: normal; }
 .story-name-2 { text-align: right; }
