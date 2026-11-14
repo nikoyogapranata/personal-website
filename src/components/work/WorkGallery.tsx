@@ -7,6 +7,7 @@ import { CATEGORIES, PROJECTS } from '@/data'
 import { DURATION, EASE } from '@/lib/motion'
 import { countFor, filterHref, parseFilter, type WorkFilter } from '@/lib/workFilter'
 import ProjectCard, { type PillHandlers } from './ProjectCard'
+import EndCard from './EndCard'
 
 /*
  * /work gallery. Desktop: the section pins and vertical scroll slides the track sideways; the card
@@ -260,6 +261,7 @@ export default function WorkGallery() {
                   />
                 ))}
               </AnimatePresence>
+              <EndCard index={count} f={f} instant={instant} register={el => { endRef.current = el }} onFocusCard={onFocusCard} />
             </motion.ol>
           </div>
 

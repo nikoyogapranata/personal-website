@@ -396,6 +396,71 @@ html:not([data-js]) .wg-chips { display: none; }
 }
 .wg-obj:has(:focus-visible) .wg-pill--anchor { opacity: 1; }
 
+/* ── End card ───────────────────────────────────────────────── */
+.wg-item--end .wg-card { min-height: 380px; }
+.wg-end {
+  justify-content: space-between;
+  gap: var(--space-m);
+  padding: clamp(24px, calc(2.6 * var(--u)), 56px);
+  background: var(--color-bg-dark);
+  color: var(--color-text-inverse);
+}
+.wg-end-label {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.wg-end-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.75rem, calc(5.2 * var(--u)), 8rem);
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+}
+.wg-end-br { display: block; }
+.wg-end-title em {
+  display: block;
+  margin-top: 0.1em;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--color-accent-primary-light);
+}
+.wg-end-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-s, 16px) var(--space-m); }
+.wg-end-cta {
+  padding: 0.85em 1.5em;
+  border: 1.5px solid var(--color-text-inverse);
+  border-radius: var(--radius-pill);
+  background: var(--color-text-inverse);
+  color: var(--color-text);
+  box-shadow: 3px 3px 0 var(--color-accent-primary);
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-small);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: transform var(--dur-fast) var(--ease);
+}
+@media (hover: hover) {
+  .wg-end-cta:hover { transform: translate(-2px, -2px); }
+}
+.wg-end-cv {
+  color: inherit;
+  font-family: var(--font-sans);
+  font-size: var(--text-small);
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+}
+.wg-end-cta:focus-visible,
+.wg-end-cv:focus-visible { outline: 2px solid var(--color-text-inverse); outline-offset: 4px; }
+
 /* ── Pinned gallery (desktop with JS) ───────────────────────── */
 @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
   html[data-js] .wg-pin { height: calc(100svh + var(--steps) * var(--step)); }
@@ -440,6 +505,7 @@ html:not([data-js]) .wg-chips { display: none; }
   html[data-js] .wg-shot { flex: 1 1 auto; min-height: 96px; aspect-ratio: auto; }
   html[data-js] .wg-card--ios .wg-shot { flex: none; width: min(44%, calc((var(--wg-card-h) - 2 * var(--wg-pad)) * 0.4615 + 2 * var(--wg-pad))); }
   html[data-js] .wg-phone { width: 100%; max-width: none; }
+  html[data-js] .wg-item--end .wg-card { min-height: 0; }
 
   html[data-js] .wg-bottom {
     flex: none;
