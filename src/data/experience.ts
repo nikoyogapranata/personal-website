@@ -169,8 +169,8 @@ export interface ExperienceCard {
   previously?: string
   period: string
   /**
-   * One line for the card. Written for Kelas Kampus and Teaching Assistant; TODO(copy): HelloCation
-   * and Jamusari still use the first sentence of the role's description
+   * One line for the card. Written for Kelas Kampus and Teaching Assistant; HelloCation
+   * and Jamusari use the first sentence of the role's description
    */
   summary: string
   skills: string[]

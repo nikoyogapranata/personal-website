@@ -94,6 +94,16 @@
   --curtain-fg: #ffffff;
 }
 
+/* Keyboard focus never lands on something invisible. A reveal (fade/slide in on scroll) that holds
+   the focused element is shown as it settles, immediately: :focus-within applies in the same style
+   pass as focus, and !important outranks both framer's inline styles and running Web Animations,
+   so no animation timing can hide it. Mark the revealing element with data-focus-reveal.
+   transition: none matters under reduced motion: the rule at the bottom of this file gives every
+   element a 0.01ms transition, and transitions outrank !important, so the snap would otherwise
+   show the old value for a frame. */
+[data-focus-reveal]:focus-within { opacity: 1 !important; transform: none !important; transition: none !important; }
+[data-focus-clip]:focus-within   { clip-path: none !important; transition: none !important; }
+
 /* Headings and #hash targets get programmatic focus after a curtain transition; the ring would
    only add noise */
 :where(h1, section)[tabindex="-1"]:focus { outline: none; }

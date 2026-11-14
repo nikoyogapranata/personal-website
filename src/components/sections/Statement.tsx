@@ -59,6 +59,26 @@ export default function Statement() {
   const statFade     = useTransform(smooth, [0.30, 0.50], [1, 0]);
   const gotFade      = useTransform(smooth, [0.45, 0.65], [0, 1]);
 
+  // GOT A PROJECT? is a link, but for most of this track it's off-screen (sliding in or out) or
+  // faded. While it has focus, CSS (data-focus-reveal / data-focus-clip in globals.css) holds its
+  // layer at x = 0, fully opaque, with the window open. Keyboard focus, or any focus while it
+  // isn't visible, also scrolls the page to that resting point, so the scene around it matches
+  // (the statement already gone), and skips the spring's lag.
+  const GOT_REST = 0.75;
+  const onGotFocus = (e: React.FocusEvent<HTMLAnchorElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    const offScreen = r.left >= innerWidth || r.right <= 0 || r.top >= innerHeight || r.bottom <= 0;
+    if (!offScreen && !e.currentTarget.matches(":focus-visible")) return; // a click on a visible link
+    const track = containerRef.current;
+    if (track) {
+      // Progress runs from the track's top at the viewport bottom ("start end") to its bottom
+      // there ("end end"), i.e. over its full height
+      const top = track.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: top - innerHeight + GOT_REST * track.offsetHeight, behavior: "instant" });
+    }
+    smooth.jump(GOT_REST);
+  };
+
   return (
     <>
     <style>{`
@@ -81,17 +101,21 @@ export default function Statement() {
           position: "sticky",
           top:      0,
           height:   "100vh",
-          overflow: "hidden",
+          // clip, not hidden: a hidden box is still a scroll container, and focusing the oversized
+          // GOT A PROJECT? link made the browser scroll it sideways (~1500px) out of place
+          overflow: "clip",
         }}
       >
         <motion.div
           data-tone-island={island ? "" : undefined}
+          // Window fully open while GOT A PROJECT? has focus
+          data-focus-clip=""
           style={{
             position:   "absolute",
             inset:      0,
             clipPath:   reduceMotion ? "none" : clipPath,
             background: island ? "var(--color-bg)" : "transparent",
-            overflow:   "hidden",
+            overflow:   "clip",
           }}
         >
           {/* Layer 1: Statement text — exits left after being "hit" */}
@@ -220,6 +244,8 @@ export default function Statement() {
 
           {/* Layer 2: GOT A PROJECT? — oversized, crashes in from right */}
           <motion.div
+            // Held at x = 0, fully shown, while the link has focus (see onGotFocus)
+            data-focus-reveal=""
             style={{
               position:   "absolute",
               inset:      0,
@@ -231,7 +257,11 @@ export default function Statement() {
               willChange: "transform",
             }}
           >
-            <Link href="/contact" style={{ color: "inherit", textDecoration: "none" }}>
+            <Link
+              href="/contact"
+              onFocus={onGotFocus}
+              style={{ color: "inherit", textDecoration: "none" }}
+            >
               <motion.span
                 className={reduceMotion ? undefined : "got-text"}
                 style={{

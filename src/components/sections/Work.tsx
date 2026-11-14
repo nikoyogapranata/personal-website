@@ -114,6 +114,8 @@ export default function Work() {
               target="_blank"
               rel="noopener noreferrer"
               {...reveal({ order: index % 3 })}
+              // Shown at once when it gets keyboard focus (globals.css)
+              data-focus-reveal=""
               className="work-row"
               style={{
                 position:       'relative',

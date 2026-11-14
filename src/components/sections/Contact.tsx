@@ -1,5 +1,5 @@
 "use client";
-import { animate, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { EMAIL, RESUME_PATH, SOCIAL } from "@/lib/site";
@@ -7,22 +7,6 @@ import { DURATION, EASE, STAGGER, VIEWPORT, reveal } from "@/lib/motion";
 
 const MotionLink = motion.create(Link);
 
-/**
- * A scroll reveal for a column that holds links. Keyboard focus can land on a link before the
- * column has faded in (focus scrolls it into view, then the reveal takes up to ~0.9s), so focus
- * inside the column shows it at once. It drives the same motion values as the reveal, so a fade
- * already running is cut short and the later in-view reveal changes nothing.
- */
-function revealWithFocus(options: Parameters<typeof reveal>[0]) {
-  const props = reveal(options);
-  const shown = "whileInView" in props ? props.whileInView : props.animate;
-  return {
-    ...props,
-    onFocusCapture: (e: React.FocusEvent<HTMLElement>) => {
-      if (getComputedStyle(e.currentTarget).opacity !== "1") animate(e.currentTarget, shown, { duration: 0 });
-    },
-  };
-}
 
 
 export default function Contact({
@@ -169,7 +153,9 @@ export default function Contact({
 
         {/* Col 2 — email & socials */}
         <motion.div
-          {...revealWithFocus({ order: 4 })}
+          {...reveal({ order: 4 })}
+          // Shown at once when a link inside gets keyboard focus (globals.css)
+          data-focus-reveal=""
           style={{
             display: "flex",
             flexDirection: "column",
@@ -209,7 +195,8 @@ export default function Contact({
 
         {/* Col 3 — GET IN TOUCH */}
         <motion.div
-          {...revealWithFocus({ from: "right", order: 5 })}
+          {...reveal({ from: "right", order: 5 })}
+          data-focus-reveal=""
           className="contact-cta-col"
           style={{ display: "flex", justifyContent: "flex-end" }}
         >
