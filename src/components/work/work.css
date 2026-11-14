@@ -121,7 +121,6 @@
   text-transform: uppercase;
   color: var(--color-text-muted);
 }
-.wg-hint[data-all] { display: none; }
 
 .wg-viewport { position: relative; }
 .wg-track {
@@ -478,7 +477,6 @@ html:not([data-js]) .wg-chips { display: none; }
     height: var(--wg-top-h);
     padding: 0 var(--wg-x);
   }
-  html[data-js] .wg-hint[data-all] { display: block; }
   html[data-js] .wg-viewport {
     flex: 1 1 auto;
     min-height: 0;

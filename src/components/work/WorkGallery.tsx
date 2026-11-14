@@ -237,9 +237,7 @@ export default function WorkGallery() {
                 )
               })}
             </div>
-            {filter === 'all'
-              ? <p className="wg-hint" data-all="" aria-hidden="true">Scroll to browse <span>→</span></p>
-              : <p className="wg-hint">Showing {count} of {PROJECTS.length}</p>}
+            {filter !== 'all' && <p className="wg-hint">Showing {count} of {PROJECTS.length}</p>}
             <p className="sr-only" role="status">{announce}</p>
           </div>
 
