@@ -4,7 +4,7 @@
 import { chromium } from 'playwright'
 import path from 'node:path'
 import { createRequire } from 'node:module'
-import { BASE_URL as BASE, MODE, artifacts, SKIP_LOADER, reporter, contrast, hex } from './lib.mjs'
+import { BASE_URL as BASE, MODE, FEATURES, artifacts, SKIP_LOADER, reporter, contrast, hex } from './lib.mjs'
 
 const sharp = createRequire(createRequire(import.meta.url).resolve('next'))('sharp')
 const OUT = artifacts('about')
@@ -113,7 +113,7 @@ function watchMatter(p) {
 
     if (w === 1440 || w === 375) {
       // Section screenshots (the story frames are captured separately below)
-      for (const [name, sel, frac] of [['bio', '.about-bio', 0], ['experience-start', '.xp-track', 0], ['experience-end', '.xp-track', 1], ['toolbox', '.tb', 0], ['cities', '.cities', 0], ['contact', '#contact', 0]]) {
+      for (const [name, sel, frac] of [['bio', '.about-bio', 0], ['experience-start', '.xp-track', 0], ['experience-end', '.xp-track', 1], ['toolbox', '.tb', 0], ...(FEATURES.cities ? [['cities', '.cities', 0]] : []), ['contact', '#contact', 0]]) {
         const t = await track(p, sel)
         await scrollTo(p, t.top + t.scroll * frac - (name === 'toolbox' ? 60 : 0), name === 'toolbox' ? 3500 : 1100)
         await p.screenshot({ path: path.join(OUT, `${w}-${name}.png`) })
@@ -244,9 +244,13 @@ function watchMatter(p) {
     await q.context().close()
   }
 
-  // ── Clocks
+  // ── Clocks (two-cities section, behind SHOW_CITIES)
   r.section('CLOCKS')
-  {
+  if (!FEATURES.cities) {
+    r.info('cities checks skipped: SHOW_CITIES is off in src/lib/features.ts')
+    const html = await (await fetch(BASE + '/about')).text()
+    r.check(!/class="cities|city-clock/.test(html), 'SHOW_CITIES off: the two-cities section is not rendered')
+  } else {
     const p = await open(browser, 1440)
     await p.goto(BASE + '/about', { waitUntil: 'networkidle' })
     await p.waitForTimeout(500)
@@ -289,7 +293,7 @@ function watchMatter(p) {
     const p = await open(browser, w, { javaScriptEnabled: false })
     await p.goto(BASE + '/about', { waitUntil: 'load' })
     await p.waitForTimeout(500)
-    const st = await p.evaluate(() => {
+    const st = await p.evaluate((cities) => {
       const shown = el => { const cs = getComputedStyle(el); let e = el; while (e) { const c = getComputedStyle(e); if (c.display === 'none' || c.visibility === 'hidden' || c.opacity === '0') return false; e = e.parentElement } return el.getBoundingClientRect().height > 0 && cs.display !== 'none' }
       return {
         h1: shown(document.querySelector('h1')),
@@ -297,12 +301,11 @@ function watchMatter(p) {
         photo: shown(document.querySelector('.story-photo')),
         cards: [...document.querySelectorAll('.xp-card')].filter(shown).length,
         chips: [...document.querySelectorAll('.tb-chips > li')].filter(shown).length,
-        cities: [...document.querySelectorAll('.city-name')].filter(shown).length,
-        line: shown(document.querySelector('.cities-rule')),
+        ...(cities ? { cities: [...document.querySelectorAll('.city-name')].filter(shown).length, line: shown(document.querySelector('.cities-rule')) } : {}),
         short: shown(document.querySelector('.about-bio p')),
         closing: shown(document.querySelector('.story-closing')),
       }
-    })
+    }, FEATURES.cities)
     r.check(Object.values(st).every(v => v === true || v === 4 || v === 32 || v === 2), `${w}px no JS: ${JSON.stringify(st)}`)
     await p.screenshot({ path: path.join(OUT, `${w}-nojs-full.png`), fullPage: true })
     await p.context().close()

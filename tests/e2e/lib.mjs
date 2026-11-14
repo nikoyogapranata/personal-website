@@ -14,6 +14,14 @@ export function artifacts(suite) {
   return dir
 }
 
+/**
+ * Feature flags, read from src/lib/features.ts (the one place they're set), so suites skip the
+ * checks for sections that are switched off
+ */
+const featuresSrc = fs.readFileSync(path.join(import.meta.dirname, '../../src/lib/features.ts'), 'utf8')
+const flag = name => new RegExp(`export const ${name}\\s*=\\s*true\\b`).test(featuresSrc)
+export const FEATURES = { cities: flag('SHOW_CITIES') }
+
 /** Skip the once-per-session intro loader */
 export const SKIP_LOADER = () => { try { sessionStorage.setItem('niko_session_loaded', '1') } catch {} }
 

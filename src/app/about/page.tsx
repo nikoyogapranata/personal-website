@@ -2,6 +2,7 @@ import StoryHero from "@/components/about/StoryHero";
 import ExperienceStack from "@/components/about/ExperienceStack";
 import Toolbox from "@/components/about/Toolbox";
 import TwoCities from "@/components/about/TwoCities";
+import { SHOW_CITIES } from "@/lib/features";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/sections/Footer";
 import { PROFILE } from "@/data";
@@ -42,7 +43,8 @@ export default function AboutPage() {
 
         <ExperienceStack />
         <Toolbox />
-        <TwoCities />
+        {/* Off for now: flip SHOW_CITIES in src/lib/features.ts */}
+        {SHOW_CITIES && <TwoCities />}
       </main>
 
       <Contact theme="light" />
