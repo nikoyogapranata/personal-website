@@ -177,7 +177,11 @@ function watchMatter(p) {
         gray: getComputedStyle(document.querySelector('.story-gray')).opacity,
         fill: getComputedStyle(document.querySelector('.story-fill')).opacity,
         sizes: img.getAttribute('sizes'),
-        preload: [...document.querySelectorAll('link[rel=preload][as=image]')].some(l => /about-fill/.test(l.getAttribute('imagesrcset') || l.href)),
+        // A preload for the same file the frame C <img> shows (whatever it's called)
+        preload: (() => {
+          const file = new URL(img.currentSrc || img.src).searchParams.get('url')
+          return [...document.querySelectorAll('link[rel=preload][as=image]')].some(l => (l.getAttribute('imagesrcset') || l.href).includes(encodeURIComponent(file)))
+        })(),
       }
     })
     r.check(+c.gray === 0 && +c.fill === 1 && c.sizes === '100vw' && c.preload, `${w}px frame C: shows the frame C photo (fill ${c.fill}, gray ${c.gray}), sizes="${c.sizes}", preloaded=${c.preload}`)

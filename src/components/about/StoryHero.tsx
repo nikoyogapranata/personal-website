@@ -5,16 +5,14 @@ import Image from 'next/image'
 import { motion, useMotionValue, useScroll, useTransform, type MotionValue } from 'framer-motion'
 import { PROFILE } from '@/data'
 import aboutHero from '../../../public/about-hero.jpg'
-import aboutFill from '../../../public/about-fill.jpg'
+import aboutFill from '../../../public/desk.jpg'
 
 /* ── The photos ─────────────────────────────────────────────────
    Two files, both replaceable as-is (sizes are read at build time); crops are set here only.
    - public/about-hero.jpg: the portrait in frames A and B (grows from the small window to fill the
      screen, gray and darkened behind the bio).
-   - public/about-fill.jpg: frame C. A landscape photo ≥ 2560px wide; it crossfades in over the
-     portrait during the B → C change. */
-// TODO(photo): about-fill.jpg is still a copy of the portrait, as a placeholder. Replace it with the
-// landscape stock photo; the about e2e suite re-measures the frame C headline contrast over it.
+   - public/desk.jpg: frame C, the desk at night (6016×4000); it crossfades in over the portrait
+     during the B → C change. The about e2e suite measures the headline contrast over it. */
 const PHOTO = {
   src: aboutHero,
   alt: 'Portrait of Niko Pranata',
@@ -22,11 +20,8 @@ const PHOTO = {
   focus: { x: 0.5, y: 0.32 },
   /** Frame A window in px, desktop and phones (< 768px wide) */
   window: { desktop: { w: 220, h: 290 }, phone: { w: 150, h: 198 } },
-  /**
-   * Frame C photo, shown full screen (object-fit: cover). position matches the portrait's focus,
-   * so the placeholder crossfades without a double image; retune it for the real photo.
-   */
-  fill: { src: aboutFill, position: '50% 32%' },
+  /** Frame C photo, shown full screen (object-fit: cover), kept centred on the laptop */
+  fill: { src: aboutFill, position: '47% 55%' },
 }
 const PHONE_MAX = 767
 const ASPECT = PHOTO.src.width / PHOTO.src.height
