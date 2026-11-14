@@ -154,8 +154,17 @@ function watchMatter(p) {
     await at(0.97)
     if (w !== 2560) await p.screenshot({ path: path.join(OUT, `${w}-story-C.png`) })
     const cc = await textContrast(p, { hideSel: '.story-closing', wordSel: '.story-closing > span', accentSel: '.story-closing-2', fg: CREAM, accentFg: VIOLET_LIGHT })
-    const gray = await p.evaluate(() => getComputedStyle(document.querySelector('.story-gray')).opacity)
-    r.check(+gray === 0 && cc.plain.ratio >= 3 && cc.accent.ratio >= 3, `${w}px frame C: full colour (gray layer ${gray}), closing line min ${cc.plain.ratio.toFixed(2)}:1 cream / ${cc.accent.ratio.toFixed(2)}:1 violet (large text ≥ 3)`)
+    const c = await p.evaluate(() => {
+      const img = document.querySelector('.story-fill img')
+      return {
+        gray: getComputedStyle(document.querySelector('.story-gray')).opacity,
+        fill: getComputedStyle(document.querySelector('.story-fill')).opacity,
+        sizes: img.getAttribute('sizes'),
+        preload: [...document.querySelectorAll('link[rel=preload][as=image]')].some(l => /about-fill/.test(l.getAttribute('imagesrcset') || l.href)),
+      }
+    })
+    r.check(+c.gray === 0 && +c.fill === 1 && c.sizes === '100vw' && c.preload, `${w}px frame C: shows the frame C photo (fill ${c.fill}, gray ${c.gray}), sizes="${c.sizes}", preloaded=${c.preload}`)
+    r.check(cc.plain.ratio >= 4.5 && cc.accent.ratio >= 3, `${w}px frame C headline over the frame C photo: cream min ${cc.plain.ratio.toFixed(2)}:1 (≥ 4.5), violet min ${cc.accent.ratio.toFixed(2)}:1 (≥ 3)`)
     // After the story: back to cream
     const bio = await track(p, '.about-bio')
     await scrollTo(p, bio.top - 200, 1200)

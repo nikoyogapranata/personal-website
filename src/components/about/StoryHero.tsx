@@ -5,19 +5,28 @@ import Image from 'next/image'
 import { motion, useMotionValue, useScroll, useTransform, type MotionValue } from 'framer-motion'
 import { PROFILE } from '@/data'
 import aboutHero from '../../../public/about-hero.jpg'
+import aboutFill from '../../../public/about-fill.jpg'
 
-/* ── The photo ──────────────────────────────────────────────────
-   To change it, replace public/about-hero.jpg (any aspect ratio; landscape suits frame C best).
-   Its size is read at build time. Crop and frame-A size are set here and nowhere else. */
-// TODO(photo): about-hero.jpg is a copy of the 1280×1600 portrait (hero.jpeg). Frame C fills the screen,
-// so it is enlarged ~2.3× at 2560px. Replace with a landscape photo at least 2560px wide.
+/* ── The photos ─────────────────────────────────────────────────
+   Two files, both replaceable as-is (sizes are read at build time); crops are set here only.
+   - public/about-hero.jpg: the portrait in frames A and B (grows from the small window to fill the
+     screen, gray and darkened behind the bio).
+   - public/about-fill.jpg: frame C. A landscape photo ≥ 2560px wide; it crossfades in over the
+     portrait during the B → C change. */
+// TODO(photo): about-fill.jpg is still a copy of the portrait, as a placeholder. Replace it with the
+// landscape stock photo; the about e2e suite re-measures the frame C headline contrast over it.
 const PHOTO = {
   src: aboutHero,
   alt: 'Portrait of Niko Pranata',
-  /** The point kept in view when the photo fills the screen (frame C), as fractions of width/height */
+  /** The point of the portrait kept in view when it fills the screen, as fractions of width/height */
   focus: { x: 0.5, y: 0.32 },
   /** Frame A window in px, desktop and phones (< 768px wide) */
   window: { desktop: { w: 220, h: 290 }, phone: { w: 150, h: 198 } },
+  /**
+   * Frame C photo, shown full screen (object-fit: cover). position matches the portrait's focus,
+   * so the placeholder crossfades without a double image; retune it for the real photo.
+   */
+  fill: { src: aboutFill, position: '50% 32%' },
 }
 const PHONE_MAX = 767
 const ASPECT = PHOTO.src.width / PHOTO.src.height
@@ -34,6 +43,8 @@ const T = {
   read:    [0.34, 0.68],
   bioOut:  [0.7, 0.75],
   color:   [0.73, 0.84],
+  /** Portrait → frame C photo, opacity only, with a slight scale settle */
+  fill:    [0.72, 0.84],
   closing: [0.8, 0.9],
 } as const
 /** Overlay opacity in frame B: the photo at 30% brightness, so cream text holds 4.5:1 over any photo */
@@ -121,6 +132,8 @@ export default function StoryHero() {
   const grayOpacity  = useTransform(() => at(p.get(), T.gray) * (1 - at(p.get(), T.color)))
   const darkOpacity  = useTransform(() => DARK * at(p.get(), T.dark) * (1 - at(p.get(), T.color)))
   const shadeOpacity = useTransform(() => at(p.get(), T.color))
+  const fillOpacity  = useTransform(() => at(p.get(), T.fill))
+  const fillScale    = useTransform(() => 1.08 - 0.08 * easeInOut(at(p.get(), T.fill)))
 
   const nameOpacity = useTransform(() => 1 - at(p.get(), T.nameOut))
   const name1X      = useTransform(() => `${-8 * at(p.get(), T.nameOut)}vw`)
@@ -158,6 +171,10 @@ export default function StoryHero() {
           {/* ── The photo, frames A → C ── */}
           <motion.div className="story-photo" style={{ clipPath, opacity: photoShown }}>
             <PhotoBox x={boxX} y={boxY} scale={boxScale} size={geo} grayOpacity={grayOpacity} />
+            {/* Frame C photo: crossfades in over the portrait (decorative, so no alt text) */}
+            <motion.div className="story-fill" aria-hidden="true" style={{ opacity: fillOpacity, scale: fillScale }}>
+              <Image src={PHOTO.fill.src} alt="" fill sizes="100vw" preload className="story-img" style={{ objectPosition: PHOTO.fill.position }} />
+            </motion.div>
             <motion.div className="story-dark" aria-hidden="true" style={{ opacity: darkOpacity }} />
             <motion.div className="story-shade" aria-hidden="true" style={{ opacity: shadeOpacity }} />
           </motion.div>
@@ -276,6 +293,7 @@ const CSS = `
 .story-photo-box { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform; }
 .story-img { object-fit: cover; }
 .story-gray { position: absolute; inset: 0; }
+.story-fill { position: absolute; inset: 0; will-change: opacity, transform; }
 /* Static filter (never animated): the copy crossfades with opacity */
 .story-gray .story-img { filter: grayscale(1); }
 .story-dark, .story-shade { position: absolute; inset: 0; pointer-events: none; }
@@ -356,7 +374,7 @@ const STATIC_CSS = `
 .story-photo, .story-bio, .story-closing {
   position: static !important; inset: auto !important; transform: none !important; opacity: 1 !important;
 }
-.story-bio-read, .story-gray, .story-dark, .story-shade { display: none !important; }
+.story-bio-read, .story-gray, .story-fill, .story-dark, .story-shade { display: none !important; }
 .story-name { color: var(--color-text); }
 .story-name-1, .story-name-2 { white-space: normal; }
 .story-name-2 { text-align: right; }
