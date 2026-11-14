@@ -41,6 +41,8 @@ export interface Profile {
     paragraphs: string[]
     /** About 70 words: the reading-size bio block on /about */
     short: string
+    /** The large Playfair line beside the bio on /about */
+    quote: string
     /** One-liner beside the photo at the top of /about */
     tagline: string
     /**
@@ -51,6 +53,8 @@ export interface Profile {
   }
   education: EducationItem[]
   languages: LanguageItem[]
+  /** The /about "Speaks" line, in order; lang marks names written in that language */
+  speaks: { label: string; lang?: string }[]
 }
 
 export const PROFILE: Profile = {
@@ -79,6 +83,7 @@ export const PROFILE: Profile = {
       "I'm currently looking for a web developer internship where I can work on real products, collaborate with experienced engineering teams, and deliver thoughtful user experiences.",
     ],
     short: "I got into tech by fixing Zoom calls and running live streams at HelloCation. Since then I've redesigned their pages in Figma, built a client's website end to end, and now lead the IT team there. That path taught me to care about the whole product: how it looks, how it's built, and who maintains it after launch. Right now I'm looking for a web development internship on a team that ships real products.",
+    quote: "Care about the whole product.",
     tagline: "a developer with a designer's eye",
     story: [
       { text: 'A ' }, { text: 'developer ' }, { text: 'with ' }, { text: 'a ' },
@@ -127,5 +132,11 @@ export const PROFILE: Profile = {
     { language: 'Indonesian & Javanese', proficiency: 'Native or Bilingual' },
     { language: 'English', proficiency: 'Professional Working' },
     { language: 'Chinese', proficiency: 'Elementary' },
+  ],
+  speaks: [
+    { label: 'Indonesian' },
+    { label: 'Javanese' },
+    { label: 'English' },
+    { label: '中文', lang: 'zh-Hans' },
   ],
 }

@@ -1,17 +1,8 @@
-import localFont from 'next/font/local'
 import Reveal from '@/components/ui/Reveal'
 import CityClock from './CityClock'
+import { cjk } from './cjkFont'
 import { PROFILE } from '@/data'
 import { DURATION, EASE, VIEWPORT } from '@/lib/motion'
-
-// Only the four Chinese characters used here (日惹南京, 1.7 KB), not a full CJK font
-const cjk = localFont({
-  src: '../../../public/fonts/NotoSerifSC-subset.woff2',
-  variable: '--font-cjk',
-  display: 'swap',
-  weight: '500',
-  preload: false,
-})
 
 const CITIES = [
   { id: 'yogyakarta', zh: '日惹', name: 'Yogyakarta', timeZone: 'Asia/Jakarta', zone: 'WIB, UTC+7' },

@@ -45,7 +45,8 @@ const T = {
   color:   [0.73, 0.84],
   /** Portrait → frame C photo, opacity only, with a slight scale settle */
   fill:    [0.72, 0.84],
-  closing: [0.8, 0.9],
+  /** Done at 0.95: only 5% of the track is left holding frame C before the bio */
+  closing: [0.84, 0.95],
 } as const
 /** Overlay opacity in frame B: the photo at 30% brightness, so cream text holds 4.5:1 over any photo */
 const DARK = 0.7

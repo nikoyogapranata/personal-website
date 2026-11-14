@@ -119,6 +119,16 @@ function watchMatter(p) {
     r.check(cards.length === 4 && cards.every(c => c.over <= 1), `${w}px experience cards fit their copy (heights ${cards.map(c => c.h).join('/')}px${cards.some(c => c.over > 1) ? ', overflow ' + cards.map(c => c.over).join('/') : ''})`)
 
     if (w === 1440 || w === 375) {
+      // Spacing story → bio → Experience (document px, layout only)
+      const gap = await p.evaluate(() => {
+        const doc = el => { const r = el.getBoundingClientRect(); return { top: r.top + scrollY, bottom: r.bottom + scrollY } }
+        const bio = [...document.querySelectorAll('.about-bio p, .about-bio a')].map(doc)
+        return {
+          storyToBio: Math.round(Math.min(...bio.map(x => x.top)) - doc(document.querySelector('.story-track')).bottom),
+          bioToExperience: Math.round(doc(document.querySelector('.xp-title')).top - Math.max(...bio.map(x => x.bottom))),
+        }
+      })
+      r.check(gap.storyToBio <= 80 && gap.bioToExperience <= 180, `${w}px spacing: story → bio ${gap.storyToBio}px (≤ 80), bio → Experience ${gap.bioToExperience}px (≤ 180)`)
       // Section screenshots (the story frames are captured separately below)
       for (const [name, sel, frac] of [['bio', '.about-bio', 0], ['experience-start', '.xp-track', 0], ['experience-end', '.xp-track', 1], ['toolbox', '.tb', 0], ...(FEATURES.cities ? [['cities', '.cities', 0]] : []), ['contact', '#contact', 0]]) {
         const t = await track(p, sel)

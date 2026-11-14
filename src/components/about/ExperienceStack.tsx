@@ -109,15 +109,17 @@ function StackedCard({ card, index, total, p, enter }: {
 }
 
 const CSS = `
-.xp { padding-top: var(--section-y); }
+/* No top padding: the bio above ends with its own, and the pinned view pads under the navbar */
+.xp { padding-top: 0; }
 .xp-track { position: relative; height: calc(100svh + var(--xp-scroll)); }
 .xp-sticky {
   position: sticky; top: 0; height: 100svh;
   display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-  gap: var(--space-xl); align-items: center;
-  padding: calc(var(--nav-h) + var(--space-m)) max(var(--page-x), calc((100% - var(--content-max)) / 2)) var(--space-m);
+  /* Top-aligned under the navbar: centring in the full-height view left ~170px empty above */
+  gap: var(--space-xl); align-items: start;
+  padding: calc(var(--nav-h) + var(--space-l)) max(var(--page-x), calc((100% - var(--content-max)) / 2)) var(--space-m);
 }
-.xp-index { display: flex; flex-direction: column; gap: var(--space-m); align-self: stretch; justify-content: center; }
+.xp-index { display: flex; flex-direction: column; gap: var(--space-m); }
 .xp-title {
   margin: 0; font-family: var(--font-display); font-weight: 700; font-size: var(--text-h2);
   letter-spacing: -0.03em; line-height: 1; text-transform: uppercase; color: var(--color-text);
@@ -166,6 +168,7 @@ const CSS = `
 
 /** Phones, reduced motion, no JS: the same cards as a plain vertical list */
 const STATIC_CSS = `
+.xp { padding-top: var(--space-l); }
 .xp-track { height: auto !important; }
 .xp-sticky {
   position: static !important; height: auto !important; display: block !important;
