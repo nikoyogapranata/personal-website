@@ -26,7 +26,7 @@ interface WorkRowProps {
 }
 
 /**
- * One row of the home page Work list. Hover or keyboard focus fills it with ink from the edge the
+ * One row of the home page Work list. Hover or keyboard focus fills it with cream from the edge the
  * pointer crossed (top or bottom, as in FlowingMenu) and loops the project's description across it.
  */
 export default function WorkRow({ index, href, title, category, description }: WorkRowProps) {

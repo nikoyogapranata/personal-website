@@ -1,7 +1,8 @@
-// Home page Work list: the ink fill + description marquee on hover and keyboard focus.
+// Home page Work list: the cream fill + description marquee on hover and keyboard focus.
 // Sizes, slide direction, row height, overflow, reduced motion, touch, a11y, contrast and frame rate.
 import { chromium } from 'playwright'
 import path from 'node:path'
+import zlib from 'node:zlib'
 import { BASE_URL, SKIP_LOADER, artifacts, contrast, reporter } from './lib.mjs'
 
 const OUT = artifacts('home-work')
@@ -33,6 +34,18 @@ const state = (p, i) => p.evaluate(i => {
     overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
   }
 }, i)
+
+/** RGB of one screen pixel (a 1×1 PNG: filter byte, then RGB or RGBA) */
+async function pixel(p, x, y) {
+  const png = await p.screenshot({ clip: { x, y, width: 1, height: 1 } })
+  const chunks = []
+  for (let o = 8; o < png.length;) {
+    const len = png.readUInt32BE(o), type = png.toString('ascii', o + 4, o + 8)
+    if (type === 'IDAT') chunks.push(png.subarray(o + 8, o + 8 + len))
+    o += 12 + len
+  }
+  return [...zlib.inflateSync(Buffer.concat(chunks)).subarray(1, 4)]
+}
 
 const heights = p => p.evaluate(() => [...document.querySelectorAll('.work-row')].map(r => r.offsetHeight))
 
@@ -75,7 +88,7 @@ for (const [w, h] of SIZES) {
       return ['.work-row__num', '.work-row__title', '.work-row__cat'].every(sel => {
         const t = r.querySelector(sel).getBoundingClientRect()
         return t.top >= f.top - 0.5 && t.bottom <= f.bottom + 0.5 && t.left >= f.left && t.right <= f.right
-      }) && cs.position === 'absolute' && Number(cs.zIndex) >= 1 && cs.backgroundColor === 'rgb(10, 10, 10)'
+      }) && cs.position === 'absolute' && Number(cs.zIndex) >= 1 && cs.backgroundColor === 'rgb(248, 248, 245)'
     }, i)
     check(covered, `row ${i} content hidden under the fill`)
     if (i === 0 && w === 1440) await p.screenshot({ path: path.join(OUT, `hover-${w}.png`) })
@@ -116,6 +129,10 @@ for (const [w, h] of SIZES) {
     check(op === '1' && s.active && Math.abs(s.fillY) < 0.5 && s.play === 'running' && (!prev || (!prev.active && prev.play === 'paused')),
       `Tab → row ${idx}: shown at once (opacity ${op}), filled, previous row reversed`)
     check(!s.overflow, `Tab → row ${idx}: no overflow`)
+    // The ring sits 4–6px inside the row, over the cream fill
+    const ring = await pixel(p, Math.round(s.left + 5), Math.round((s.top + s.bottom) / 2))
+    const cream = await pixel(p, Math.round(s.left + 12), Math.round(s.top + 12))
+    check(ring.every(c => c < 40) && cream.every(c => c > 230), `Tab → row ${idx}: ink focus ring on cream (ring ${ring}, fill ${cream})`)
     hits++
   }
   check(hits === n, `focused all ${n} rows by keyboard`)
@@ -149,7 +166,7 @@ section('a11y + contrast')
     const tree = await p.locator('.work-row').nth(i).ariaSnapshot()
     check(tree.split('\n').length <= 3 && !/·/.test(tree), `row ${i}: accessible link "${tree.replace(/\s+/g, ' ').slice(0, 60)}"`)
     const c = contrast(rgb(r.fg), rgb(r.bg))
-    check(c >= 7, `row ${i}: cream on ink ${c.toFixed(1)}:1 (${r.fg} on ${r.bg})`)
+    check(c >= 7, `row ${i}: ink on cream ${c.toFixed(1)}:1 (${r.fg} on ${r.bg})`)
   }
   await ctx.close()
 }
@@ -171,7 +188,7 @@ section('reduced motion')
       return el && { ell: getComputedStyle(el).textOverflow, cut: el.scrollWidth > el.clientWidth, fits: el.offsetHeight <= r.offsetHeight, track: !!r.querySelector('.work-row__track') }
     }, i)
     check(s.active && Math.abs(s.fillY) < 0.5 && st && !st.track && st.ell === 'ellipsis' && st.cut && st.fits,
-      `row ${i}: ink at once, static description cut with ellipsis`)
+      `row ${i}: fill at once, static description cut with ellipsis`)
     if (i === 0) await p.screenshot({ path: path.join(OUT, 'reduced.png') })
     await p.mouse.move(x, s.top - 2)
     await p.waitForTimeout(30)

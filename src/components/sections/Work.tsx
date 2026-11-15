@@ -187,15 +187,15 @@ export default function Work() {
           color: var(--tone-faint);
         }
 
-        /* Hover/focus fill (WorkRow). Absolute and clipped by the row, so it never changes its size */
+        /* Hover/focus fill (WorkRow): cream with ink text, so it shows on the dark section. Absolute and clipped by the row, so it never changes its size */
         .work-row__fill {
           position: absolute;
           inset: 0;
           z-index: 1;
           overflow: hidden;
           pointer-events: none;
-          background: var(--color-bg-dark);
-          color: var(--color-text-inverse);
+          background: var(--color-bg);
+          color: var(--color-text);
           font-family: var(--font-serif);
           font-style: italic;
           font-weight: 400;
@@ -203,6 +203,19 @@ export default function Work() {
           letter-spacing: -0.01em;
           line-height: 1.1;
           white-space: nowrap;
+        }
+        /* Keyboard focus always fills the row, so the ring is drawn inside it, in ink on cream.
+           An outline would paint under the positioned fill, so it's a layer above it instead. */
+        .work-row:focus-visible {
+          outline: none;
+        }
+        .work-row:focus-visible::after {
+          content: '';
+          position: absolute;
+          inset: 4px;
+          z-index: 2;
+          border: 2px solid var(--color-text);
+          pointer-events: none;
         }
         .work-row__fill-inner {
           display: flex;
