@@ -63,6 +63,27 @@ for (const [w, h] of SIZES) {
   check(n === 5, `${n} rows`)
   const h0 = await heights(p)
 
+  // Full-width rows, text on the page gutter (same as Contact's content box), CTA and title centred
+  const g = await p.evaluate(() => {
+    const vw = document.documentElement.clientWidth
+    const rows = [...document.querySelectorAll('.work-row')].map(r => {
+      const b = r.getBoundingClientRect(), f = r.querySelector('.work-row__fill').getBoundingClientRect()
+      return { l: b.left, r: b.right, fl: f.left, fr: f.right,
+        num: r.querySelector('.work-row__num').getBoundingClientRect().left,
+        cat: r.querySelector('.work-row__cat').getBoundingClientRect().right }
+    })
+    const contact = document.getElementById('contact'), cs = getComputedStyle(contact)
+    const gutter = parseFloat(cs.paddingLeft)
+    const mid = el => { const b = el.getBoundingClientRect(); return b.left + b.width / 2 }
+    return { vw, rows, gutter, cta: mid(document.querySelector('a[href="/work"]')), title: mid(document.querySelector('.work-title')) }
+  })
+  check(g.rows.every(r => Math.abs(r.l) < 1 && Math.abs(r.r - g.vw) < 1 && Math.abs(r.fl) < 1 && Math.abs(r.fr - g.vw) < 1),
+    `rows and fills span the viewport (0 to ${g.vw})`)
+  check(g.rows.every(r => Math.abs(r.num - g.gutter) < 1 && Math.abs(g.vw - r.cat - g.gutter) < 1),
+    `row text on the page gutter: ${g.rows[0].num.toFixed(1)} / ${(g.vw - g.rows[0].cat).toFixed(1)}px, Contact ${g.gutter.toFixed(1)}px`)
+  check(Math.abs(g.cta - g.vw / 2) < 1 && Math.abs(g.title - g.vw / 2) < 1,
+    `"See all" (${g.cta.toFixed(1)}) and title (${g.title.toFixed(1)}) centred on ${g.vw / 2}`)
+
   for (let i = 0; i < n; i++) {
     await centre(p, i)
     let s = await state(p, i)

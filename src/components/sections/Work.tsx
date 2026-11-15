@@ -98,7 +98,7 @@ export default function Work() {
       <div data-tone="dark" style={{
         display:        'flex',
         justifyContent: 'center',
-        padding:        'clamp(40px, calc(4.1667 * var(--u)), 96px) clamp(24px, calc(3.125 * var(--u)), 72px) var(--space-2xl)',
+        padding:        'clamp(40px, calc(4.1667 * var(--u)), 96px) max(var(--page-x), calc((100% - var(--content-max)) / 2)) var(--space-2xl)',
       }}>
         <MotionLink
           href="/work"
@@ -139,8 +139,11 @@ export default function Work() {
       </div>
 
       <style>{`
+        /* Rows (and their hover fill) run edge to edge; their text keeps the page gutter.
+           Percent padding resolves against the full-width row, as for every other section. */
         .work-list {
-          padding: 0 clamp(24px, calc(3.125 * var(--u)), 72px) var(--space-2xl);
+          --wl-x: max(var(--page-x), calc((100% - var(--content-max)) / 2));
+          padding: 0 0 var(--space-2xl);
         }
         .work-row {
           position: relative;
@@ -150,7 +153,7 @@ export default function Work() {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: var(--space-l) clamp(24px, calc(3.125 * var(--u)), 72px);
+          padding: var(--space-l) var(--wl-x);
           gap: var(--space-m);
           color: inherit;
           text-decoration: none;
@@ -246,14 +249,14 @@ export default function Work() {
           min-width: 0;
           overflow: hidden;
           text-overflow: ellipsis;
-          padding: 0 clamp(24px, calc(3.125 * var(--u)), 72px);
+          padding: 0 var(--wl-x);
         }
         @keyframes work-marquee {
           to { transform: translateX(-50%); }
         }
         @media (max-width: 900px) {
           .work-list { padding: 0 0 80px; }
-          .work-row  { flex-wrap: wrap; gap: 16px !important; padding: clamp(20px, 3vw, 32px) clamp(16px, 3vw, 30px) !important; }
+          .work-row  { flex-wrap: wrap; gap: 16px !important; padding: clamp(20px, 3vw, 32px) var(--wl-x) !important; }
         }
       `}</style>
     </section>
