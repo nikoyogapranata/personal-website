@@ -118,6 +118,17 @@ function watchMatter(p) {
     }))
     r.check(cards.length === 4 && cards.every(c => c.over <= 1), `${w}px experience cards fit their copy (heights ${cards.map(c => c.h).join('/')}px${cards.some(c => c.over > 1) ? ', overflow ' + cards.map(c => c.over).join('/') : ''})`)
 
+    // Bio: the paragraph alone, one column on the page gutter, 55–72 characters a line
+    const bio = await p.evaluate(() => {
+      const el = document.querySelector('.about-bio-text'), t = el.firstChild, r = document.createRange(), lines = {}
+      for (let i = 0; i < t.length; i++) { r.setStart(t, i); r.setEnd(t, i + 1); const top = Math.round(r.getBoundingClientRect().top); lines[top] = (lines[top] || 0) + 1 }
+      const n = Object.values(lines).map(c => c - 1).slice(0, -1) // trailing spaces; the last line is short
+      return { n, quote: !!document.querySelector('.about-quote') || /Care about the whole product\./.test(document.body.innerText),
+        left: el.getBoundingClientRect().left, gutter: parseFloat(getComputedStyle(el.closest('section')).paddingLeft) }
+    })
+    r.check(!bio.quote && Math.abs(bio.left - bio.gutter) < 1 && (w < 768 || bio.n.every(c => c >= 55 && c <= 72)),
+      `${w}px bio: no quote, on the gutter (${bio.left.toFixed(0)}px), ${bio.n.join('/')} characters a line`)
+
     if (w === 1440 || w === 375) {
       // Spacing story → bio → Experience (document px, layout only)
       const gap = await p.evaluate(() => {
