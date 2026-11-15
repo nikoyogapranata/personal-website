@@ -10,6 +10,7 @@ import {
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import React from "react";
 import Image from "next/image";
+import { CITY } from "@/lib/site";
 
 /* ── tokens ──────────────────────────────────────────────────── */
 const B = "1.5px solid #0a0a0a";
@@ -397,7 +398,7 @@ export default function Hero({ progress }: { progress: MotionValue<number> }) {
               <span
                 style={{ ...serif("#ffffff"), transform: "translateY(var(--hero-lift))" }}
               >
-                Yogyakarta
+                {CITY.name}
               </span>
             </div>
 
@@ -422,7 +423,7 @@ export default function Hero({ progress }: { progress: MotionValue<number> }) {
                 marginLeft: "var(--hero-gap)",
               }}
             >
-              INDONESIA
+              {CITY.country.toUpperCase()}
             </span>
           </div>
         </HoverPushCard>

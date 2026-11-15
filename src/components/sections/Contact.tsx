@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { EMAIL, RESUME_PATH, SOCIAL } from "@/lib/site";
+import { CITY, EMAIL, RESUME_PATH, SOCIAL } from "@/lib/site";
 import { DURATION, EASE, STAGGER, VIEWPORT, reveal } from "@/lib/motion";
 
 const MotionLink = motion.create(Link);
@@ -147,7 +147,7 @@ export default function Contact({
             margin: 0,
           }}
         >
-          Open to freelance projects and internships. Based in Yogyakarta and
+          Open to freelance projects and internships. Based in {CITY.name} and
           available remotely, I design it, build it, and ship it, end to end.
         </motion.p>
 

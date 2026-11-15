@@ -9,7 +9,7 @@ import { loaderBootScript } from "@/lib/loader";
 import { workBootScript } from "@/lib/workFilter";
 import MotionProvider from "@/components/MotionProvider";
 import ToneProvider from "@/components/ui/Tone";
-import { EMAIL, SITE_URL, SOCIAL } from "@/lib/site";
+import { CITY, EMAIL, SITE_URL, SOCIAL } from "@/lib/site";
 import "./globals.css";
 
 const clashDisplay = localFont({
@@ -75,7 +75,7 @@ const personJsonLd = {
   image: `${SITE_URL}/hero.jpeg`,
   jobTitle: "Fullstack Web Developer",
   email: `mailto:${EMAIL}`,
-  address: { "@type": "PostalAddress", addressLocality: "Yogyakarta", addressCountry: "ID" },
+  address: { "@type": "PostalAddress", addressLocality: CITY.name, addressCountry: CITY.countryCode },
   sameAs: [SOCIAL.linkedin, SOCIAL.github],
 };
 

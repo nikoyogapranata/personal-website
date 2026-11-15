@@ -1,5 +1,5 @@
 import Reveal from '@/components/ui/Reveal'
-import CityClock from './CityClock'
+import CityClock from '@/components/ui/CityClock'
 import { cjk } from './cjkFont'
 import { PROFILE } from '@/data'
 import { DURATION, EASE, VIEWPORT } from '@/lib/motion'
