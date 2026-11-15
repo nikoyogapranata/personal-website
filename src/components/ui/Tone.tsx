@@ -8,7 +8,8 @@ import { DURATION } from '@/lib/motion'
  * Light/dark "tone" of the page. Sections declare data-tone="light|violet|dark"; whichever one
  * sits under the viewport's midline sets the tone. Fixed backdrop layers crossfade to it, and
  * text colour tokens (--tone-fg etc., set from html[data-fg]) flip halfway through the
- * crossfade, so text is never mid-grey on mid-grey. With prefers-reduced-motion both switch
+ * crossfade, so text is never mid-grey on mid-grey. A section may change its data-tone later;
+ * that is picked up too. With prefers-reduced-motion both switch
  * instantly. Sections on top of the backdrop leave their background transparent.
  */
 
@@ -60,7 +61,10 @@ export default function ToneProvider({ children }: { children: React.ReactNode }
     }, { rootMargin: '-50% 0px -50% 0px' })
     sections.forEach(el => io.observe(el))
     if (!sections.length) pick()
-    return () => io.disconnect()
+    // A section can change its own tone in place (/contact turns dark once a message is sent)
+    const mo = new MutationObserver(pick)
+    sections.forEach(el => mo.observe(el, { attributes: true, attributeFilter: ['data-tone'] }))
+    return () => { io.disconnect(); mo.disconnect() }
   }, [pathname])
 
   // Crossfade the backdrop to bg and flip fg at the midpoint
