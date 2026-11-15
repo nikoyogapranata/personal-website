@@ -1,37 +1,23 @@
 'use client'
 
-import { useRef, useState } from 'react'
-import Image from 'next/image'
+import { useRef } from 'react'
 import Link from 'next/link'
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useScroll,
-  useTransform,
-} from 'framer-motion'
+import { motion, useSpring, useScroll, useTransform } from 'framer-motion'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import { CATEGORY_LABEL, FEATURED_PROJECTS, PROJECTS, isTodo } from '@/data'
-import { DURATION, EASE, EASE_IN_OUT, SCROLL_SPRING, reveal } from '@/lib/motion'
+import { DURATION, EASE, SCROLL_SPRING } from '@/lib/motion'
+import WorkRow from './WorkRow'
 
 const MotionLink = motion.create(Link)
 
 export default function Work() {
   const sectionRef              = useRef<HTMLElement>(null)
   const titleRef                = useRef<HTMLDivElement>(null)
-  const [hoveredId, setHoveredId] = useState<string | null>(null)
-  // The preview card is fixed and always "in view", so lazy loading alone would fetch every image on page load
-  const [previewReady, setPreviewReady] = useState(false)
 
-  // The `featured` flag picks them (src/data/projects.ts); every one has a live link and a screenshot
+  // The `featured` flag picks them (src/data/projects.ts); every one has a live link
   const featuredProjects = FEATURED_PROJECTS.flatMap(p =>
-    !p.link || isTodo(p.link) || isTodo(p.screenshot) ? [] : [{ ...p, href: p.link.url, image: p.screenshot.src }],
+    !p.link || isTodo(p.link) ? [] : [{ ...p, href: p.link.url }],
   )
-
-  const enterRow = (id: string) => {
-    setHoveredId(id)
-    setPreviewReady(true)
-  }
 
   const { scrollYProgress } = useScroll({
     target: titleRef,
@@ -44,11 +30,6 @@ export default function Work() {
   const titleScale   = useTransform(smoothProgress, [0, 0.85], [1, 0.26])
   // Reduced motion: fade the pinned title out instead of shrinking it
   const titleFade    = useTransform(smoothProgress, [0, 0.85], [1, 0])
-
-  const mouseX = useMotionValue(0)
-  const mouseY = useMotionValue(0)
-  const cardX  = useSpring(mouseX, { stiffness: 120, damping: 20, mass: 0.5 })
-  const cardY  = useSpring(mouseY, { stiffness: 120, damping: 20, mass: 0.5 })
 
   return (
     <section
@@ -100,133 +81,17 @@ export default function Work() {
         className="work-list"
         data-tone="dark"
         style={{ position: 'relative', zIndex: 2, marginTop: '-20vh' }}
-        onMouseMove={(e) => {
-          mouseX.set(e.clientX)
-          mouseY.set(e.clientY)
-        }}
       >
-        {featuredProjects.map((project, index) => {
-          const isHovered = hoveredId === project.slug
-          return (
-            <motion.a
-              key={project.slug}
-              href={project.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              {...reveal({ order: index % 3 })}
-              // Shown at once when it gets keyboard focus (globals.css)
-              data-focus-reveal=""
-              className="work-row"
-              style={{
-                position:       'relative',
-                overflow:       'hidden',
-                minHeight:      'clamp(80px, calc(6.25 * var(--u)), 144px)',
-                borderTop:      '0.5px solid var(--color-border)',
-                display:        'flex',
-                alignItems:     'center',
-                justifyContent: 'space-between',
-                padding:        'var(--space-l) clamp(24px, calc(3.125 * var(--u)), 72px)',
-                gap:            'var(--space-m)',
-                color:          'inherit',
-                textDecoration: 'none',
-              }}
-              // A tap also fires enter events; touch gets no preview (the link opens a new tab)
-              onPointerEnter={(e) => { if (e.pointerType !== 'touch') enterRow(project.slug) }}
-              onPointerLeave={() => setHoveredId(null)}
-              onFocus={(e) => {
-                // Keyboard focus: show the same preview, anchored to the row (a tap focuses too)
-                if (!e.currentTarget.matches(':focus-visible')) return
-                const rect = e.currentTarget.getBoundingClientRect()
-                mouseX.set(rect.left + rect.width / 2)
-                mouseY.set(rect.top + rect.height / 2)
-                enterRow(project.slug)
-              }}
-              onBlur={() => setHoveredId(null)}
-            >
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 'clamp(12px, calc(1.25 * var(--u)), 29px)' }}>
-                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-label)', color: '#888', letterSpacing: '0.1em', flexShrink: 0 }}>
-                  {'0' + (index + 1)}
-                </span>
-                <span style={{ position: 'relative', display: 'inline-block' }}>
-                  <motion.span
-                    initial={false}
-                    animate={{ opacity: isHovered ? 0 : 1 }}
-                    transition={{ duration: DURATION.base, ease: EASE_IN_OUT }}
-                    style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: 'var(--text-h2)', letterSpacing: '-0.02em', color: 'var(--tone-fg)', lineHeight: 1.1, display: 'block' }}
-                  >
-                    {project.title}
-                  </motion.span>
-                  <motion.span
-                    aria-hidden="true"
-                    initial={false}
-                    animate={{ opacity: isHovered ? 1 : 0 }}
-                    transition={{ duration: DURATION.base, ease: EASE_IN_OUT }}
-                    style={{ position: 'absolute', top: 0, left: 0, fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 400, fontSize: 'var(--text-h2)', letterSpacing: '-0.02em', color: 'var(--color-accent-primary-light)', lineHeight: 1.1, whiteSpace: 'nowrap' }}
-                  >
-                    {project.title}
-                  </motion.span>
-                </span>
-              </div>
-              <div style={{ flexShrink: 0 }}>
-                <span style={{ fontFamily: 'var(--font-sans)', fontSize: 'var(--text-label)', color: isHovered ? '#aaa' : 'var(--tone-faint)', letterSpacing: '0.05em', transition: 'color var(--dur-fast) var(--ease)' }}>
-                  {CATEGORY_LABEL[project.category]}
-                </span>
-              </div>
-            </motion.a>
-          )
-        })}
-
-        {/* Cursor-following preview card */}
-        <motion.div
-          style={{
-            position:      'fixed',
-            top:           0,
-            left:          0,
-            x:             cardX,
-            y:             cardY,
-            translateX:    '-50%',
-            translateY:    '-50%',
-            zIndex:        100,
-            pointerEvents: 'none',
-            width:         'clamp(280px, calc(29.1667 * var(--u)), 672px)',
-            height:        'clamp(200px, calc(19.7917 * var(--u)), 456px)',
-            overflow:      'hidden',
-            borderRadius:  4,
-          }}
-          initial={false}
-          animate={{
-            opacity: hoveredId !== null ? 1 : 0,
-            scale:   hoveredId !== null ? 1 : 0.85,
-          }}
-          transition={{
-            opacity: { duration: DURATION.base, ease: EASE_IN_OUT },
-            scale:   { duration: DURATION.fast, ease: EASE },
-          }}
-        >
-          {previewReady && featuredProjects.map(project => (
-            <motion.div
-              key={project.slug}
-              initial={false}
-              animate={{ opacity: hoveredId === project.slug ? 1 : 0 }}
-              transition={{ duration: DURATION.fast, ease: EASE_IN_OUT }}
-              style={{ position: 'absolute', inset: 0 }}
-            >
-              <Image
-                src={project.image}
-                alt=""
-                fill
-                // Card is max(280px, min(29.17 × --u, 672px)): 280 on phones, ≤374 up to 1280, then ~29vw
-                sizes="(max-width: 767px) 280px, (max-width: 1280px) 374px, min(29.2vw, 672px)"
-                style={{ objectFit: 'cover', objectPosition: 'center' }}
-              />
-            </motion.div>
-          ))}
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1 }}>
-            <span style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-label)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.18em', color: 'var(--color-text-inverse)', padding: '0.77em 1.85em', border: '1px solid rgba(248,248,245,0.7)' }}>
-              View
-            </span>
-          </div>
-        </motion.div>
+        {featuredProjects.map((project, index) => (
+          <WorkRow
+            key={project.slug}
+            index={index}
+            href={project.href}
+            title={project.title}
+            category={CATEGORY_LABEL[project.category]}
+            description={project.description}
+          />
+        ))}
       </div>
 
       {/* ── Bottom CTA ── */}
@@ -278,10 +143,100 @@ export default function Work() {
           padding: 0 clamp(24px, calc(3.125 * var(--u)), 72px) var(--space-2xl);
         }
         .work-row {
+          position: relative;
+          overflow: hidden;
+          min-height: clamp(80px, calc(6.25 * var(--u)), 144px);
+          border-top: 0.5px solid var(--color-border);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: var(--space-l) clamp(24px, calc(3.125 * var(--u)), 72px);
+          gap: var(--space-m);
+          color: inherit;
+          text-decoration: none;
           cursor: pointer;
         }
         a.work-row:last-of-type {
           border-bottom: 0.5px solid var(--color-border);
+        }
+        .work-row__lead {
+          display: flex;
+          align-items: baseline;
+          gap: clamp(12px, calc(1.25 * var(--u)), 29px);
+        }
+        .work-row__num {
+          font-family: var(--font-sans);
+          font-size: var(--text-label);
+          color: #888;
+          letter-spacing: 0.1em;
+          flex-shrink: 0;
+        }
+        .work-row__title {
+          font-family: var(--font-display);
+          font-weight: 400;
+          font-size: var(--text-h2);
+          letter-spacing: -0.02em;
+          line-height: 1.1;
+          color: var(--tone-fg);
+        }
+        .work-row__cat {
+          flex-shrink: 0;
+          font-family: var(--font-sans);
+          font-size: var(--text-label);
+          letter-spacing: 0.05em;
+          color: var(--tone-faint);
+        }
+
+        /* Hover/focus fill (WorkRow). Absolute and clipped by the row, so it never changes its size */
+        .work-row__fill {
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          overflow: hidden;
+          pointer-events: none;
+          background: var(--color-bg-dark);
+          color: var(--color-text-inverse);
+          font-family: var(--font-serif);
+          font-style: italic;
+          font-weight: 400;
+          font-size: var(--text-h2);
+          letter-spacing: -0.01em;
+          line-height: 1.1;
+          white-space: nowrap;
+        }
+        .work-row__fill-inner {
+          display: flex;
+          align-items: center;
+          height: 100%;
+        }
+        /* Two identical halves, so -50% is exactly one half: a seamless loop.
+           Paused unless the row is active; the duration is set inline from MARQUEE_EM_PER_SEC. */
+        .work-row__track {
+          display: flex;
+          width: max-content;
+          animation: work-marquee 20s linear infinite paused;
+        }
+        .work-row[data-active] .work-row__track {
+          animation-play-state: running;
+          will-change: transform;
+        }
+        .work-row__half,
+        .work-row__item {
+          display: flex;
+          flex-shrink: 0;
+        }
+        .work-row__sep {
+          padding: 0 0.5em;
+        }
+        /* Reduced motion: still, one line, cut with an ellipsis */
+        .work-row__static {
+          min-width: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          padding: 0 clamp(24px, calc(3.125 * var(--u)), 72px);
+        }
+        @keyframes work-marquee {
+          to { transform: translateX(-50%); }
         }
         @media (max-width: 900px) {
           .work-list { padding: 0 0 80px; }

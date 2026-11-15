@@ -8,7 +8,7 @@
 import { spawn, spawnSync } from 'node:child_process'
 import path from 'node:path'
 
-const SUITES = ['loader', 'transitions', 'leftover', 'prepush', 'keyboard', 'about', 'work', 'contact-page']
+const SUITES = ['loader', 'transitions', 'leftover', 'prepush', 'keyboard', 'home-work', 'about', 'work', 'contact-page']
 const args = process.argv.slice(2)
 const prod = args.includes('--prod')
 const only = args.filter(a => !a.startsWith('--'))

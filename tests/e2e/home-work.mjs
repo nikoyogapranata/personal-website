@@ -1,0 +1,228 @@
+// Home page Work list: the ink fill + description marquee on hover and keyboard focus.
+// Sizes, slide direction, row height, overflow, reduced motion, touch, a11y, contrast and frame rate.
+import { chromium } from 'playwright'
+import path from 'node:path'
+import { BASE_URL, SKIP_LOADER, artifacts, contrast, reporter } from './lib.mjs'
+
+const OUT = artifacts('home-work')
+const { check, info, section, done } = reporter()
+const b = await chromium.launch({ channel: 'chrome' })
+
+const SIZES = [[1024, 768], [1440, 900], [2560, 1440]]
+
+async function open(ctxOpts = {}) {
+  const ctx = await b.newContext(ctxOpts)
+  const p = await ctx.newPage()
+  await p.addInitScript(SKIP_LOADER)
+  await p.goto(BASE_URL + '/')
+  await p.waitForSelector('.work-row')
+  return { ctx, p }
+}
+
+/** Row geometry, fill offset (px, + is below) and marquee state */
+const state = (p, i) => p.evaluate(i => {
+  const r = document.querySelectorAll('.work-row')[i]
+  const fill = r.querySelector('.work-row__fill'), track = r.querySelector('.work-row__track')
+  const box = r.getBoundingClientRect()
+  return {
+    top: box.top, bottom: box.bottom, left: box.left, width: box.width, h: r.offsetHeight,
+    active: r.hasAttribute('data-active'),
+    fillY: new DOMMatrix(getComputedStyle(fill).transform).m42,
+    trackX: track ? new DOMMatrix(getComputedStyle(track).transform).m41 : null,
+    play: track ? getComputedStyle(track).animationPlayState : null,
+    overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
+  }
+}, i)
+
+const heights = p => p.evaluate(() => [...document.querySelectorAll('.work-row')].map(r => r.offsetHeight))
+
+async function centre(p, i) {
+  await p.evaluate(i => document.querySelectorAll('.work-row')[i].scrollIntoView({ block: 'center' }), i)
+  await p.waitForTimeout(900)
+}
+
+// ── Hover, every row, from both edges, at three widths ─────────────
+for (const [w, h] of SIZES) {
+  section(`hover ${w}×${h}`)
+  const { ctx, p } = await open({ viewport: { width: w, height: h } })
+  await centre(p, 0)
+  const n = await p.evaluate(() => document.querySelectorAll('.work-row').length)
+  check(n === 5, `${n} rows`)
+  const h0 = await heights(p)
+
+  for (let i = 0; i < n; i++) {
+    await centre(p, i)
+    let s = await state(p, i)
+    const x = s.left + s.width / 2
+
+    // Enter through the top edge
+    await p.mouse.move(x, s.top - 2)
+    await p.mouse.move(x, s.top + 3)
+    await p.waitForTimeout(60)
+    const mid = await state(p, i)
+    check(mid.active && mid.fillY < -1, `row ${i} enters from top (fill y ${mid.fillY.toFixed(0)} mid-slide)`)
+    await p.waitForTimeout(800)
+    s = await state(p, i)
+    const x0 = s.trackX
+    await p.waitForTimeout(300)
+    const s2 = await state(p, i)
+    check(Math.abs(s.fillY) < 0.5 && s.play === 'running' && s2.trackX < x0,
+      `row ${i} filled, marquee running (moved ${(x0 - s2.trackX).toFixed(1)}px in 300ms)`)
+    const covered = await p.evaluate(i => {
+      // The fill has pointer-events: none, so test geometry and paint order instead of hit-testing
+      const r = document.querySelectorAll('.work-row')[i], fill = r.querySelector('.work-row__fill')
+      const f = fill.getBoundingClientRect(), cs = getComputedStyle(fill)
+      return ['.work-row__num', '.work-row__title', '.work-row__cat'].every(sel => {
+        const t = r.querySelector(sel).getBoundingClientRect()
+        return t.top >= f.top - 0.5 && t.bottom <= f.bottom + 0.5 && t.left >= f.left && t.right <= f.right
+      }) && cs.position === 'absolute' && Number(cs.zIndex) >= 1 && cs.backgroundColor === 'rgb(10, 10, 10)'
+    }, i)
+    check(covered, `row ${i} content hidden under the fill`)
+    if (i === 0 && w === 1440) await p.screenshot({ path: path.join(OUT, `hover-${w}.png`) })
+
+    // Leave through the top edge: it slides back up
+    await p.mouse.move(x, s.top - 2)
+    await p.waitForTimeout(800)
+    s = await state(p, i)
+    check(!s.active && s.fillY < -0.95 * s.h && s.play === 'paused', `row ${i} leaves upward and pauses (fill y ${s.fillY.toFixed(0)})`)
+
+    // Enter through the bottom edge, leave through it
+    await p.mouse.move(x, s.bottom + 2)
+    await p.mouse.move(x, s.bottom - 3)
+    await p.waitForTimeout(60)
+    const midB = await state(p, i)
+    check(midB.active && midB.fillY > 1, `row ${i} enters from bottom (fill y ${midB.fillY.toFixed(0)} mid-slide)`)
+    await p.waitForTimeout(800)
+    await p.mouse.move(x, s.bottom + 2)
+    await p.waitForTimeout(800)
+    s = await state(p, i)
+    check(!s.active && s.fillY > 0.95 * s.h, `row ${i} leaves downward (fill y ${s.fillY.toFixed(0)})`)
+    check(!s.overflow, `row ${i} no horizontal overflow`)
+  }
+  check(JSON.stringify(await heights(p)) === JSON.stringify(h0), `row heights unchanged ${JSON.stringify(h0)}`)
+
+  // ── Keyboard: Tab through the rows ──
+  await p.mouse.move(1, 1)
+  await p.evaluate(() => { window.scrollTo(0, 0); document.activeElement?.blur() })
+  let hits = 0
+  for (let k = 0; k < 80 && hits < n; k++) {
+    await p.keyboard.press('Tab')
+    const idx = await p.evaluate(() => [...document.querySelectorAll('.work-row')].indexOf(document.activeElement))
+    if (idx < 0) continue
+    const op = await p.evaluate(() => getComputedStyle(document.activeElement).opacity)
+    await p.waitForTimeout(800)
+    const s = await state(p, idx)
+    const prev = idx > 0 ? await state(p, idx - 1) : null
+    check(op === '1' && s.active && Math.abs(s.fillY) < 0.5 && s.play === 'running' && (!prev || (!prev.active && prev.play === 'paused')),
+      `Tab → row ${idx}: shown at once (opacity ${op}), filled, previous row reversed`)
+    check(!s.overflow, `Tab → row ${idx}: no overflow`)
+    hits++
+  }
+  check(hits === n, `focused all ${n} rows by keyboard`)
+  await p.keyboard.press('Tab')
+  await p.waitForTimeout(800)
+  const last = await state(p, n - 1)
+  check(!last.active && last.fillY > 0.95 * last.h, 'blur reverses the last row')
+  check(JSON.stringify(await heights(p)) === JSON.stringify(h0), 'row heights unchanged after keyboard pass')
+  await ctx.close()
+}
+
+// ── Accessibility and contrast ────────────────────────────────────
+section('a11y + contrast')
+{
+  const { ctx, p } = await open({ viewport: { width: 1440, height: 900 } })
+  const a = await p.evaluate(() => [...document.querySelectorAll('.work-row')].map(r => {
+    const d = document.getElementById(r.getAttribute('aria-describedby'))
+    const fill = r.querySelector('.work-row__fill')
+    const fs = getComputedStyle(fill)
+    return {
+      desc: d?.textContent.length ?? 0, descHidden: d?.hidden,
+      fillHidden: fill.getAttribute('aria-hidden'),
+      // What a screen reader gets as the link text: hidden elements and the aria-hidden fill drop out
+      name: r.innerText.replace(/\s+/g, ' ').trim(),
+      fg: fs.color, bg: fs.backgroundColor,
+    }
+  }))
+  const rgb = s => s.match(/\d+/g).slice(0, 3).map(Number)
+  for (const [i, r] of a.entries()) {
+    check(r.desc > 20 && r.descHidden && r.fillHidden === 'true', `row ${i}: description via aria-describedby (${r.desc} chars), copies aria-hidden`)
+    const tree = await p.locator('.work-row').nth(i).ariaSnapshot()
+    check(tree.split('\n').length <= 3 && !/·/.test(tree), `row ${i}: accessible link "${tree.replace(/\s+/g, ' ').slice(0, 60)}"`)
+    const c = contrast(rgb(r.fg), rgb(r.bg))
+    check(c >= 7, `row ${i}: cream on ink ${c.toFixed(1)}:1 (${r.fg} on ${r.bg})`)
+  }
+  await ctx.close()
+}
+
+// ── Reduced motion ────────────────────────────────────────────────
+section('reduced motion')
+{
+  const { ctx, p } = await open({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' })
+  for (let i = 0; i < 5; i++) {
+    await centre(p, i)
+    let s = await state(p, i)
+    const x = s.left + s.width / 2
+    await p.mouse.move(x, s.top - 2)
+    await p.mouse.move(x, s.top + 3)
+    await p.waitForTimeout(30)
+    s = await state(p, i)
+    const st = await p.evaluate(i => {
+      const r = document.querySelectorAll('.work-row')[i], el = r.querySelector('.work-row__static')
+      return el && { ell: getComputedStyle(el).textOverflow, cut: el.scrollWidth > el.clientWidth, fits: el.offsetHeight <= r.offsetHeight, track: !!r.querySelector('.work-row__track') }
+    }, i)
+    check(s.active && Math.abs(s.fillY) < 0.5 && st && !st.track && st.ell === 'ellipsis' && st.cut && st.fits,
+      `row ${i}: ink at once, static description cut with ellipsis`)
+    if (i === 0) await p.screenshot({ path: path.join(OUT, 'reduced.png') })
+    await p.mouse.move(x, s.top - 2)
+    await p.waitForTimeout(30)
+    s = await state(p, i)
+    check(!s.active && s.fillY > 0.95 * s.h, `row ${i}: gone at once on leave`)
+  }
+  await ctx.close()
+}
+
+// ── Touch ─────────────────────────────────────────────────────────
+section('touch')
+{
+  const { ctx, p } = await open({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true })
+  check(await p.evaluate(() => matchMedia('(hover: none), (pointer: coarse)').matches), 'touch emulation reports no hover')
+  for (let i = 0; i < 5; i++) {
+    await centre(p, i)
+    const s = await state(p, i)
+    const popup = ctx.waitForEvent('page', { timeout: 5000 }).catch(() => null)
+    await p.touchscreen.tap(s.left + s.width / 2, s.top + s.h / 2)
+    const pg = await popup
+    await p.waitForTimeout(700)
+    const after = await state(p, i)
+    check(!!pg && !after.active && after.fillY > 0.95 * after.h, `row ${i}: tap opens a tab, no fill (active ${after.active}, fill y ${after.fillY.toFixed(0)}/${after.h})`)
+    await pg?.close()
+  }
+  await ctx.close()
+}
+
+// ── Frame rate while hovering, 4× CPU throttling ──────────────────
+section('frame rate, 4× CPU')
+{
+  const { ctx, p } = await open({ viewport: { width: 1440, height: 900 } })
+  await centre(p, 0)
+  const cdp = await ctx.newCDPSession(p)
+  await cdp.send('Emulation.setCPUThrottlingRate', { rate: 4 })
+  const s = await state(p, 0)
+  await p.mouse.move(s.left + s.width / 2, s.top - 2)
+  const fps = p.evaluate(() => new Promise(res => {
+    const t = []; const t0 = performance.now()
+    const f = now => { t.push(now); now - t0 < 3000 ? requestAnimationFrame(f) : res(t) }
+    requestAnimationFrame(f)
+  }))
+  await p.mouse.move(s.left + s.width / 2, s.top + 3)
+  const t = await fps
+  const gaps = t.slice(1).map((v, i) => v - t[i])
+  const rate = (gaps.length / ((t.at(-1) - t[0]) / 1000))
+  const long = gaps.filter(g => g > 34).length
+  check(rate >= 50 && long <= 3, `${rate.toFixed(1)} fps over 3s while sliding in and scrolling, ${long} frame(s) over 34ms, worst ${Math.max(...gaps).toFixed(1)}ms`)
+  await cdp.send('Emulation.setCPUThrottlingRate', { rate: 1 })
+  await ctx.close()
+}
+
+await b.close()
+done()
