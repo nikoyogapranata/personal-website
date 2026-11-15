@@ -6,7 +6,7 @@ import zlib from 'node:zlib'
 import { BASE_URL, SKIP_LOADER, artifacts, contrast, reporter } from './lib.mjs'
 
 const OUT = artifacts('home-work')
-const { check, info, section, done } = reporter()
+const { check, section, done } = reporter()
 const b = await chromium.launch({ channel: 'chrome' })
 
 const SIZES = [[1024, 768], [1440, 900], [2560, 1440]]
@@ -91,6 +91,12 @@ for (const [w, h] of SIZES) {
       }) && cs.position === 'absolute' && Number(cs.zIndex) >= 1 && cs.backgroundColor === 'rgb(248, 248, 245)'
     }, i)
     check(covered, `row ${i} content hidden under the fill`)
+    // One tagline (plus separator) passes in 6–8s: the loop is one half of the track, `copies` items long
+    const pass = await p.evaluate(i => {
+      const r = document.querySelectorAll('.work-row')[i], half = r.querySelector('.work-row__half')
+      return parseFloat(getComputedStyle(r.querySelector('.work-row__track')).animationDuration) / half.children.length
+    }, i)
+    check(pass >= 6 && pass <= 8, `row ${i} one tagline pass takes ${pass.toFixed(1)}s`)
     if (i === 0 && w === 1440) await p.screenshot({ path: path.join(OUT, `hover-${w}.png`) })
 
     // Leave through the top edge: it slides back up
@@ -162,7 +168,7 @@ section('a11y + contrast')
   }))
   const rgb = s => s.match(/\d+/g).slice(0, 3).map(Number)
   for (const [i, r] of a.entries()) {
-    check(r.desc > 20 && r.descHidden && r.fillHidden === 'true', `row ${i}: description via aria-describedby (${r.desc} chars), copies aria-hidden`)
+    check(r.desc > 20 && r.desc <= 60 && r.descHidden && r.fillHidden === 'true', `row ${i}: tagline via aria-describedby (${r.desc} chars), copies aria-hidden`)
     const tree = await p.locator('.work-row').nth(i).ariaSnapshot()
     check(tree.split('\n').length <= 3 && !/·/.test(tree), `row ${i}: accessible link "${tree.replace(/\s+/g, ' ').slice(0, 60)}"`)
     const c = contrast(rgb(r.fg), rgb(r.bg))
@@ -185,10 +191,19 @@ section('reduced motion')
     s = await state(p, i)
     const st = await p.evaluate(i => {
       const r = document.querySelectorAll('.work-row')[i], el = r.querySelector('.work-row__static')
-      return el && { ell: getComputedStyle(el).textOverflow, cut: el.scrollWidth > el.clientWidth, fits: el.offsetHeight <= r.offsetHeight, track: !!r.querySelector('.work-row__track') }
+      if (!el) return null
+      const lineH = parseFloat(getComputedStyle(el).lineHeight)
+      const one = () => el.offsetHeight <= lineH * 1.5 && el.offsetHeight <= r.offsetHeight
+      const res = { ell: getComputedStyle(el).textOverflow, fits: one(), track: !!r.querySelector('.work-row__track') }
+      // A line too long for the row (the description fallback) is cut, still on one line
+      const text = el.textContent
+      el.textContent = text + ' ' + text + ' ' + text
+      res.longCut = el.scrollWidth > el.clientWidth && one()
+      el.textContent = text
+      return res
     }, i)
-    check(s.active && Math.abs(s.fillY) < 0.5 && st && !st.track && st.ell === 'ellipsis' && st.cut && st.fits,
-      `row ${i}: fill at once, static description cut with ellipsis`)
+    check(s.active && Math.abs(s.fillY) < 0.5 && st && !st.track && st.ell === 'ellipsis' && st.fits && st.longCut,
+      `row ${i}: fill at once, static one line; a long line is cut with an ellipsis`)
     if (i === 0) await p.screenshot({ path: path.join(OUT, 'reduced.png') })
     await p.mouse.move(x, s.top - 2)
     await p.waitForTimeout(30)
@@ -228,7 +243,7 @@ section('frame rate, 4× CPU')
   await p.mouse.move(s.left + s.width / 2, s.top - 2)
   const fps = p.evaluate(() => new Promise(res => {
     const t = []; const t0 = performance.now()
-    const f = now => { t.push(now); now - t0 < 3000 ? requestAnimationFrame(f) : res(t) }
+    const f = now => { t.push(now); if (now - t0 < 3000) requestAnimationFrame(f); else res(t) }
     requestAnimationFrame(f)
   }))
   await p.mouse.move(s.left + s.width / 2, s.top + 3)

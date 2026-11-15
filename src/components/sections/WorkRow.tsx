@@ -7,10 +7,10 @@ import { DURATION, EASE, reveal } from '@/lib/motion'
 
 /**
  * Marquee speed, in ems of the marquee text per second, so it feels the same at every size.
- * 0.9 matches the site menu (FlowingMenu at speed 12: ~393px per loop at 36px text).
+ * Taglines (with the separator) are 21–25em, so 3.2 gives one pass every 6.7–7.8s.
  * The one number to tune.
  */
-const MARQUEE_EM_PER_SEC = 0.9
+const MARQUEE_EM_PER_SEC = 3.2
 
 type Edge = 'top' | 'bottom'
 
@@ -22,14 +22,15 @@ interface WorkRowProps {
   href: string
   title: string
   category: string
-  description: string
+  /** The marquee line, also read once by screen readers */
+  text: string
 }
 
 /**
  * One row of the home page Work list. Hover or keyboard focus fills it with cream from the edge the
- * pointer crossed (top or bottom, as in FlowingMenu) and loops the project's description across it.
+ * pointer crossed (top or bottom, as in FlowingMenu) and loops the project's tagline across it.
  */
-export default function WorkRow({ index, href, title, category, description }: WorkRowProps) {
+export default function WorkRow({ index, href, title, category, text }: WorkRowProps) {
   const reduceMotion = usePrefersReducedMotion()
   const descId       = useId()
   const rowRef       = useRef<HTMLAnchorElement>(null)
@@ -87,7 +88,7 @@ export default function WorkRow({ index, href, title, category, description }: W
 
   const item = (
     <>
-      <span>{description}</span>
+      <span>{text}</span>
       <span className="work-row__sep">·</span>
     </>
   )
@@ -133,12 +134,12 @@ export default function WorkRow({ index, href, title, category, description }: W
       </span>
       <span className="work-row__cat">{category}</span>
       {/* Read once by screen readers; the visible copies below are decoration */}
-      <span id={descId} hidden>{description}</span>
+      <span id={descId} hidden>{text}</span>
 
       <motion.span className="work-row__fill" aria-hidden="true" style={{ y: fillY }}>
         <motion.span className="work-row__fill-inner" style={{ y: innerY }}>
           {reduceMotion ? (
-            <span className="work-row__static">{description}</span>
+            <span className="work-row__static">{text}</span>
           ) : (
             <span className="work-row__track" style={{ animationDuration: `${loopSecs}s` }}>
               {[0, 1].map(half => (

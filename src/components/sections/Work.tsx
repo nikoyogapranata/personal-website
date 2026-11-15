@@ -89,7 +89,7 @@ export default function Work() {
             href={project.href}
             title={project.title}
             category={CATEGORY_LABEL[project.category]}
-            description={project.description}
+            text={project.tagline ?? project.description}
           />
         ))}
       </div>

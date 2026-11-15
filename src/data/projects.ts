@@ -41,6 +41,8 @@ export interface Project {
   /** Team the project was made with. Not shown on the card yet */
   team?: string
   description: string
+  /** One short line for the home page Work list marquee; falls back to description */
+  tagline?: string
   stack: string[]
   /** Landscape for web and cms, a portrait phone screenshot for ios */
   screenshot: Screenshot | Todo
@@ -58,6 +60,7 @@ export const PROJECTS: Project[] = [
     period: TODO,
     featured: true,
     description: 'Chinese vocabulary learning platform with radical-based grouping, three quiz modes, and HSK 1 to 4 vocabulary, wrapped in a digital ink aesthetic.',
+    tagline: "Learn HSK Chinese vocabulary, one radical at a time",
     stack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Firebase', 'Supabase', 'PostgreSQL'],
     screenshot: { src: '/moink.webp', width: 1898, height: 970 },
     link: { kind: 'visit', url: 'https://moinkchinese.vercel.app/' },
@@ -76,6 +79,7 @@ export const PROJECTS: Project[] = [
     featured: true,
     teamLead: true,
     description: 'Healthcare platform with electronic health records, real-time queuing and an AI health chatbot, for patients, doctors and admins.',
+    tagline: "Health records, queues and an AI chatbot in one platform",
     stack: ['Next.js', 'Supabase', 'PostgreSQL'],
     screenshot: { src: '/healthsync.webp', width: 2400, height: 1423 },
     link: { kind: 'visit', url: 'https://healthsync-7.vercel.app' },
@@ -92,6 +96,7 @@ export const PROJECTS: Project[] = [
     period: 'Jul 2026 to Oct 2026',
     featured: true,
     description: 'Rebuilt the core pages and set up a reusable design system for an exam-prep education platform.',
+    tagline: "A rebuilt front end and the design system behind it",
     stack: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
     screenshot: { src: '/kelas-kampus.webp', width: 1900, height: 968 },
     link: { kind: 'visit', url: 'https://kelaskampus.id' },
@@ -108,6 +113,7 @@ export const PROJECTS: Project[] = [
     period: TODO,
     featured: true,
     description: 'Led the website redesign with a remote team, plus SEO and analytics.',
+    tagline: "A remote-team redesign, plus SEO and analytics",
     stack: ['WordPress'],
     screenshot: { src: '/hellocation.webp', width: 1897, height: 967 },
     link: { kind: 'visit', url: 'https://hellocation.id' },
@@ -147,6 +153,7 @@ export const PROJECTS: Project[] = [
     period: 'Sep 2025 to Nov 2025',
     featured: true,
     description: 'WordPress site for a herbal café and medicinal-plant conservation project in Desa Guwosari, with staff trained to run it.',
+    tagline: "A herbal café's home on the web, run by its own staff",
     stack: ['WordPress', 'Elementor'],
     screenshot: { src: '/jamusari.webp', width: 2400, height: 1417 },
     link: { kind: 'visit', url: 'https://jamusari.com' },
