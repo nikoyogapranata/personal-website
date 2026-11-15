@@ -1,9 +1,7 @@
 import Reveal from '@/components/ui/Reveal'
 import CopyEmail from './CopyEmail'
-import { cjk } from '@/components/about/cjkFont'
-import { PROFILE } from '@/data'
 import { reveal } from '@/lib/motion'
-import { CITY, EMAIL, RESUME_PATH, SOCIAL } from '@/lib/site'
+import { EMAIL, RESUME_PATH, SOCIAL } from '@/lib/site'
 
 const CARDS = [
   { href: SOCIAL.linkedin, kicker: 'Profile', title: 'LinkedIn',    arrow: '↗', tone: 'violet', newTab: true },
@@ -11,10 +9,10 @@ const CARDS = [
   { href: RESUME_PATH,     kicker: 'PDF',     title: 'Download CV', arrow: '↓', tone: 'crimson', newTab: true },
 ] as const
 
-/** (02) The address to copy, three channel cards, and where I am / what I speak. Works without JS. */
+/** (02) The address to copy and three channel cards. Works without JS. */
 export default function Channels() {
   return (
-    <section className={`ch ${cjk.variable}`} data-tone="light" aria-labelledby="ch-title">
+    <section className="ch" data-tone="light" aria-labelledby="ch-title">
       <Reveal {...reveal()} data-focus-reveal="">
         <p className="ch-label">(02) Rather not use a form?</p>
         <h2 id="ch-title" className="ch-title">Just write to me.</h2>
@@ -50,19 +48,6 @@ export default function Channels() {
           </li>
         ))}
       </ul>
-
-      <div className="ch-bottom">
-        <p>Based in {CITY.name}, working remotely</p>
-        <p>
-          <span className="ch-speaks-label">Speaks</span>{' '}
-          {PROFILE.speaks.map((l, i) => (
-            <span key={l.label}>
-              <span lang={l.lang}>{l.label}</span>
-              {i < PROFILE.speaks.length - 1 ? ', ' : ''}
-            </span>
-          ))}
-        </p>
-      </div>
     </section>
   )
 }

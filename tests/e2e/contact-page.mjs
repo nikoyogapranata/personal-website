@@ -1,5 +1,5 @@
 // /contact: layout at every width (no overflow, the sentence, the one-line email, cards), the
-// status-bar clock (no shift, ticks on the minute), keyboard-only fill and submit (arrow keys on
+// the removed status bar and channels row, keyboard-only fill and submit (arrow keys on
 // the topic chips), validation (blur, submit, focus, aria), server-side validation, API failures,
 // the sent state and "send another", copy to clipboard (and its fallback), reduced motion, no JS,
 // curtain in and out, CLS, and contrast on every text colour.
@@ -202,31 +202,28 @@ const checkContrast = (list, label) => {
   }
 
   // ── Clock: renders after mount, same width as its placeholder, ticks on the minute
-  r.section('CLOCK')
-  {
-    const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } })
-    await ctx.addInitScript(SKIP_LOADER)
-    const p = await ctx.newPage()
-    // 14:49:50 in Yogyakarta (UTC+7)
-    await p.clock.install({ time: new Date('2026-11-15T07:49:50Z') })
-    await p.goto(BASE + '/contact', { waitUntil: 'domcontentloaded' })
-    await p.clock.runFor(1500)
-    const html = await (await p.request.get(BASE + '/contact')).text()
-    r.check(/--:--/.test(html), 'server render shows the --:-- placeholder')
-    const t1 = await p.$eval('.ct-status-time', e => e.textContent.replace(/\s+/g, ' ').trim())
-    r.check(/It.s 14:49 in Yogyakarta/i.test(t1) && /reply within a day/i.test(t1), `status: "${t1}"`)
-    const widths = await p.$eval('.ct-clock .city-clock', el => {
-      const w1 = el.getBoundingClientRect().width; const t = el.textContent
-      el.textContent = '--:--'; const w2 = el.getBoundingClientRect().width; el.textContent = t
-      return [w1, w2]
+  r.section('REMOVED')
+  // No status bar, no "Based in / Speaks" row, no reply-time promise, no CJK font; the title sits up
+  for (const w of [1440, 375]) {
+    const p = await open(browser, w)
+    const fonts = []
+    p.on('request', q => { if (/\.woff2/.test(q.url())) fonts.push(q.url()) })
+    await go(p)
+    const v = await p.evaluate(() => {
+      const nav = document.querySelector('nav, header').getBoundingClientRect().bottom
+      return {
+        gone: ['.ct-status', '.ct-dot', '.ct-clock', '.city-clock', '.ch-bottom'].filter(s => document.querySelector(s)),
+        text: /within a day|Open to internships|Based in|Speaks/i.test(document.body.innerText),
+        gap: document.querySelector('.ct-title').getBoundingClientRect().top + scrollY - nav,
+        space: parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--space-l')) || 0,
+      }
     })
-    r.check(Math.abs(widths[0] - widths[1]) < 0.5, `clock and placeholder same width (${widths.map(x => x.toFixed(1)).join(' / ')})`)
-    await p.clock.runFor(15_000)
-    const t2 = await p.$eval('.ct-clock', e => e.textContent)
-    r.check(t2 === '14:50', `ticks on the minute → ${t2}`)
-    const left = await p.$eval('.ct-status-item', e => e.textContent.trim())
-    r.check(/Open to internships and freelance/i.test(left), `status left: "${left}"`)
-    await ctx.close()
+    r.check(!v.gone.length && !v.text, `${w}: status bar and bottom row gone${v.gone.length ? ' (' + v.gone + ')' : ''}`)
+    r.check(v.gap > 0 && v.gap < 80, `${w}: title ${v.gap.toFixed(0)}px under the navbar`)
+    const cjk = fonts.filter(u => /NotoSerifSC/i.test(u))
+    const html = await (await p.request.get(BASE + '/contact')).text()
+    r.check(!cjk.length && !/NotoSerifSC|--font-cjk/.test(html), `${w}: no CJK font on /contact (${fonts.length} fonts loaded)`)
+    await p.context().close()
   }
 
   // ── Keyboard only: Tab to the form, type, arrow keys on the chips, submit
@@ -429,7 +426,7 @@ const checkContrast = (list, label) => {
     r.check(/^Message sent · \d\d:\d\d, Yogyakarta$/i.test(v.label), `${w}: label "${v.label}"`)
     r.check(v.title?.startsWith('Got it,') && v.title.includes(name), `${w}: title "${v.title?.slice(0, 50)}"`)
     r.check(/Playfair/.test(v.nameFont) && v.nameColor === 'rgb(167, 139, 250)', `${w}: name in Playfair italic light violet`)
-    r.check(v.line === 'Thanks for reaching out about a freelance project. I\'ll reply to ada@example.com within a day, usually sooner.', `${w}: "${v.line}"`)
+    r.check(v.line === 'Thanks for reaching out about a freelance project. I\'ll reply to ada@example.com soon.', `${w}: "${v.line}"`)
     r.check(v.card?.includes(name) && v.card.includes('<b>site</b> <img src=x') && v.cardEm === 'rgb(91, 33, 182)', `${w}: echo card repeats their sentence in violet`)
     r.check(!v.img && v.xss === undefined, `${w}: visitor text rendered as text, never HTML`)
     r.check(v.tilt !== 'none', `${w}: card tilted (${v.tilt})`)
@@ -509,8 +506,6 @@ const checkContrast = (list, label) => {
     r.check(!moved.length, `no transform during the swap (${moved.length ? moved[0] : 'none seen'})`)
     const s = await state(p)
     r.check(s.sent && s.fg === 'dark', `sent, tone ${s.fg}`)
-    const dot = await p.$eval('.ct-dot', e => getComputedStyle(e).animationIterationCount)
-    r.check(dot === '1', `availability dot doesn't pulse (iterations ${dot})`)
     await p.context().close()
   }
 
@@ -529,16 +524,13 @@ const checkContrast = (list, label) => {
         link: vis(document.querySelector('.ch-email--nojs')),
         hint: document.querySelector('.ch-hint').innerText.trim(),
         cards: [...document.querySelectorAll('.ch-card')].filter(c => vis(c) && getComputedStyle(c.closest('[data-reveal]')).opacity === '1').length,
-        bottom: vis(document.querySelector('.ch-bottom')),
         h1: getComputedStyle(document.querySelector('h1').closest('[data-reveal]')).opacity,
-        clock: document.querySelector('.ct-clock').textContent,
       }
     })
     r.check(!n.form && n.note && n.noteLink === `mailto:${EMAIL}`, `${w}: form hidden, note with mailto shown`)
     r.check(!n.btn && n.link, `${w}: copy button swapped for a mailto link`)
     r.check(/^Open it in your mail app/.test(n.hint), `${w}: hint "${n.hint}"`)
-    r.check(n.cards === 3 && n.bottom && n.h1 === '1', `${w}: cards, bottom row and title visible`)
-    r.check(n.clock === '--:--', `${w}: clock keeps its placeholder (${n.clock})`)
+    r.check(n.cards === 3 && n.h1 === '1', `${w}: cards and title visible`)
     const o = await overflow(p)
     r.check(o.scroll <= 0, `${w}: no overflow (+${o.scroll})`)
     await shot(p, `${w}-nojs`, true)

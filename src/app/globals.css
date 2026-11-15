@@ -176,11 +176,6 @@
   to { transform: translateX(calc(-100% / 6)); }
 }
 
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.3; }
-}
-
 /* ── Base ───────────────────────────────────────────────────────── */
 @layer base {
   *, *::before, *::after {
@@ -211,7 +206,7 @@
 }
 
 /* ── Reduced motion ─────────────────────────────────────────────
-   Stops CSS keyframes (e.g. the availability pulse) and transitions.
+   Stops CSS keyframes (e.g. the Work row marquee) and transitions.
    JS-driven motion is handled by MotionConfig and usePrefersReducedMotion. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

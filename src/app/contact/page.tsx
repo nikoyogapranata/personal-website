@@ -1,6 +1,5 @@
 import '@/components/contact/contact.css'
 import Reveal from '@/components/ui/Reveal'
-import StatusBar from '@/components/contact/StatusBar'
 import SentenceForm from '@/components/contact/SentenceForm'
 import Channels from '@/components/contact/Channels'
 import Footer from '@/components/sections/Footer'
@@ -15,7 +14,6 @@ export default function ContactPage() {
         <SentenceForm
           header={
             <>
-              <StatusBar />
               <Reveal {...reveal({ onMount: true, duration: DURATION.slow })}>
                 <h1 className="ct-title">
                   LET&apos;S TALK<span className="ct-title-stop">.</span>

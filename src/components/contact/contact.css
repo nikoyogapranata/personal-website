@@ -1,4 +1,4 @@
-/* /contact: status bar and title (.ct), the sentence form (.sf), the sent state (.ss) and the
+/* /contact: title (.ct), the sentence form (.sf), the sent state (.ss) and the
    channels (.ch). Text takes its colour from the tone tokens (--tone-fg etc.), so the top block
    reads on cream and, after a send, on the dark tone. Layout changes (phones, no JS) are all
    decided here in CSS, so nothing moves after hydration. */
@@ -10,48 +10,12 @@
   --sf-size: clamp(1.75rem, calc(3.6111 * var(--u)), 83px);
 }
 
-/* ── Status bar and title ───────────────────────────────────── */
+/* ── Title ───────────────────────────────────── */
 .ct-top {
-  padding: calc(var(--nav-h) + clamp(8px, calc(0.8333 * var(--u)), 20px)) var(--ct-x) var(--section-y);
-}
-.ct-status {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 6px 24px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--ct-hair);
-  font-family: var(--font-sans);
-  font-size: var(--text-label);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--tone-faint);
-  transition: color var(--dur-base) var(--ease-in-out);
-}
-.ct-status-item {
-  margin: 0;
-  display: flex;
-  align-items: baseline;
-  gap: 4px 0.6em;
-}
-.ct-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #16a34a;
-  flex-shrink: 0;
-  align-self: center;
-  animation: pulse-dot 2s infinite;
-}
-/* Fixed width: "--:--" before mount and the real time take the same room */
-.ct-clock .city-clock {
-  display: inline-block;
-  width: 3.9em;
-  text-align: center;
-  font-variant-numeric: tabular-nums;
+  padding: calc(var(--nav-h) + var(--space-l)) var(--ct-x) var(--section-y);
 }
 .ct-title {
-  margin: var(--space-l) 0 var(--space-xl);
+  margin: 0 0 var(--space-xl);
   font-family: var(--font-display);
   font-weight: 700;
   font-size: calc(var(--text-title) * 0.85);
@@ -489,24 +453,6 @@ html:not([data-js]) .ch-hint-nojs { display: inline; }
   letter-spacing: -0.02em;
 }
 
-.ch-bottom {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 8px 32px;
-  margin-top: var(--space-2xl);
-  padding-top: 14px;
-  border-top: 1px solid var(--ct-hair);
-  font-family: var(--font-sans);
-  font-size: var(--text-label);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--tone-faint);
-}
-.ch-bottom p { margin: 0; }
-.ch-speaks-label { margin-right: 0.6em; }
-.ch-bottom [lang|="zh"] { font-family: var(--font-cjk), var(--font-serif), "Songti SC", "SimSun", serif; letter-spacing: 0.05em; }
-
 /* ── Tablets ────────────────────────────────────────────────── */
 @media (max-width: 1023px) {
   .ss { grid-template-columns: minmax(0, 1fr); }
@@ -520,8 +466,6 @@ html:not([data-js]) .ch-hint-nojs { display: inline; }
 }
 @media (max-width: 640px) {
   .ct-title { font-size: clamp(52px, 15vw, 120px); }
-  .ct-status-time .ct-sep { display: none; }
-  .ct-status-time { flex-direction: column; gap: 4px; }
   /* Every blank takes its own full line; the sentence breaks around them */
   .sf-blank { display: flex; width: 100%; }
   .sf-row, .sf-cell { flex: 1 1 auto; }

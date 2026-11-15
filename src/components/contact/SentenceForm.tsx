@@ -95,7 +95,7 @@ export default function SentenceForm({ header }: { header: React.ReactNode }) {
       if (!res.ok) throw new Error(typeof data.error === 'string' ? data.error : 'Your message could not be sent.')
       setSent({ fields: cleaned, time: sentTime() })
       setStatus('sent')
-      setAnnounce(`Message sent. Thanks, ${cleaned.name}. I'll reply to ${cleaned.email} within a day.`)
+      setAnnounce(`Message sent. Thanks, ${cleaned.name}. I'll reply to ${cleaned.email} soon.`)
     } catch (err) {
       setStatus('error')
       setApiError(err instanceof TypeError

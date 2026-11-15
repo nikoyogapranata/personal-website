@@ -44,8 +44,7 @@ export default function SentState({ sent, time, onReset }: {
           Got it, <em>{sent.name}</em>
         </h2>
         <p className="ss-line">
-          Thanks for reaching out about {topic}. I&apos;ll reply to <span className="ss-email">{sent.email}</span> within
-          a day, usually sooner.
+          Thanks for reaching out about {topic}. I&apos;ll reply to <span className="ss-email">{sent.email}</span> soon.
         </p>
         <div className="ss-actions">
           <Link href="/work" className="ct-btn ct-btn--cream">
