@@ -157,7 +157,8 @@ async function freshTones(b) {
     await p.evaluate(() => scrollTo(0, 300))
     await none('same page (navbar Contact on /contact)', () => p.click('nav a[href="/contact"]'), '/contact')
     console.log(`    scroll kept: ${await p.evaluate(() => scrollY)}`)
-    await none('mailto link', async () => { await p.evaluate(() => document.querySelector('a[href^="mailto:"]').addEventListener('click', e => e.preventDefault(), { once: true })); await p.click('main a[href^="mailto:"]') }, '/contact')
+    // :visible — /contact also has mailto links that only show without JS
+    await none('mailto link', async () => { const l = p.locator('main a[href^="mailto:"]:visible').first(); await l.evaluate(a => a.addEventListener('click', e => e.preventDefault(), { once: true })); await l.click() }, '/contact')
     await none('CV download (target=_blank)', async () => { const [popup] = await Promise.all([p.context().waitForEvent('page'), p.click('main a[href="/cv.pdf"]')]); await popup.close() }, '/contact')
     await none('ctrl+click footer Work', async () => { const [popup] = await Promise.all([p.context().waitForEvent('page'), p.click('footer nav a[href="/work"]', { modifiers: ['Control'] })]); console.log(`    new tab opened: ${popup.url()}`); await popup.close() }, '/contact')
     await none('middle click footer About', async () => { const pr = p.context().waitForEvent('page', { timeout: 3000 }).catch(() => null); await p.click('footer nav a[href="/about"]', { button: 'middle' }); const pop = await pr; if (pop) await pop.close() }, '/contact')
