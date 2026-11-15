@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { motion, useMotionValueEvent, useScroll, useSpring, useTransform } from "framer-motion";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { SCROLL_SPRING } from "@/lib/motion";
+import { scrollToY } from "@/lib/scroll";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -74,7 +75,7 @@ export default function Statement() {
       // Progress runs from the track's top at the viewport bottom ("start end") to its bottom
       // there ("end end"), i.e. over its full height
       const top = track.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({ top: top - innerHeight + GOT_REST * track.offsetHeight, behavior: "instant" });
+      scrollToY(top - innerHeight + GOT_REST * track.offsetHeight);
     }
     smooth.jump(GOT_REST);
   };

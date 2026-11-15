@@ -5,6 +5,7 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, use
 import { AnimatePresence, animate, motion, useMotionValue, useMotionValueEvent, useScroll, useSpring, type MotionValue } from 'framer-motion'
 import { CATEGORIES, PROJECTS } from '@/data'
 import { DURATION, EASE } from '@/lib/motion'
+import { scrollToY } from '@/lib/scroll'
 import { countFor, filterHref, parseFilter, type WorkFilter } from '@/lib/workFilter'
 import ProjectCard, { type PillHandlers } from './ProjectCard'
 import EndCard from './EndCard'
@@ -139,7 +140,7 @@ export default function WorkGallery() {
       // same at any point of it, so the jump can't be seen), swap the cards, fade back in
       animate(trackOpacity, 0, { duration: DURATION.fast, ease: EASE }).then(() => {
         if (token !== pending.current) return
-        window.scrollTo({ top: pinTop, behavior: 'instant' })
+        scrollToY(pinTop)
         fadeIn.current = true
         setInstant(true)
         setFilter(next)
@@ -152,7 +153,7 @@ export default function WorkGallery() {
     setFilter(next)
     if (!matchMedia(PINNED_QUERY).matches && pin && pin.getBoundingClientRect().top < 0) {
       const nav = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--nav-h')) || 56
-      window.scrollTo({ top: pinTop - nav, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
+      scrollToY(pinTop - nav, { smooth: true })
     }
   }, [trackOpacity])
 
@@ -187,7 +188,7 @@ export default function WorkGallery() {
     if (!document.activeElement?.matches(':focus-visible')) return
     const { pinTop, range, centers } = geo.current
     const n = centers.length - 1
-    window.scrollTo({ top: pinTop + (n > 0 ? (i / n) * range : 0), behavior: 'smooth' })
+    scrollToY(pinTop + (n > 0 ? (i / n) * range : 0), { smooth: true })
   }, [])
 
   const register = useCallback((slug: string, el: HTMLLIElement | null) => {
@@ -216,7 +217,7 @@ export default function WorkGallery() {
       <div ref={pinRef} className="wg-pin" style={{ ['--steps' as string]: count, ['--step' as string]: `${STEP_SVH}svh` }}>
         <div ref={frameRef} className="wg-frame">
           <div className="wg-top">
-            <div className="wg-chips" role="group" aria-label="Filter projects by type">
+            <div className="wg-chips" data-lenis-prevent-horizontal="" role="group" aria-label="Filter projects by type">
               {CHIPS.map(c => {
                 const on = filter === c.id
                 return (

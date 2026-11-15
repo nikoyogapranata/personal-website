@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { motion, type Variants } from 'framer-motion'
 import { EASE, EASE_IN_OUT } from '@/lib/motion'
+import { scrollToElement, scrollToY } from '@/lib/scroll'
 
 /**
  * Curtain transition for internal navigation: a panel slides up over the page, shows the
@@ -88,10 +89,11 @@ export default function PageTransition() {
     pending.current = null
     let anchor: HTMLElement | null = null
     if (!fromHistory) {
-      // Land on the #hash target if the link had one, otherwise at the top
+      // Land on the #hash target if the link had one, otherwise at the top (through Lenis when
+      // it's on, so a wheel glide still running can't pull the page back)
       anchor = target ? hashTarget(new URL(target, location.href).hash) : null
-      if (anchor) anchor.scrollIntoView()
-      else window.scrollTo(0, 0)
+      if (anchor) scrollToElement(anchor)
+      else scrollToY(0)
     }
     // Two frames: the new page lays out and the tone backdrop picks its colour before the reveal
     requestAnimationFrame(() => requestAnimationFrame(() => {

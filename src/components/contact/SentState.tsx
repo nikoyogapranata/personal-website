@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { topicLabel, type ContactFields, type TopicId } from '@/lib/contact'
 import { CITY } from '@/lib/site'
+import { scrollToElement } from '@/lib/scroll'
 
 /** Long messages are cut short on the card; the full text went in the email */
 const ECHO_MAX = 280
@@ -30,8 +31,7 @@ export default function SentState({ sent, time, onReset }: {
     const h = heading.current
     if (!h) return
     h.focus({ preventScroll: true })
-    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches
-    h.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' })
+    scrollToElement(h, { block: 'center', smooth: true })
   }, [])
 
   return (

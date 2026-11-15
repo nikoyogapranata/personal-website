@@ -5,6 +5,7 @@ import FilmGrain from "@/components/ui/FilmGrain";
 import Navbar from "@/components/sections/Navbar";
 import LoadingScreen from "@/components/ui/LoadingScreen";
 import PageTransition from "@/components/ui/PageTransition";
+import SmoothScroll from "@/components/ui/SmoothScroll";
 import { loaderBootScript } from "@/lib/loader";
 import { workBootScript } from "@/lib/workFilter";
 import MotionProvider from "@/components/MotionProvider";
@@ -104,6 +105,7 @@ export default function RootLayout({
         />
         <MotionProvider>
           <ToneProvider>
+            <SmoothScroll />
             <LoadingScreen />
             <FilmGrain />
             <Navbar />

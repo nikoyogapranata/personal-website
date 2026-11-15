@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic'
 import { usePathname } from 'next/navigation'
 import { TONE_COLOR, useTone } from '../ui/Tone'
 import { DURATION, EASE, EASE_IN_OUT } from '@/lib/motion'
+import { scrollToY } from '@/lib/scroll'
 
 // FlowingMenu pulls in GSAP; only load it when the menu is about to open
 const loadFlowingMenu = () => import('../ui/FlowingMenu')
@@ -114,10 +115,7 @@ export default function Navbar() {
     return () => cancelAnimationFrame(frame)
   }, [menuOpen])
 
-  const goTop = () => window.scrollTo({
-    top: 0,
-    behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-  })
+  const goTop = () => scrollToY(0, { smooth: true })
 
   // base color flips with the background under the navbar
   const base   = isDark ? '#f8f8f5' : '#0a0a0a'
@@ -270,6 +268,8 @@ export default function Navbar() {
               key="panel"
               id="site-menu"
               ref={panelRef}
+              // Lenis leaves wheel and touch over the menu to the browser
+              data-lenis-prevent=""
               // A link to the page we're on doesn't navigate, so close here; other links close
               // the menu through the route change above
               onClick={(e) => {
