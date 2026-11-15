@@ -213,6 +213,28 @@ section('reduced motion')
   await ctx.close()
 }
 
+// ── Hero cards stay gone below the hero ───────────────────────────
+// The fixed hero (I'M NIKO YOGA cards) fades out over its scroll driver. Framer runs that fade as
+// a native scroll-timeline animation; with keyframes only mid-range the browser filled the end with
+// the inline opacity, so the hero came back and, under reduced motion (cards not flown off), showed
+// through the transparent sections over the Work list.
+section('hero gone below the hero')
+for (const reducedMotion of ['reduce', 'no-preference']) {
+  const { ctx, p } = await open({ viewport: { width: 1440, height: 900 }, reducedMotion })
+  const heroOp = () => p.evaluate(() => Number(getComputedStyle(document.querySelector('main > div:first-child section')).opacity))
+  for (const [label, sel] of [['about', '#about, [data-tone] h2'], ['work title', '#work'], ['work list', '.work-row'], ['last row', '.work-row:last-of-type'], ['contact', '#contact']]) {
+    await p.evaluate(sel => document.querySelector(sel)?.scrollIntoView({ block: 'center' }), sel)
+    await p.waitForTimeout(500)
+    const op = await heroOp()
+    check(op === 0, `${reducedMotion}: hero opacity ${op} at ${label}`)
+  }
+  // And it returns at the top
+  await p.evaluate(() => window.scrollTo(0, 0))
+  await p.waitForTimeout(500)
+  check(await heroOp() === 1, `${reducedMotion}: hero back at the top`)
+  await ctx.close()
+}
+
 // ── Touch ─────────────────────────────────────────────────────────
 section('touch')
 {

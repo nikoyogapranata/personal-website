@@ -79,7 +79,9 @@ function ReadWord({ text, accent, progress, start, end }: {
   start: number
   end: number
 }) {
-  const opacity = useTransform(progress, [start, end], [0, 1])
+  // Spans 0 to 1 so Framer's native scroll-timeline animation has end keyframes; with only
+  // [start, end] the browser filled 1 with the inline opacity (0) and the word faded out again
+  const opacity = useTransform(progress, [0, Math.max(start, 1e-3), Math.min(end, 1 - 1e-3), 1], [0, 0, 1, 1])
   return <motion.span className={accent ? 'story-accent' : undefined} style={{ opacity }}>{text}</motion.span>
 }
 

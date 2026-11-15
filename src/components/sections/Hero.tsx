@@ -150,7 +150,10 @@ export default function Hero({ progress }: { progress: MotionValue<number> }) {
   const box4Rotate = useTransform(progress, [0, 1], [1.4, 25]);
 
   const heroScale = useTransform(progress, [0, 1], [1, 4.5]);
-  const heroOpacity = useTransform(progress, [0.4, 0.6], [1, 0]);
+  // The range spans 0 to 1 on purpose. Framer runs this as a native scroll-timeline animation, and
+  // keyframes only at 0.4 and 0.6 let the browser fill 0 and 1 with the inline opacity (1): the
+  // hero came back once scrolled past, showing through the transparent sections under reduced motion.
+  const heroOpacity = useTransform(progress, [0, 0.4, 0.6, 1], [1, 1, 0, 0]);
   const heroBlur = useTransform(progress, [0.3, 0.6], [0, 14]);
   const heroFilter = useTransform(heroBlur, (b) => `blur(${b}px)`);
 
