@@ -1,14 +1,32 @@
-const MAX = { name: 100, email: 200, subject: 200, message: 5000 } as const
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+import { TOPICS, validate } from '@/lib/contact'
 
-type Field = keyof typeof MAX
-
-function read(body: Record<string, unknown>, key: Field) {
-  const value = body[key]
-  return typeof value === 'string' ? value.trim() : ''
-}
+// The /contact form posts here; the message goes out through Resend's REST API.
+// Rules and messages live in src/lib/contact.ts, shared with the form.
 
 export async function POST(request: Request) {
+  let body: Record<string, unknown>
+  try {
+    const json = await request.json()
+    if (!json || typeof json !== 'object' || Array.isArray(json)) throw new Error()
+    body = json
+  } catch {
+    return Response.json({ error: 'Invalid request.' }, { status: 400 })
+  }
+
+  // Honeypot: real visitors never see or fill this field
+  if (typeof body.company === 'string' && body.company !== '') {
+    return Response.json({ ok: true })
+  }
+
+  // Same checks as the browser, never trusted from it. Field errors go back for the form to
+  // show under each blank.
+  const { values, errors } = validate(body)
+  if (Object.keys(errors).length) {
+    return Response.json({ error: 'Please check the highlighted fields.', errors }, { status: 400 })
+  }
+  const { name, email, message } = values
+  const topic = TOPICS.find(t => t.id === values.topic)!
+
   const apiKey = process.env.RESEND_API_KEY
   const to     = process.env.CONTACT_EMAIL
   // Resend only allows onboarding@resend.dev until a sending domain is verified
@@ -19,44 +37,18 @@ export async function POST(request: Request) {
     return Response.json({ error: 'The contact form is not configured yet.' }, { status: 500 })
   }
 
-  let body: Record<string, unknown>
-  try {
-    body = await request.json()
-  } catch {
-    return Response.json({ error: 'Invalid request.' }, { status: 400 })
-  }
-
-  // Honeypot: real visitors never see or fill this field
-  if (typeof body.company === 'string' && body.company !== '') {
-    return Response.json({ ok: true })
-  }
-
-  const name    = read(body, 'name')
-  const email   = read(body, 'email')
-  const subject = read(body, 'subject')
-  const message = read(body, 'message')
-
-  if (!name || !email || !message) {
-    return Response.json({ error: 'Please fill in your name, email and message.' }, { status: 400 })
-  }
-  if (!EMAIL_RE.test(email)) {
-    return Response.json({ error: 'Please enter a valid email address.' }, { status: 400 })
-  }
-  for (const key of Object.keys(MAX) as Field[]) {
-    if (read(body, key).length > MAX[key]) {
-      return Response.json({ error: `Your ${key} is too long.` }, { status: 400 })
-    }
-  }
-
   const res = await fetch('https://api.resend.com/emails', {
     method:  'POST',
     headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       from,
       to:       [to],
+      // Validated above (no whitespace, line breaks, commas or brackets), so it is safe as a
+      // header and "Reply" in the inbox goes straight to the visitor
       reply_to: email,
-      subject:  `Portfolio: ${subject || `Message from ${name}`}`,
-      text:     `Name: ${name}\nEmail: ${email}\nSubject: ${subject || '-'}\n\n${message}`,
+      subject:  `Portfolio: ${topic.subject}, from ${name}`,
+      // Plain text only: nothing the visitor typed is ever rendered as HTML
+      text:     `Name: ${name}\nEmail: ${email}\nTopic: ${topic.label}\n\n${message}`,
     }),
   })
 

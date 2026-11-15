@@ -1,0 +1,533 @@
+/* /contact: status bar and title (.ct), the sentence form (.sf), the sent state (.ss) and the
+   channels (.ch). Text takes its colour from the tone tokens (--tone-fg etc.), so the top block
+   reads on cream and, after a send, on the dark tone. Layout changes (phones, no JS) are all
+   decided here in CSS, so nothing moves after hydration. */
+
+.ct {
+  --ct-x: max(var(--page-x), calc((100% - var(--content-max)) / 2));
+  --ct-hair: color-mix(in srgb, var(--tone-fg) 22%, transparent);
+  /* The sentence: 52px at 1440×900, 62px at 1920×1080 */
+  --sf-size: clamp(1.75rem, calc(3.6111 * var(--u)), 83px);
+}
+
+/* ── Status bar and title ───────────────────────────────────── */
+.ct-top {
+  padding: calc(var(--nav-h) + clamp(8px, calc(0.8333 * var(--u)), 20px)) var(--ct-x) var(--section-y);
+}
+.ct-status {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--ct-hair);
+  font-family: var(--font-sans);
+  font-size: var(--text-label);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--tone-faint);
+  transition: color var(--dur-base) var(--ease-in-out);
+}
+.ct-status-item {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 4px 0.6em;
+}
+.ct-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #16a34a;
+  flex-shrink: 0;
+  align-self: center;
+  animation: pulse-dot 2s infinite;
+}
+/* Fixed width: "--:--" before mount and the real time take the same room */
+.ct-clock .city-clock {
+  display: inline-block;
+  width: 3.9em;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.ct-title {
+  margin: var(--space-l) 0 var(--space-xl);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: calc(var(--text-title) * 0.85);
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+  color: var(--tone-fg);
+}
+.ct-title-stop {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--color-accent-secondary);
+}
+
+/* ── The sentence form ──────────────────────────────────────── */
+.sf-nojs { display: none; }
+html:not([data-js]) .sf-wrap { display: none; }
+html:not([data-js]) .sf-nojs {
+  display: block;
+  margin: 0;
+  max-width: 34rem;
+  font-family: var(--font-sans);
+  font-size: var(--text-body-lg);
+  line-height: 1.6;
+  color: var(--tone-fg);
+}
+.sf-nojs a { color: var(--color-accent-primary); text-underline-offset: 0.2em; }
+
+.sf-honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
+.sf-sentence {
+  --sf-lh: 1.45em;
+  --sf-uw: 2px;
+  --sf-line: var(--color-line-strong);
+  max-width: 23em;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--sf-size);
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+  color: var(--tone-fg);
+}
+
+/* One blank: [field over its invisible copy][punctuation], then the error */
+.sf-blank {
+  display: inline-flex;
+  flex-direction: column;
+  max-width: 100%;
+  vertical-align: baseline;
+}
+.sf-row { display: flex; align-items: baseline; min-width: 0; }
+.sf-cell {
+  display: grid;
+  grid-template-columns: minmax(0, auto);
+  min-width: 0;
+}
+.sf-suffix { flex-shrink: 0; }
+.sf-chip-last { display: inline-flex; align-items: baseline; white-space: nowrap; }
+.sf-mirror,
+.sf-field {
+  grid-area: 1 / 1;
+  margin: 0;
+  padding: 0 0.06em;
+  border: 0;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1em;
+  line-height: var(--sf-lh);
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+.sf-mirror {
+  visibility: hidden;
+  white-space: pre;
+  overflow: hidden;
+}
+.sf-blank--multi .sf-mirror { white-space: pre-wrap; }
+.sf-field {
+  /* Width 0 + min-width 100%: fills the cell without adding the input's default width to it */
+  width: 0;
+  min-width: 100%;
+  height: 100%;
+  appearance: none;
+  border-radius: 0;
+  resize: none;
+  overflow: hidden;
+  outline: none;
+  color: var(--color-accent-primary);
+  /* An underline under every line, so the message keeps its blank look as it wraps */
+  background: linear-gradient(transparent calc(var(--sf-lh) - var(--sf-uw)), var(--sf-line) 0) 0 0 / 100% var(--sf-lh);
+}
+.sf-field::placeholder { color: var(--tone-faint); opacity: 1; }
+.sf-field:focus { --sf-uw: 4px; --sf-line: var(--color-accent-primary); }
+.sf-field[aria-invalid="true"]:not(:focus) { --sf-line: var(--color-accent-secondary); }
+
+.sf-error {
+  display: block;
+  /* Takes the blank's width without widening it */
+  width: 0;
+  min-width: 100%;
+  margin: 0.4em 0 0.2em;
+  font-family: var(--font-sans);
+  font-size: var(--text-small);
+  font-weight: 500;
+  font-style: normal;
+  line-height: 1.35;
+  letter-spacing: 0;
+  color: var(--color-accent-secondary);
+}
+
+/* Topic chips: real radios inside labels */
+.sf-topics {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.28em 0.32em;
+  max-width: 100%;
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+}
+.sf-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55em 0.95em 0.5em;
+  font-family: var(--font-display);
+  font-size: 0.42em;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: nowrap;
+  color: var(--color-text);
+  background: #ffffff;
+  border: var(--border-ink);
+  border-radius: var(--radius-pill);
+  box-shadow: 4px 4px 0 var(--color-text);
+  cursor: pointer;
+  user-select: none;
+  transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease),
+    color var(--dur-fast) var(--ease), background-color var(--dur-fast) var(--ease);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .sf-chip:hover:not(:has(:checked)) { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--color-text); }
+}
+/* Picked: ink, pressed 2px into a violet shadow */
+.sf-chip:has(:checked) {
+  color: var(--color-text-inverse);
+  background: var(--color-text);
+  box-shadow: 2px 2px 0 var(--color-accent-primary);
+  transform: translate(2px, 2px);
+}
+/* The others step back, still at 4.5:1 */
+.sf-topics[data-picked] .sf-chip:not(:has(:checked)) {
+  color: var(--color-text-faint);
+  border-color: var(--color-line-strong);
+  box-shadow: 4px 4px 0 var(--color-line-strong);
+}
+.sf-chip:has(:focus-visible) { outline: 3px solid var(--color-accent-primary); outline-offset: 4px; }
+.sf-topics .sf-error--topics { flex-basis: 100%; width: auto; min-width: 0; margin-top: 0.1em; }
+
+.sf-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 28px;
+  margin-top: var(--space-xl);
+}
+.sf-api-error {
+  flex: 1 1 22rem;
+  max-width: 40rem;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.55;
+  color: var(--color-accent-secondary);
+}
+.sf-api-error:empty { display: none; }
+.sf-api-error a { color: inherit; text-underline-offset: 0.2em; }
+
+/* ── Brutalist buttons ──────────────────────────────────────── */
+.ct-btn {
+  --btn-shadow: var(--color-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 1.2em 2.1em;
+  font-family: var(--font-display);
+  font-size: var(--text-small);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: var(--border-ink);
+  border-radius: var(--radius-sm);
+  box-shadow: 6px 6px 0 var(--btn-shadow);
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ct-btn:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--btn-shadow); }
+}
+.ct-btn:active { transform: translate(4px, 4px); box-shadow: 2px 2px 0 var(--btn-shadow); }
+.ct-btn:focus-visible { outline: 3px solid var(--color-accent-primary); outline-offset: 4px; }
+.ct-btn--violet { color: #ffffff; background: var(--color-accent-primary); }
+.ct-btn--violet[aria-disabled="true"] { cursor: progress; transform: translate(4px, 4px); box-shadow: 2px 2px 0 var(--btn-shadow); }
+.ct-btn--cream {
+  --btn-shadow: var(--color-accent-primary-light);
+  color: var(--color-text);
+  background: var(--color-bg);
+  border-color: var(--color-bg);
+}
+.ct-btn--ghost {
+  --btn-shadow: transparent;
+  color: var(--tone-fg);
+  background: transparent;
+  border-color: currentColor;
+}
+.ct-btn--cream:focus-visible,
+.ct-btn--ghost:focus-visible { outline-color: var(--color-accent-primary-light); }
+
+/* ── Sent state ─────────────────────────────────────────────── */
+.ss {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-xl) var(--space-2xl);
+}
+.ss-label {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-label);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--tone-faint);
+}
+.ss-title {
+  margin: 0.25em 0 0.3em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-display);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: var(--tone-fg);
+  overflow-wrap: anywhere;
+}
+.ss-title em {
+  display: block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--color-accent-primary-light);
+}
+.ss-line {
+  margin: 0;
+  max-width: 34rem;
+  font-family: var(--font-sans);
+  font-size: var(--text-body-lg);
+  line-height: 1.6;
+  color: var(--tone-fg);
+}
+.ss-email { overflow-wrap: anywhere; }
+.ss-actions { display: flex; flex-wrap: wrap; gap: 20px 28px; margin-top: var(--space-l); }
+.ss-card {
+  margin: 0;
+  padding: var(--space-m);
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: var(--border-ink);
+  border-radius: var(--radius-sm);
+  box-shadow: 10px 10px 0 var(--color-accent-primary-light);
+  transform: rotate(2.5deg);
+}
+.ss-card-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-label);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+}
+.ss-card-text {
+  margin: 0.7em 0 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.125rem, calc(1.5 * var(--u)), 2.25rem);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+.ss-card-text em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-accent-primary);
+  white-space: pre-line;
+}
+
+/* ── (02) Email and channels ────────────────────────────────── */
+.ch {
+  padding: var(--section-y) var(--ct-x);
+}
+.ch-label {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-label);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--tone-faint);
+}
+.ch-title {
+  margin: 0.2em 0 var(--space-l);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--text-h3);
+  line-height: 1.1;
+  color: var(--tone-serif);
+}
+.ch-email-wrap { container-type: inline-size; }
+.ch-email-box { position: relative; display: inline-block; max-width: 100%; }
+.ch-email {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  /* One line at every width: the box width over the address's length in ems */
+  font-size: min(var(--text-display), calc(100cqi / (var(--chars) * 0.57)));
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+  color: var(--tone-fg);
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  text-decoration-thickness: 0.05em;
+  text-underline-offset: 0.12em;
+  cursor: copy;
+  transition: color var(--dur-fast) var(--ease);
+}
+.ch-email:hover,
+.ch-email:focus-visible { color: var(--color-accent-primary); }
+.ch-email:focus-visible { outline: 3px solid var(--color-accent-primary); outline-offset: 6px; }
+.ch-email--nojs { display: none; cursor: pointer; }
+html:not([data-js]) .ch-email--js { display: none; }
+html:not([data-js]) .ch-email--nojs { display: inline-block; }
+.ch-pill {
+  position: absolute;
+  top: -0.6em;
+  right: -0.4em;
+  padding: 0.55em 1em 0.5em;
+  font-family: var(--font-sans);
+  font-size: var(--text-small);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--color-text-inverse);
+  background: var(--color-text);
+  border-radius: var(--radius-pill);
+  box-shadow: 3px 3px 0 var(--color-accent-primary);
+  pointer-events: none;
+}
+.ch-hint {
+  margin: 0.9em 0 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  color: var(--tone-faint);
+}
+.ch-mailto { color: var(--tone-fg); text-underline-offset: 0.2em; }
+.ch-hint-nojs { display: none; }
+html:not([data-js]) .ch-hint-js { display: none; }
+html:not([data-js]) .ch-hint-nojs { display: inline; }
+
+.ch-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-m);
+  margin: var(--space-xl) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.ch-card-wrap { height: 100%; }
+.ch-card {
+  display: grid;
+  grid-template: "kicker arrow" auto "title title" 1fr / 1fr auto;
+  align-items: start;
+  gap: 12px;
+  height: 100%;
+  min-height: clamp(140px, calc(11 * var(--u)), 260px);
+  padding: var(--space-m);
+  text-decoration: none;
+  border: var(--border-ink);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-card);
+  transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ch-card:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0 var(--color-text); }
+}
+.ch-card:active { transform: translate(4px, 4px); box-shadow: 2px 2px 0 var(--color-text); }
+.ch-card:focus-visible { outline: 3px solid var(--color-accent-primary); outline-offset: 5px; }
+.ch-card--violet  { color: #ffffff; background: var(--color-accent-primary); }
+.ch-card--white   { color: var(--color-text); background: #ffffff; }
+.ch-card--crimson { color: #ffffff; background: var(--color-accent-secondary); }
+.ch-card-kicker {
+  grid-area: kicker;
+  font-family: var(--font-sans);
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.ch-card-arrow {
+  grid-area: arrow;
+  font-family: var(--font-display);
+  font-size: var(--text-h4);
+  line-height: 0.8;
+}
+.ch-card-title {
+  grid-area: title;
+  align-self: end;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-h3);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.ch-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 32px;
+  margin-top: var(--space-2xl);
+  padding-top: 14px;
+  border-top: 1px solid var(--ct-hair);
+  font-family: var(--font-sans);
+  font-size: var(--text-label);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--tone-faint);
+}
+.ch-bottom p { margin: 0; }
+.ch-speaks-label { margin-right: 0.6em; }
+.ch-bottom [lang|="zh"] { font-family: var(--font-cjk), var(--font-serif), "Songti SC", "SimSun", serif; letter-spacing: 0.05em; }
+
+/* ── Tablets ────────────────────────────────────────────────── */
+@media (max-width: 1023px) {
+  .ss { grid-template-columns: minmax(0, 1fr); }
+  .ss-card { max-width: 36rem; transform: rotate(1.5deg); }
+}
+
+/* ── Phones ─────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .ch-cards { grid-template-columns: minmax(0, 1fr); }
+  .ch-card { min-height: 120px; }
+}
+@media (max-width: 640px) {
+  .ct-title { font-size: clamp(52px, 15vw, 120px); }
+  .ct-status-time .ct-sep { display: none; }
+  .ct-status-time { flex-direction: column; gap: 4px; }
+  /* Every blank takes its own full line; the sentence breaks around them */
+  .sf-blank { display: flex; width: 100%; }
+  .sf-row, .sf-cell { flex: 1 1 auto; }
+  .sf-cell { grid-template-columns: minmax(0, 1fr); }
+  .sf-topics { display: flex; margin: 0.2em 0; }
+  /* Thumb-sized chips: about 44px tall */
+  .sf-chip { font-size: 0.6em; padding: 0.8em 1.05em 0.75em; }
+  .ss-card { transform: rotate(1deg); }
+}
