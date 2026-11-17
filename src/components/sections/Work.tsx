@@ -10,6 +10,9 @@ import WorkRow from './WorkRow'
 
 const MotionLink = motion.create(Link)
 
+/** Scroll length of the pinned title: the shrink plays over it, then the rows ride up over the end */
+const TITLE_TRACK = '250vh'
+
 export default function Work() {
   const sectionRef              = useRef<HTMLElement>(null)
   const titleRef                = useRef<HTMLDivElement>(null)
@@ -38,7 +41,7 @@ export default function Work() {
       style={{ position: 'relative' }}
     >
       {/* Violet while the title is large; the list below switches the page to dark */}
-      <div ref={titleRef} data-tone="violet" style={{ minHeight: '180vh', position: 'relative', zIndex: 1 }}>
+      <div ref={titleRef} data-tone="violet" style={{ minHeight: TITLE_TRACK, position: 'relative', zIndex: 1 }}>
         <div style={{
           position:       'sticky',
           top:            0,

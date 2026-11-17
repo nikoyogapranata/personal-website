@@ -113,7 +113,7 @@ async function freshTones(b) {
     await via('/about', '#contact a[href="/contact"]', '/contact')                       // Get in Touch CTA
     await via('/', 'a[href="/contact"]:has-text("GOT A PROJECT?")', '/contact', async () => {
       // Scroll to where GOT A PROJECT? sits mid-screen
-      const y = await p.evaluate(() => { const el = [...document.querySelectorAll('a')].find(a => a.textContent.includes('GOT A PROJECT')); const track = el.closest('div[style*="300vh"]'); return track.getBoundingClientRect().top + scrollY + track.offsetHeight * 0.5 })
+      const y = await p.evaluate(() => { const el = [...document.querySelectorAll('a')].find(a => a.textContent.includes('GOT A PROJECT')); const track = el.closest('div[style*="380vh"]'); return track.getBoundingClientRect().top + scrollY + track.offsetHeight * 0.5 })
       await p.evaluate(y => scrollTo(0, y), y); await p.waitForTimeout(1500)
     })
     // Menu open → click item

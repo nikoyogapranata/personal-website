@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
-import { SCROLL_LERP, SMOOTH_SCROLL_QUERY, setLenis } from '@/lib/scroll'
+import { SCROLL_LERP, SCROLL_WHEEL_MULTIPLIER, SMOOTH_SCROLL_QUERY, setLenis } from '@/lib/scroll'
 
 /**
  * Eased wheel and trackpad scrolling (Lenis) on the window. Lenis only smooths wheel input and
@@ -43,6 +43,7 @@ export default function SmoothScroll() {
       if (mq.matches && !lenis) {
         lenis = new Lenis({
           lerp: SCROLL_LERP,
+          wheelMultiplier: SCROLL_WHEEL_MULTIPLIER,
           smoothWheel: true,
           syncTouch: false,          // touch scrolling stays native
           autoRaf: true,

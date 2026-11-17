@@ -1,15 +1,44 @@
 "use client";
-import { useRef, useState } from "react";
-import { motion, useMotionValueEvent, useScroll, useSpring, useTransform } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, transform, useMotionValue, useMotionValueEvent, useScroll, useSpring, useTransform } from "framer-motion";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { SCROLL_SPRING } from "@/lib/motion";
 import { scrollToY } from "@/lib/scroll";
 import Image from "next/image";
 import Link from "next/link";
 
-// Tone zones (see page.tsx): light from the top of the 300vh track, dark from 40vh down.
-// A zone switches when it crosses the viewport midline, i.e. at progress (50 + offset) / 200:
-// light at 0.25, as the window finishes opening, and dark at 0.45, as GOT A PROJECT? takes over.
+/**
+ * Scroll length of the track. Progress (scrollYProgress) runs 0 → 1 over its full height, from its
+ * top at the viewport bottom to its bottom there, so 0.01 of progress is 3.8vh of scroll. The scene
+ * pins at 100 / 380 ≈ 0.26 and unpins at 1.
+ */
+const TRACK_VH = 380;
+
+/** Scroll phases, as [start, end] progress. The early ones keep the scroll distances they had on the old 300vh track. */
+const PHASE = {
+  /** The window's clip-path opens to full screen (0 → 68vh) */
+  clip:       [0, 0.18],
+  /** The inline photo grows into the line (19 → 61vh) */
+  image:      [0.05, 0.16],
+  /** The statement is knocked out to the left (91 → 209vh) */
+  statOut:    [0.24, 0.55],
+  /** GOT A PROJECT? slides in from the right until its start sits at the left padding (30 → 224vh) */
+  gotIn:      [0.08, 0.59],
+  /** It keeps going left until its end sits at the right padding (224 → 342vh), then holds there to the unpin (342 → 380vh) */
+  gotThrough: [0.59, 0.90],
+  /** Reduced motion: crossfade the statement out, then GOT A PROJECT? in, in place */
+  statFade:   [0.24, 0.39],
+  gotFade:    [0.36, 0.51],
+} satisfies Record<string, [number, number]>;
+/** The window stays a cream island over the dark backdrop until here (91vh), see `island` */
+const ISLAND_UNTIL = 0.24;
+/** GOT A PROJECT? starts this far right (vw), and its end rests this far from the right edge (matching its left padding) */
+const GOT_FROM_VW = 120;
+const GOT_EDGE_VW = 4;
+
+// Tone zones (see page.tsx): light from the top of the track, dark from 40vh down. A zone switches
+// when it crosses the viewport midline, i.e. at progress (50vh + offset) / TRACK_VH: light at 0.13,
+// as the window opens, and dark at 0.24, as the window goes transparent and the statement is hit.
 const DARK_FROM = "40vh";
 
 export default function Statement() {
@@ -22,11 +51,11 @@ export default function Statement() {
 
   const springCfg = SCROLL_SPRING;
 
-  // Phase 1 (0 → 0.23): clip-path expands — same feel, rescaled for taller container
-  const clipTopRaw    = useTransform(scrollYProgress, [0, 0.23], [28, 0]);
-  const clipRightRaw  = useTransform(scrollYProgress, [0, 0.23], [20, 0]);
-  const clipBottomRaw = useTransform(scrollYProgress, [0, 0.23], [28, 0]);
-  const clipLeftRaw   = useTransform(scrollYProgress, [0, 0.23], [20, 0]);
+  // Phase 1: clip-path expands
+  const clipTopRaw    = useTransform(scrollYProgress, PHASE.clip, [28, 0]);
+  const clipRightRaw  = useTransform(scrollYProgress, PHASE.clip, [20, 0]);
+  const clipBottomRaw = useTransform(scrollYProgress, PHASE.clip, [28, 0]);
+  const clipLeftRaw   = useTransform(scrollYProgress, PHASE.clip, [20, 0]);
 
   const clipTop    = useSpring(clipTopRaw,    springCfg);
   const clipRight  = useSpring(clipRightRaw,  springCfg);
@@ -38,34 +67,52 @@ export default function Statement() {
     ([t, r, b, l]: number[]) => `inset(${t}% ${r}% ${b}% ${l}%)`,
   );
 
-  const imgWidthRaw = useTransform(scrollYProgress, [0.06, 0.20], ["0em", "1.1em"]);
+  const imgWidthRaw = useTransform(scrollYProgress, PHASE.image, ["0em", "1.1em"]);
   const imgWidth    = useSpring(imgWidthRaw, springCfg);
 
   // Phase 2: collision then full scroll-through
   const smooth = useSpring(scrollYProgress, springCfg);
 
-  // GOT A PROJECT? enters (collision), then continues scrolling left to reveal full text
-  const gotX     = useTransform(smooth, [0.10, 0.75, 1.2], ["120vw", "0vw", "-240vw"]);
+  // GOT A PROJECT? enters (collision), then continues left to reveal the full text and rests with
+  // its end in view. It is about two screens wide, by an amount that depends on the viewport (its
+  // font size is clamped), so the resting x is measured: the screen width less its own width.
+  const gotRef = useRef<HTMLSpanElement>(null);
+  const gotEnd = useMotionValue(GOT_EDGE_VW - 200); // vw; replaced by the measurement on mount
+  useEffect(() => {
+    const el = gotRef.current;
+    if (!el) return;
+    const measure = () => gotEnd.set(100 - GOT_EDGE_VW - (el.offsetWidth / window.innerWidth) * 100);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    window.addEventListener("resize", measure);
+    return () => { ro.disconnect(); window.removeEventListener("resize", measure); };
+  }, [gotEnd]);
+  const gotX = useTransform(
+    [smooth, gotEnd] as [typeof smooth, typeof gotEnd],
+    ([v, end]: number[]) =>
+      `${transform(v, [PHASE.gotIn[0], PHASE.gotThrough[0], PHASE.gotThrough[1]], [GOT_FROM_VW, 0, end])}vw`,
+  );
   // While it opens, the window is a cream panel inside the dark tone from Work. Once the light
   // tone has taken over the backdrop it goes transparent, so the later switch to dark is the
   // backdrop's crossfade rather than a scrubbed cream → black blend.
   const [island, setIsland] = useState(true);
-  useMotionValueEvent(scrollYProgress, "change", (v) => setIsland(v < 0.3));
+  useMotionValueEvent(scrollYProgress, "change", (v) => setIsland(v < ISLAND_UNTIL));
 
   // Statement gets pushed out — starts moving after GOT A PROJECT? is already mid-screen
-  const statX = useTransform(smooth, [0.30, 0.70], ["0vw", "-130vw"]);
+  const statX = useTransform(smooth, PHASE.statOut, ["0vw", "-130vw"]);
 
   // Reduced motion: no clip zoom or horizontal travel — crossfade the two layers in place
   const reduceMotion = usePrefersReducedMotion();
-  const statFade     = useTransform(smooth, [0.30, 0.50], [1, 0]);
-  const gotFade      = useTransform(smooth, [0.45, 0.65], [0, 1]);
+  const statFade     = useTransform(smooth, PHASE.statFade, [1, 0]);
+  const gotFade      = useTransform(smooth, PHASE.gotFade, [0, 1]);
 
   // GOT A PROJECT? is a link, but for most of this track it's off-screen (sliding in or out) or
   // faded. While it has focus, CSS (data-focus-reveal / data-focus-clip in globals.css) holds its
   // layer at x = 0, fully opaque, with the window open. Keyboard focus, or any focus while it
   // isn't visible, also scrolls the page to that resting point, so the scene around it matches
   // (the statement already gone), and skips the spring's lag.
-  const GOT_REST = 0.75;
+  const GOT_REST = PHASE.gotThrough[0];
   const onGotFocus = (e: React.FocusEvent<HTMLAnchorElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
     const offScreen = r.left >= innerWidth || r.right <= 0 || r.top >= innerHeight || r.bottom <= 0;
@@ -91,7 +138,7 @@ export default function Statement() {
       ref={containerRef}
       style={{
         position:   "relative",
-        height:     "300vh",
+        height:     `${TRACK_VH}vh`,
         zIndex:     10,
       }}
     >
@@ -264,6 +311,7 @@ export default function Statement() {
               style={{ color: "inherit", textDecoration: "none" }}
             >
               <motion.span
+                ref={gotRef}
                 className={reduceMotion ? undefined : "got-text"}
                 style={{
                   fontFamily:    "var(--font-display)",

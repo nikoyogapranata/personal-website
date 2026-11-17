@@ -3,7 +3,12 @@
 // navigation, #hash, back/forward, keyboard, focus) lands where it should and stays there even
 // when it starts in the middle of a wheel glide.
 import { chromium } from 'playwright'
+import fs from 'node:fs'
+import path from 'node:path'
 import { BASE_URL, SKIP_LOADER, reporter } from './lib.mjs'
+
+/** Lenis scales each wheel delta by this (src/lib/scroll.ts, the one place it's set) */
+const WHEEL = Number(fs.readFileSync(path.join(import.meta.dirname, '../../src/lib/scroll.ts'), 'utf8').match(/SCROLL_WHEEL_MULTIPLIER\s*=\s*([\d.]+)/)[1])
 
 const { check, section, done } = reporter()
 const b = await chromium.launch({ channel: 'chrome' })
@@ -49,7 +54,7 @@ for (const url of ['/', '/about', '/work']) {
   await p.waitForTimeout(2000)
   const r = await rest(p, 500)
   const eased = samples[0] > 0 && samples[0] < 500 && samples.some((v, i) => i && v > samples[i - 1])
-  check(eased && Math.abs(r.c - y0 - 600) <= 2 && r.still, `${url}: one 600px wheel eases in (${samples.slice(0, 6).join(', ')}…) and rests at +${r.c - y0}`)
+  check(eased && Math.abs(r.c - y0 - 600 * WHEEL) <= 2 && r.still, `${url}: one 600px wheel eases in (${samples.slice(0, 6).join(', ')}…) and rests at +${r.c - y0} (600 × ${WHEEL})`)
   await ctx.close()
 }
 

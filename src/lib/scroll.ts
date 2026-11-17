@@ -4,7 +4,10 @@ import type Lenis from 'lenis'
  * Wheel smoothing (Lenis lerp): the share of the remaining distance covered each frame.
  * Lower is floatier, 1 is no smoothing. The one number to tune the feel.
  */
-export const SCROLL_LERP = 0.08
+export const SCROLL_LERP = 0.1
+
+/** Distance per wheel tick, as a multiple of the native delta. Below 1 is shorter steps. */
+export const SCROLL_WHEEL_MULTIPLIER = 0.85
 
 /** Lenis runs only for a fine pointer with hover (mouse, trackpad) and motion allowed */
 export const SMOOTH_SCROLL_QUERY = '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)'
