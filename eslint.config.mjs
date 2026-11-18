@@ -15,6 +15,8 @@ const eslintConfig = defineConfig([
     // Agent/editor tooling, not site code
     ".agents/**",
     ".claude/**",
+    // Standalone print portfolio, not part of the Next.js app
+    "portfolio/**",
   ]),
 ]);
 

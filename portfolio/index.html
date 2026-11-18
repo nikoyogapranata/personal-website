@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Niko Pranata, Portfolio 2026</title>
+  <meta name="author" content="Niko Yoga Pranata">
+  <meta name="description" content="Selected work by Niko Pranata, fullstack web developer.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,500&family=Space+Grotesk:wght@400;500;600;700&display=block">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ── Cover ─────────────────────────────────────────────────── -->
+<section class="page page--cover" aria-label="Cover">
+  <div class="cover__text">
+    <header class="runner runner--top">
+      <span>Portfolio</span>
+      <span>Selected work, 2023 to 2026</span>
+    </header>
+
+    <h1 class="cover__name">
+      <span>Niko</span>
+      <span>Pranata</span>
+      <img class="cover__spark" src="../public/spark.png" alt="">
+    </h1>
+
+    <p class="cover__role">Fullstack web developer,<br><span class="serif">a developer with a designer's eye</span></p>
+    <p class="cover__headline">Informatics and Software Engineering student and fullstack web developer. I build interfaces that feel considered, from motion to markup.</p>
+
+    <footer class="runner runner--bottom">
+      <span>Yogyakarta, Indonesia</span>
+      <span>nikopranata.vercel.app</span>
+      <span class="runner__folio"></span>
+    </footer>
+  </div>
+
+  <figure class="cover__photo">
+    <img src="../public/about-hero.jpg" alt="Portrait of Niko Pranata">
+  </figure>
+</section>
+
+<!-- ── About ─────────────────────────────────────────────────── -->
+<section class="page page--dark" aria-label="About">
+  <header class="runner runner--top">
+    <span>About</span>
+    <span>Niko Pranata</span>
+  </header>
+
+  <div class="about">
+    <div>
+      <h2 class="about__title">About</h2>
+      <p class="about__lead">I build interfaces that feel <span class="serif">considered</span>, where every detail has a reason.</p>
+      <div class="about__bio">
+        <p>I got into tech by fixing Zoom calls and running live streams at HelloCation. Since then I've redesigned their pages in Figma, built a client's website end to end, and now lead the IT team there. That path taught me to care about the whole product: how it looks, how it's built, and who maintains it after launch.</p>
+        <p>I build with Next.js, TypeScript, Tailwind CSS and Framer Motion, and backends with Node.js, PHP and PostgreSQL. Right now I'm looking for a web development internship on a team that ships real products.</p>
+      </div>
+    </div>
+
+    <div class="about__facts">
+      <div class="facts__group">
+        <span class="label">Education, double degree</span>
+        <div class="facts__row">
+          <div><span class="facts__main">Software Engineering</span><span class="facts__sub">Nanjing Xiaozhuang University, Nanjing, China</span></div>
+          <span class="facts__when">2025 to now</span>
+        </div>
+        <div class="facts__row">
+          <div><span class="facts__main">Informatics</span><span class="facts__sub">Universitas Islam Indonesia, Yogyakarta</span></div>
+          <span class="facts__when">2023 to now</span>
+        </div>
+      </div>
+
+      <div class="facts__group">
+        <span class="label">Experience</span>
+        <div class="facts__row">
+          <div><span class="facts__main">IT Manager</span><span class="facts__sub">HelloCation, remote</span></div>
+          <span class="facts__when">Jan 2026 to now</span>
+        </div>
+        <div class="facts__row">
+          <div><span class="facts__main">Frontend Developer Intern</span><span class="facts__sub">Kelas Kampus</span></div>
+          <span class="facts__when">Jul 2026 to Oct 2026</span>
+        </div>
+        <div class="facts__row">
+          <div><span class="facts__main">Web Developer</span><span class="facts__sub">Jamusari Cafe</span></div>
+          <span class="facts__when">Aug 2025 to Nov 2025</span>
+        </div>
+        <div class="facts__row">
+          <div><span class="facts__main">UI/UX Designer</span><span class="facts__sub">HelloCation Korea, remote</span></div>
+          <span class="facts__when">Mar 2025 to Jun 2025</span>
+        </div>
+      </div>
+
+      <div class="facts__group">
+        <span class="label">Speaks</span>
+        <p class="facts__speaks">Indonesian, Javanese, English, <span lang="zh-Hans">中文</span></p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="runner runner--bottom">
+    <span>Niko Pranata</span>
+    <span>nikopranata.vercel.app</span>
+    <span class="runner__folio"></span>
+  </footer>
+</section>
+
+<!-- ── Projects: one slide each, in the site's display order (src/data/projects.ts),
+     without the two iOS apps that have no screenshots yet ── -->
+
+<section class="page" aria-label="moink">
+  <header class="runner runner--top"><span>Selected work</span><span>01 / 07</span></header>
+  <div class="project">
+    <figure class="shot"><img src="../public/moink.webp" width="1898" height="970" alt="moink home page"></figure>
+    <div>
+      <span class="project__num">01</span>
+      <h2 class="project__title">moink</h2>
+      <p class="project__tagline serif">Learn HSK Chinese vocabulary, one radical at a time</p>
+      <p class="project__desc">Learners preparing for the HSK exams need a way to build and review a large vocabulary. moink groups HSK 1 to 4 words, sourced from the CC-CEDICT dictionary, by their shared radicals and tests them with three quiz modes. I designed and built it, from the ink and calligraphy-inspired interface (Framer Motion and the Canvas API) to sign-in with Firebase Auth and learning data stored in Firestore and Supabase. It is live as a study tool for HSK exam preparation.</p>
+      <dl class="meta">
+        <div class="meta__row"><dt>Type</dt><dd>Web app</dd></div>
+        <div class="meta__row"><dt>Role</dt><dd>Designer and developer</dd></div>
+        <div class="meta__row"><dt>Stack</dt><dd>Next.js, TypeScript, Tailwind CSS, Firebase, Supabase, PostgreSQL</dd></div>
+        <div class="meta__row"><dt>Link</dt><dd><a class="meta__link" href="https://moinkchinese.vercel.app/">moinkchinese.vercel.app</a></dd></div>
+      </dl>
+    </div>
+  </div>
+  <footer class="runner runner--bottom"><span>Niko Pranata</span><span>nikopranata.vercel.app</span><span class="runner__folio"></span></footer>
+</section>
+
+<section class="page" aria-label="HealthSync">
+  <header class="runner runner--top"><span>Selected work</span><span>02 / 07</span></header>
+  <div class="project">
+    <figure class="shot"><img src="../public/healthsync.webp" width="2400" height="1423" alt="HealthSync landing page"></figure>
+    <div>
+      <span class="project__num">02</span>
+      <h2 class="project__title">HealthSync</h2>
+      <p class="project__tagline serif">Health records, queues and an AI chatbot in one platform</p>
+      <p class="project__desc">Patient records are often split across facilities, and hospital queues are hard to manage. HealthSync brings electronic health records and cross-facility data into one platform for patients, doctors and administrators, with a real-time queue and an AI health chatbot built on the Google Generative AI SDK. As team lead, I led development on Next.js, Supabase and PostgreSQL and built the real-time queuing system and role-based access control. The result is a working platform that gives each role its own workflow, live on Vercel.</p>
+      <dl class="meta">
+        <div class="meta__row"><dt>Type</dt><dd>Web app</dd></div>
+        <div class="meta__row"><dt>Role</dt><dd>Team lead</dd></div>
+        <div class="meta__row"><dt>Period</dt><dd>Mar 2025 to Jul 2025</dd></div>
+        <div class="meta__row"><dt>Stack</dt><dd>Next.js, Supabase, PostgreSQL</dd></div>
+        <div class="meta__row"><dt>Link</dt><dd><a class="meta__link" href="https://healthsync-7.vercel.app">healthsync-7.vercel.app</a></dd></div>
+      </dl>
+    </div>
+  </div>
+  <footer class="runner runner--bottom"><span>Niko Pranata</span><span>nikopranata.vercel.app</span><span class="runner__folio"></span></footer>
+</section>
+
+<section class="page" aria-label="Kelas Kampus">
+  <header class="runner runner--top"><span>Selected work</span><span>03 / 07</span></header>
+  <div class="project">
+    <figure class="shot"><img src="../public/kelas-kampus.webp" width="1900" height="968" alt="Kelas Kampus home page"></figure>
+    <div>
+      <span class="project__num">03</span>
+      <h2 class="project__title">Kelas Kampus</h2>
+      <p class="project__tagline serif">A rebuilt front end and the design system behind it</p>
+      <p class="project__desc">Kelas Kampus, an exam-prep education platform, was running on legacy pages that needed a consistent UI for a growing student base. During my remote frontend internship (Batch 8), I rebuilt the core pages with Next.js, TypeScript, Tailwind CSS and Framer Motion, moved them to a component-based architecture, and connected them to the backend through a REST API. I also built a design system of reusable components with typography, spacing and color tokens. The platform now has one consistent, responsive UI and a base that makes future pages faster to build.</p>
+      <dl class="meta">
+        <div class="meta__row"><dt>Type</dt><dd>Web app</dd></div>
+        <div class="meta__row"><dt>Role</dt><dd>Frontend Developer Intern</dd></div>
+        <div class="meta__row"><dt>Period</dt><dd>Jul 2026 to Oct 2026</dd></div>
+        <div class="meta__row"><dt>Stack</dt><dd>Next.js, TypeScript, Tailwind CSS, Framer Motion</dd></div>
+        <div class="meta__row"><dt>Link</dt><dd><a class="meta__link" href="https://kelaskampus.id">kelaskampus.id</a></dd></div>
+      </dl>
+    </div>
+  </div>
+  <footer class="runner runner--bottom"><span>Niko Pranata</span><span>nikopranata.vercel.app</span><span class="runner__folio"></span></footer>
+</section>
+
+<section class="page" aria-label="HelloCation.id">
+  <header class="runner runner--top"><span>Selected work</span><span>04 / 07</span></header>
+  <div class="project">
+    <figure class="shot"><img src="../public/hellocation.webp" width="1897" height="967" alt="HelloCation home page"></figure>
+    <div>
+      <span class="project__num">04</span>
+      <h2 class="project__title">HelloCation.id</h2>
+      <p class="project__tagline serif">A remote-team redesign, plus SEO and analytics</p>
+      <p class="project__desc">HelloCation's website needed modern layouts, a clearer visual hierarchy and consistent branding. As UI/UX designer, I redesigned the Home, About Us, Services, News and Contact pages in Figma. As IT Manager, I then led a remote team of 6 designers and developers from that concept through WordPress staging to launch, and I managed on-page SEO and used Google Analytics to set redesign priorities. The redesigned site is live at hellocation.id, and I keep its server and website running.</p>
+      <dl class="meta">
+        <div class="meta__row"><dt>Type</dt><dd>CMS site</dd></div>
+        <div class="meta__row"><dt>Role</dt><dd>IT Manager, redesign lead</dd></div>
+        <div class="meta__row"><dt>Stack</dt><dd>WordPress, Figma</dd></div>
+        <div class="meta__row"><dt>Link</dt><dd><a class="meta__link" href="https://hellocation.id">hellocation.id</a></dd></div>
+      </dl>
+    </div>
+  </div>
+  <footer class="runner runner--bottom"><span>Niko Pranata</span><span>nikopranata.vercel.app</span><span class="runner__folio"></span></footer>
+</section>
+
+<section class="page" aria-label="JAMUSARI">
+  <header class="runner runner--top"><span>Selected work</span><span>05 / 07</span></header>
+  <div class="project">
+    <figure class="shot"><img src="../public/jamusari.webp" width="2400" height="1417" alt="JAMUSARI home page"></figure>
+    <div>
+      <span class="project__num">05</span>
+      <h2 class="project__title">JAMUSARI</h2>
+      <p class="project__tagline serif">A herbal café's home on the web, run by its own staff</p>
+      <p class="project__desc">Jamusari, a herbal café in Desa Guwosari linked to a medicinal-plant (TOGA) conservation program, needed a website for its “Modern Jamu” brand. I built jamusari.com on my own with WordPress and Elementor, including hosting, the domain on Hostinger, and deployment. I designed responsive layouts for the product catalog, educational blog and conservation gallery, gathered and structured all the content, and set up on-page SEO. The site is live, and the café's non-technical staff were trained to update it without a developer.</p>
+      <dl class="meta">
+        <div class="meta__row"><dt>Type</dt><dd>CMS site</dd></div>
+        <div class="meta__row"><dt>Role</dt><dd>Web Developer</dd></div>
+        <div class="meta__row"><dt>Period</dt><dd>Sep 2025 to Nov 2025</dd></div>
+        <div class="meta__row"><dt>Stack</dt><dd>WordPress, Elementor</dd></div>
+        <div class="meta__row"><dt>Link</dt><dd><a class="meta__link" href="https://jamusari.com">jamusari.com</a></dd></div>
+      </dl>
+    </div>
+  </div>
+  <footer class="runner runner--bottom"><span>Niko Pranata</span><span>nikopranata.vercel.app</span><span class="runner__folio"></span></footer>
+</section>
+
+<section class="page" aria-label="WETRACK">
+  <header class="runner runner--top"><span>Selected work</span><span>06 / 07</span></header>
+  <div class="project">
+    <figure class="shot"><img src="../public/wetrack.webp" width="2400" height="1358" alt="WETRACK dashboard"></figure>
+    <div>
+      <span class="project__num">06</span>
+      <h2 class="project__title">WETRACK</h2>
+      <p class="project__desc">Authorities supervising people on conditional release need to know where they are and whether they stay within allowed areas before full release. WETRACK is a web-based monitoring system with real-time location tracking, geofencing that alerts authorities to boundary violations, and role-based dashboards. As team lead, I developed it with PHP, MySQL, JavaScript and Leaflet and designed the multi-user architecture that lets different authorities securely access and manage sensitive tracking data. The finished system covers the full path from tracking to alerting the right authority, and its source is on GitHub.</p>
+      <dl class="meta">
+        <div class="meta__row"><dt>Type</dt><dd>Web app</dd></div>
+        <div class="meta__row"><dt>Role</dt><dd>Team lead</dd></div>
+        <div class="meta__row"><dt>Period</dt><dd>Sep 2024 to Jan 2025</dd></div>
+        <div class="meta__row"><dt>Stack</dt><dd>PHP, MySQL, JavaScript, Leaflet</dd></div>
+        <div class="meta__row"><dt>Link</dt><dd><a class="meta__link" href="https://github.com/nikoyogapranata/wetrack">github.com/nikoyogapranata/wetrack</a></dd></div>
+      </dl>
+    </div>
+  </div>
+  <footer class="runner runner--bottom"><span>Niko Pranata</span><span>nikopranata.vercel.app</span><span class="runner__folio"></span></footer>
+</section>
+
+<section class="page" aria-label="EduNovel">
+  <header class="runner runner--top"><span>Selected work</span><span>07 / 07</span></header>
+  <div class="project">
+    <figure class="shot"><img src="../public/edunovel.webp" width="2400" height="1490" alt="EduNovel app screens"></figure>
+    <div>
+      <span class="project__num">07</span>
+      <h2 class="project__title">EduNovel</h2>
+      <p class="project__desc">EduNovel is a gamified learning app from the EduConnect team, built to make studying feel more like play. I designed its user flows, interface and visual theme in Figma. I also made the posters and promo videos that introduced the app. The outcome was a complete app design and a matching set of promotional material for the team.</p>
+      <dl class="meta">
+        <div class="meta__row"><dt>Type</dt><dd>UI/UX design</dd></div>
+        <div class="meta__row"><dt>Role</dt><dd>UI/UX designer, EduConnect team</dd></div>
+        <div class="meta__row"><dt>Period</dt><dd>Sep 2023 to Jan 2024</dd></div>
+        <div class="meta__row"><dt>Stack</dt><dd>Figma</dd></div>
+      </dl>
+    </div>
+  </div>
+  <footer class="runner runner--bottom"><span>Niko Pranata</span><span>nikopranata.vercel.app</span><span class="runner__folio"></span></footer>
+</section>
+
+<!-- ── Contact ───────────────────────────────────────────────── -->
+<section class="page page--dark" aria-label="Contact">
+  <header class="runner runner--top">
+    <span>Contact</span>
+    <span>Open to work</span>
+  </header>
+
+  <div class="contact">
+    <h2 class="contact__title">
+      <span>Let's work</span>
+      <span>together<img class="contact__spark" src="../public/spark.png" alt=""></span>
+    </h2>
+
+    <div class="contact__grid">
+      <p class="contact__note">
+        <strong>Available for web developer internships and freelance collaborations.</strong>
+        Based in Yogyakarta, Indonesia, studying in Nanjing, China, and happy to work remotely.
+      </p>
+
+      <div class="channels">
+        <div class="channels__row"><span class="label">Email</span><a href="mailto:nikopranatabusiness@gmail.com">nikopranatabusiness@gmail.com</a></div>
+        <div class="channels__row"><span class="label">Website</span><a href="https://nikopranata.vercel.app">nikopranata.vercel.app<img class="arrow" src="assets/arrow.svg" alt=""></a></div>
+        <div class="channels__row"><span class="label">LinkedIn</span><a href="https://www.linkedin.com/in/nikoyogapranata">in/nikoyogapranata<img class="arrow" src="assets/arrow.svg" alt=""></a></div>
+        <div class="channels__row"><span class="label">GitHub</span><a href="https://github.com/nikoyogapranata">github.com/nikoyogapranata<img class="arrow" src="assets/arrow.svg" alt=""></a></div>
+        <div class="channels__row"><span class="label">CV</span><a href="https://nikopranata.vercel.app/Niko%20Yoga%20Pranata%20-%20CV.pdf">Download the CV<img class="arrow" src="assets/arrow.svg" alt=""></a></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="runner runner--bottom">
+    <span>Niko Pranata</span>
+    <span>nikopranata.vercel.app</span>
+    <span class="runner__folio"></span>
+  </footer>
+</section>
+
+</body>
+</html>
